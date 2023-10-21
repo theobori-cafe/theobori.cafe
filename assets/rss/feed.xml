@@ -1,0 +1,1110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Théo Bori</title>
+        <link>http://localhost:3000</link>
+        <description>Posts and archives about things I make</description>
+        <lastBuildDate>Sun, 24 Sep 2023 22:31:22 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>Feed for Node.js</generator>
+        <image>
+            <title>Théo Bori</title>
+            <url>http://localhost:3000/favicon.png</url>
+            <link>http://localhost:3000</link>
+        </image>
+        <copyright>All rights reserved 2023, Théo Bori</copyright>
+        <item>
+            <title><![CDATA[Open source services]]></title>
+            <link>http://localhost:3000/post/theoboricafe</link>
+            <guid>http://localhost:3000/post/theoboricafe</guid>
+            <pubDate>Sun, 24 Sep 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Provides privacy-friendly open source services on a tiny server.]]></description>
+            <content:encoded><![CDATA[
+# ~
+
+The aim of the project is to provide open source services to anyone who wants to use them. For the moment, the machine(s) used are small and consequently there are a limited number of services and features. This can of course evolve over time, depending on resources and motivation. So, if you're looking for performance above all else, I'd recommend [deuxfleurs.fr](https://deuxfleurs.fr/) or [chatons.org](https://www.chatons.org/). To use some of them, you'll need to send me an e-mail **`himself at theobori dot cafe`**.
+
+It's all about privacy and security. The aim is to be able to use simple and efficient services such as Joplin or SearXNG, but also to avoid Google, Microsoft, etc. Server configuration and DNS entries are automated and open source on GitHub. See [theobori-cafe organization](https://github.com/theobori-cafe).
+
+<p align="center" width="100%">
+  <img src="/searxng.svg" width="70%">
+</p>
+
+Services status can be checked at [status.theobori.cafe](https://status.theobori.cafe).
+
+While setting up the server(s) and services, I learned some interesting things about network and system security. By the way, an onion (Tor) service is available.
+
+nioaz2guqngy62mtld7gjeeivlkpai2m6h5isryorfys7mhubargcuid.onion.
+
+<p align="center" width="100%">
+  <img src="/tor_logo.svg" width="40%">
+</p>
+
+I've chosen to use a Joplin server instead of Nextcloud for lack of resources, and plan to have an instance as soon as possible!
+]]></content:encoded>
+            <author>theo1.bori@epitech.eu (Théo Bori)</author>
+        </item>
+        <item>
+            <title><![CDATA[Teeworlds utilities]]></title>
+            <link>http://localhost:3000/post/teeworlds-utilities</link>
+            <guid>http://localhost:3000/post/teeworlds-utilities</guid>
+            <pubDate>Wed, 26 Jul 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Asset utilities including skin rendering, extracting, editing and many more for the Teeworlds community.]]></description>
+            <content:encoded><![CDATA[
+# ~
+
+This idea came to me when I was looking for a Teeworlds skin renderer.
+
+The ones that existed didn't suit me, as they didn't really respect the in-game rendering. Either the feet were too far out or the colors were wrong.
+
+So I decided to make my own toolbox to manipulate Teeworlds assets, which we use on skins.tw and for the Teeworlds Data Discord bot. 
+Indirectly, other people use it, for example, to render skins in a Discord channel that displays messages in real time (fokkonaut's Discord server)
+
+<p align="center" width="100%">
+  <img src="/fokkonaut_bridge.png">
+</p>
+
+or in other projects like [TeeAssembler 2.0](https://teeassembler.developer.li/) that used some part of the **`teeworlds-utilites`** code.
+
+# Use cases
+
+### Teeworlds skin rendering
+
+Render a Teeworlds 4K skin with default and custom colors.
+
+```typescript
+import {
+  Skin,
+  ColorCode,
+  ColorRGB
+} from 'teeworlds-utilities';
+
+const renderTest = async () => {
+  const skin = new Skin();
+
+  await skin.load('https://api.skins.tw/database/skins/96AATxN3DEzcGww4QhmduFCsPzaxhZO7Tq6Lh9OI.png');
+
+  skin
+    .render()
+    .saveRenderAs('default.png')
+    .colorTee(
+      new ColorCode(6619008),
+      new ColorRGB(136, 113, 255),
+    )
+    .render()
+    .saveRenderAs('color.png');
+}
+
+try {
+  renderTest();
+} catch (err) {
+  console.error(err);
+}
+```
+
+### Rendered skins
+
+<p align="center" width="100%">
+  <img src="/render_color.png" width="40%">
+  <img src="/render_default.png" width="40%">
+</p>
+
+### Scene
+
+A custom scene including a rendered skin.
+
+```typescript
+import { Scene } from 'teeworlds-utilities';
+
+const sceneTest = async () => {
+  const scene = new Scene(
+    'data/scenes/schemes/example.json'
+  ).preprocess();
+
+  await scene.renderScene();
+  scene.saveScene('scene.png')
+}
+
+sceneTest();
+```
+
+### Rendered scene
+
+<p align="center" width="100%">
+  <img src="/scene.png" width="80%">
+</p>
+
+### Merge asset parts
+
+Here we are going to merge specific parts from a skin (right) to another (left).
+
+Any Teeworlds asset should works.
+
+<p align="center" width="100%">
+  <img src="/ahl_skin.png">
+  <img src="/bit_skin.png" width="216px">
+</p>
+
+
+```typescript
+import {
+  Skin,
+  SkinPart
+} from 'teeworlds-utilities';
+
+const mergeTest = async () => {
+  const skin = new Skin();
+  await skin.load('https://api.skins.tw/database/skins/OUZsYUrmUkitNBUAtKyxdiH5EnLBTkBy8tKNPVmi.png');
+
+  const skin_src = new Skin();
+  await skin_src.load('https://api.skins.tw/database/skins/6l7fEywyc0hnchjJAqEHVLmYVJIlNe2Cv6HJVNcR.png');
+
+  skin
+    .copyParts(
+      skin_src,
+      SkinPart.FOOT,
+      SkinPart.FOOT_SHADOW,
+      SkinPart.DEFAULT_EYE,
+      SkinPart.ANGRY_EYE,
+      SkinPart.BLINK_EYE,
+      SkinPart.CROSS_EYE,
+      SkinPart.HAPPY_EYE,
+      SkinPart.SCARY_EYE,
+      SkinPart.HAND_SHADOW,
+      SkinPart.HAND,
+    )
+    .setEyeAssetPart(SkinPart.ANGRY_EYE)
+    .render()
+    .saveAs('skin.png')
+    .saveRenderAs('skin.png')
+}
+
+try {
+  mergeTest();
+} catch (err) {
+  console.error(err);
+}
+```
+
+### New skin
+
+<p align="center" width="100%">
+  <img src="/render_new_skin.png">
+  <img src="/new_skin.png">
+</p>
+
+# Other renders
+
+<p align="center" width="100%">
+  <img src="/skin_weapon.png">
+  <img src="/skin_weapon_color.png">
+</p>
+
+<p align="center" width="100%">
+  <img src="/board.png">
+</p>
+
+# Try
+
+[*Source*](https://github.com/teeworlds-utilities/teeworlds-utilities)
+]]></content:encoded>
+            <author>theo1.bori@epitech.eu (Théo Bori)</author>
+        </item>
+        <item>
+            <title><![CDATA[Terraform NeuVector provider]]></title>
+            <link>http://localhost:3000/post/tf-neuvector</link>
+            <guid>http://localhost:3000/post/tf-neuvector</guid>
+            <pubDate>Sun, 04 Jun 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[A Terraform provider to configure NeuVector and manage its resources.]]></description>
+            <content:encoded><![CDATA[
+# ~
+
+This project is used to manage NeuVector's configuration and its most revelant resources. I was asked to automate the configuration of the solution in a fairly specific context. Initially, I had made a rather well-organized bash script that could apply these resources, but not destroy them.
+
+I then asked around and very quickly found Terraform. So I learned how to use it and made a module that could manage any NeuVector resource, including creation and destruction only.
+
+A huge problem was the token that NeuVector provides tends to timeout quite quickly (300 seconds by default).
+So I decided to create a Terraform provider to handle all this cleanly. The language best suited for this is Go, so I learned it. Hashicorp explains that it's best to separate the client library from the provider.
+
+<p align="center" width="100%">
+    <img src="/terraform_provider.png" width="90%">
+</p>
+
+So I created a Go SDK for NeuVector before using it in the provider, you can find it out [here](https://github.com/theobori/go-neuvector).
+
+Now the provider is able to fully manage the implemented resources (create, delete, update and import).
+
+# Use cases
+
+The provider Terraform block looks like below.
+
+```
+terraform {
+  required_providers {
+    neuvector = {
+      source = "theobori/neuvector"
+      version = "0.4.1"
+    }
+  }
+}
+
+provider "neuvector" {
+  base_url = "https://127.0.0.1:10443/v1/"
+  username = "admin"
+  password = "admin"
+}
+```
+
+Once it is declared in the configuration, you can start using it as you want. Here's a Terraform example that could be applied after installing NeuVector.
+
+```
+resource "neuvector_eula" "eula" {
+    accepted = true
+}
+
+resource "neuvector_registry" "registry_test" {
+  name                   = "docker.io"
+  registry_type          = "Docker Registry"
+  filters                = ["*"]
+  registry               = "https://registry.hub.docker.com/"
+  rescan_after_db_update = true
+  auth_with_token        = false
+  scan_layers            = true
+}
+
+resource "neuvector_group" "group_test" {
+  name = "mytestgroup"
+
+  criteria {
+    key   = "pattern"
+    value = "[a-z]"
+    op    = "regex"
+  }
+
+  criteria {
+    key   = "namespace"
+    value = "example"
+    op    = "="
+  }
+}
+
+data "neuvector_group_metadata" "group_metadata" {
+    name = neuvector_group.group_test.id
+}
+
+resource "neuvector_service_config" "service_config_test" {
+  services = data.neuvector_group_services.group_metadata.services
+
+  not_scored = true
+}
+```
+
+# Try
+
+[*Source*](https://github.com/theobori/terraform-provider-neuvector)
+]]></content:encoded>
+            <author>theo1.bori@epitech.eu (Théo Bori)</author>
+        </item>
+        <item>
+            <title><![CDATA[Terraform chaos engineering]]></title>
+            <link>http://localhost:3000/post/tf-doom</link>
+            <guid>http://localhost:3000/post/tf-doom</guid>
+            <pubDate>Sat, 03 Jun 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Destroy Terraform resource by killing DOOM enemies.]]></description>
+            <content:encoded><![CDATA[
+# ~
+
+I first saw [kubedoom](https://github.com/storax/kubedoom) and thought it was pretty cool, so I decided to do the same for Terraform, knowing that I was working with it for professional projects. 
+
+The principle is very simple, each enemy represents a Terraform resource, if an enemy dies, the associated resource is destroyed.
+
+# How it works ?
+
+The main program is **`tf-doom`**', which creates a UNIX socket, listens to it and simultaneously launches an X11 virtual server (Xvfb), a VNC server (x11vnc) attached to this X session and **`psdoom`** (DOOM writing to the UNIX socket). 
+
+Everything we've just described will be encapsulated in a Docker container.
+
+The binaries **`Xvfb`** and **`x11vnc`** are used to create a cross-platform graphical access to **`psdoom`** inside the container.
+
+**`psdoom`** will continuously write to the UNIX socket to signal **`tf-doom`** to send Terraform resource information. When an enemy is killed, **`psdoom`** writes the associated resource name to the socket.
+
+<p align="center" width="100%">
+    <img src="/tf-doom.png" width="80%">
+</p>
+
+# Demo
+
+This demo has been realized with the test Terraform project, every steps to reproduce it are detailed in the README file on the repository.
+
+<p align="center" width="100%">
+    <video controls width="80%">
+        <source src="/tf-doom.mp4" type="video/mp4">
+        <a href="/tf-doom.mp4">MP4</a>
+    </video>
+</p>
+
+# Try
+
+[*Source*](https://github.com/theobori/tf-doom)
+]]></content:encoded>
+            <author>theo1.bori@epitech.eu (Théo Bori)</author>
+        </item>
+        <item>
+            <title><![CDATA[DOOM modding]]></title>
+            <link>http://localhost:3000/post/tinywad</link>
+            <guid>http://localhost:3000/post/tinywad</guid>
+            <pubDate>Wed, 03 May 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[A library for extracting, building, parsing and updating WAD files.]]></description>
+            <content:encoded><![CDATA[
+# ~
+
+This project is a WAD library/manager, it can be used as a base for other WAD projects like a GUI, a CLI, etc..
+
+I have played around with some well known `IWAD` like **`doom.wad`** and **`doom2.wad`** (registered).
+
+To test the `IWAD`/`PWAD` generated, I have used two engines:
+- [GZDoom](https://zdoom.org/index) (tests + screenshots)
+- [WAD Commander](https://wadcmd.com/) (tests + preview in multiple contexts)
+
+# Use cases
+
+Some use cases you could use in a DOOM modding context.
+
+### IWAD patching
+
+```rust
+use tinywad::error::WadError;
+use tinywad::models::operation::WadOp;
+use tinywad::wad::Wad;
+
+fn main() -> Result<(), WadError> {
+    let mut doom_2 = Wad::new();
+    doom_2.load_from_file("wads/doom2.wad")?;
+
+    let gate = doom_2.lump("GATE3").unwrap();
+
+    let mut doom_1 = Wad::new();
+    doom_1.load_from_file("doom1.wad")?;
+
+    doom_1.select("^FLAT|FLOOR");
+    doom_1.update_lumps_raw(&gate.data().buffer);
+    doom_1.save("doom1.wad");
+
+    Ok(())
+}
+```
+
+So basically (above) it loads a first `IWAD` file, in our case it is **`doom2.wad`**. It borrows a lump (**`GATE3`**) into the variable **`gate`**, then we load a second `IWAD` which is **`doom1.wad`**, it selects desired lumps, then it update the selected lumps in `DOOM1` and finally overwrite the file.
+
+### Screenhot(s)
+
+<img src="/doom_gate3.png" width="60%">
+
+### Lumps extracting
+
+```rust
+use std::fs;
+
+use tinywad::dir::MAX_PAL;
+use tinywad::error::WadError;
+use tinywad::models::operation::WadOp;
+use tinywad::wad::Wad;
+
+fn main() -> Result<(), WadError> {
+    let mut doom_2 = Wad::new();
+    doom_2.load_from_file("wads/doom2.wad")?;
+
+    for pal in 0..MAX_PAL {
+        doom_2.set_palette(pal);
+        doom_2.reload()?;
+        doom_2.select("^BOSF");
+        
+        let dirpath = format!("doom2/pal_{}", pal);
+
+        fs::create_dir_all(dirpath.clone()).unwrap();
+
+        doom_2.save_lumps(dirpath);
+    }
+
+    Ok(())
+}
+```
+
+In this part of code, it extracts as PNG the selected lumps with different palettes (13).
+
+### Extracted lumps (as PNGs)
+
+<p float="left">
+  <img src="/doom2/pal_0/BOSFB0.png">
+  <img src="/doom2/pal_1/BOSFB0.png">
+  <img src="/doom2/pal_2/BOSFB0.png">
+  <img src="/doom2/pal_3/BOSFB0.png">
+  <img src="/doom2/pal_4/BOSFB0.png">
+  <img src="/doom2/pal_5/BOSFB0.png">
+  <img src="/doom2/pal_6/BOSFB0.png">
+  <img src="/doom2/pal_7/BOSFB0.png">
+  <img src="/doom2/pal_8/BOSFB0.png">
+  <img src="/doom2/pal_9/BOSFB0.png">
+  <img src="/doom2/pal_10/BOSFB0.png">
+  <img src="/doom2/pal_11/BOSFB0.png">
+  <img src="/doom2/pal_12/BOSFB0.png">
+</p>
+
+### Dumping metadata
+
+```rust
+use tinywad::error::WadError;
+use tinywad::models::operation::WadOp;
+use tinywad::wad::Wad;
+
+fn main() -> Result<(), WadError> {
+    let mut src = Wad::new();
+
+    src.load_from_file("wads/hexen.wad")?;
+    src.dump();
+
+    Ok(())
+}
+```
+
+### Output
+
+```
+Name: XXTIC, Size: 8, Offset: 12
+Name: STARTUP, Size: 153648, Offset: 20
+Name: PLAYPAL, Size: 21504, Offset: 153668, Palettes amount: 28
+Name: COLORMAP, Size: 8704, Offset: 175172
+Name: FOGMAP, Size: 8704, Offset: 183876
+Name: TINTTAB, Size: 65536, Offset: 192580
+Name: TRANTBL0, Size: 256, Offset: 258116
+Name: TRANTBL1, Size: 256, Offset: 258372
+Name: TRANTBL2, Size: 256, Offset: 258628
+...
+```
+
+### Building a PWAD from scratch
+
+```rust
+use tinywad::error::WadError;
+use tinywad::lump::{LumpAdd, LumpAddKind};
+use tinywad::models::operation::WadOp;
+use tinywad::wad::{Wad, WadKind,};
+
+fn main() -> Result<(), WadError> {
+    let mut src = Wad::new();
+
+    let lump_names = [
+        "FLOOR0_1", "FLOOR0_3", "FLOOR0_6",
+        "FLOOR1_1", "FLOOR1_7", "FLOOR3_3",
+        "FLOOR4_1", "FLOOR4_5", "FLOOR4_6",
+        "FLOOR4_8", "FLOOR5_1", "FLOOR5_2",
+        "FLOOR5_3", "FLOOR5_4", "FLOOR6_1",
+        "FLOOR6_2", "FLOOR7_1", "FLOOR7_2",
+    ];
+
+    src.load_from_file("doom.wad")?;
+
+    let gate = src.lump("FLOOR6_1").unwrap();
+
+    let mut dest = Wad::new();
+
+    dest.set_kind(WadKind::Pwad);
+    dest.add_lump_raw(
+        LumpAdd::new(
+            LumpAddKind::Back,
+            &vec![],
+            "FF_START",
+        )
+    )?;
+
+    for lump_name in lump_names {
+        dest.add_lump_raw(
+            LumpAdd::new(
+                LumpAddKind::Back,
+                &gate.data().buffer,
+                lump_name,
+            )
+        )?;
+    }
+
+    dest.add_lump_raw(
+        LumpAdd::new(
+            LumpAddKind::Back,
+            &vec![],
+            "F_END",
+        )
+    )?;
+
+    dest.save("doom1_patch.wad");
+
+    Ok(())
+}
+```
+
+To take the screenshot (below) **`doom1_patch.wad`** has been injected into GZDOOM with the `IWAD` **`doom.wad`** (registered).
+
+### Screenshot(s)
+
+<img src="/doom_floor6_1.png" width="60%">
+
+### Download files(s)
+
+[`doom1_patch.wad`](/doom1_patch.wad)  
+[`doom1_patch.asc`](/doom1_patch.asc)  
+[`checksum`](/checksum.txt)
+
+### Extracting MIDI lumps
+
+Extracting every musics from the `IWAD` **`doom.wad`**.
+
+```rust
+use tinywad::error::WadError;
+use tinywad::models::operation::WadOp;
+use tinywad::wad::{Wad};
+
+fn main() -> Result<(), WadError> {
+    let mut src = Wad::new();
+
+    src.load_from_file("doom.wad")?;
+    src.select("D_");
+    src.save_lumps(".");
+
+    Ok(())
+}
+```
+
+### `D_E1M1` converted from MIDI to MP3
+
+<figure>
+    <audio
+        controls
+        src="/D_E1M1.mp3">
+    </audio>
+</figure>
+
+# Try
+
+[*Source*](https://github.com/theobori/tinywad)
+]]></content:encoded>
+            <author>theo1.bori@epitech.eu (Théo Bori)</author>
+        </item>
+        <item>
+            <title><![CDATA[CHIP-8 emulator]]></title>
+            <link>http://localhost:3000/post/tinychip</link>
+            <guid>http://localhost:3000/post/tinychip</guid>
+            <pubDate>Wed, 08 Mar 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[A CHIP-8 emulator that is able to support multiple API(s) and interpreter(s) implementations, it also supports some quirks for load and shift instructions. Adjustable clock speed from 500hz to 2000hz.]]></description>
+            <content:encoded><![CDATA[
+# ~
+
+I wanted to learn the basics of emulator development and emulation in general. So I decided to make a chip8 emulator.
+In fact it's a misuse of language to say that it's an "emulator" because chip8 is a language, so we should rather say "interpreter".
+
+# How does it works ?
+
+So, basically there are three main components that make it works. The **CPU**, the **API** and the **Core** (kernel).
+
+The API polls the keyboard inputs and send them to the CPU that put them in the right memory location.
+The CPU fetch, decode and execute an instruction from a **ROM** (program or game), it can change the VRAM and the CPU registers, etc ..
+Depending of the CPU state, the window draw the VRAM throught the API.
+
+There are approximately ~n instructions executed per second for a frequency of n hz (n is 500 by default).
+And the sound and delay timers are managed with 60hz.
+
+# Screenshots
+
+
+<p align="center" width="100%">
+  <img src="/breakout_320_160.png">
+  <img src="/space_invaders_320_160.png">
+</p>
+
+<p align="center" width="100%">
+  <img src="/ibm_logo_640_320.png" width="640px" height="320px">
+</p>
+
+### CPU
+
+Almost everything is managed by the CPU, RAM, VRAM, pressed hotkeys (keyboard inputs), the sound, etc...
+
+### API
+
+It manages the graphical window and the sound and fills the CPU with the keyboard inputs.
+
+### Core
+
+The core makes the links between this two components.
+
+# Some extra informations
+
+As I said, it supports some quirks for specific instructions, because according to some old documents,`fx55`, `fx65`, `8xy6` and `8xye` dont have the same semantic depending of the machine they were implemeneted on.
+
+I implemented the 36 instructions + the 4 I was taking before to be compatible with more ROM.
+
+# Try
+
+[*Source*](https://github.com/theobori/tinychip)
+]]></content:encoded>
+            <author>theo1.bori@epitech.eu (Théo Bori)</author>
+        </item>
+        <item>
+            <title><![CDATA[www]]></title>
+            <link>http://localhost:3000/post/websites</link>
+            <guid>http://localhost:3000/post/websites</guid>
+            <pubDate>Wed, 08 Mar 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[A simple list of interesting websites]]></description>
+            <content:encoded><![CDATA[
+# ~
+
+- [tilde.team](https://tilde.team)
+- [tilde.pink](https://tilde.pink)
+- [landchad.net](https://landchad.net)
+- [rawtext.club](https://rawtext.club)
+- [suckless.org](https://suckless.org)
+- [libreboot.org](https://libreboot.org)
+- [hashbang.sh](https://hashbang.sh)
+- [nostr.com](https://nostr.com)
+- [roadmap.sh](https://roadmap.sh)
+- [0x0.st](https://0x0.st)
+- [anonfiles.com](https://anonfiles.com)
+- [syncthing.net](https://syncthing.net)
+- [wiby.me](https://wiby.me)
+- [ʞ.cc](https://xn--rpa.cc)
+- [cmpxchg8b.com](https://cmpxchg8b.com)
+- [xkcd.com](https://xkcd.com)
+- [swizec.com](https://swizec.com)
+- [thenewstack.io](https://thenewstack.io)
+- [sectordisk.pw](https://sectordisk.pw)]]></content:encoded>
+            <author>theo1.bori@epitech.eu (Théo Bori)</author>
+        </item>
+        <item>
+            <title><![CDATA[Linux environment workflow]]></title>
+            <link>http://localhost:3000/post/workflow</link>
+            <guid>http://localhost:3000/post/workflow</guid>
+            <pubDate>Mon, 20 Feb 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[A reproducible environment based on i3 and rofi.]]></description>
+            <content:encoded><![CDATA[
+# ~
+
+I've been using only Linux for years now, I've almost always used GNOME and even i3 but without any real configuration effort. Now I have a working environment that I find very practical and that allows me to be fast and more comfortable.
+
+# Overview
+
+<p align="center" width="100%">
+  <img src="/workflow.png">
+</p>
+
+# Theme: `Dracula`
+
+<p align="center" width="100%">
+  <img src="/dracula_logo.png">
+</p>
+
+I have used the Dracula theme for almost every applications.
+
+# Environment
+
+I won't list every single software I use, but only my most frequently used and important ones (modern Rust apps, suckless, etc..).
+
+**`i3`**: As window manager, minimalist, pretty useful and suckless
+
+**`i3blocks`**: Status bar, customed with some Luke Smith scripts + mine
+
+**`rofi`**: Application launcher as a dmenu replacement
+
+**`rofimoji`**: Emoji manager / character picker
+
+**`wezterm`**: GPU-accelerated cross-platform terminal emulator and multiplexer, implemented in Rust
+
+**`tmux`**: Terminal multiplexer
+
+**`fish`**: Unix shell
+
+**`oh-my-fish`** plugins:
+  - `bobthefish`
+  - `peco`
+  - `bang-bang`
+  - `fish_logo`
+
+**`nix`**: Cross platform packager manager
+
+**`feh`**: Image viewer, used to set the wallpaper
+
+**`flameshot`**: Screenshot software
+
+**`slock`**: Suckless screen locker
+
+# Easy to install
+
+I have made an automatic installation with Ansible for a faster, easier and more customizable environment setup.
+
+The Nix installation assumes that SELinux is disabled, because Nix has made its own security system.
+
+<p align="center" width="100%">
+  <img src="/nix_security.png">
+</p>
+
+*Source: [Repository](https://github.com/theobori/self-config)*
+]]></content:encoded>
+            <author>theo1.bori@epitech.eu (Théo Bori)</author>
+        </item>
+        <item>
+            <title><![CDATA[Collection of useful Python stuff]]></title>
+            <link>http://localhost:3000/post/python-useful</link>
+            <guid>http://localhost:3000/post/python-useful</guid>
+            <pubDate>Fri, 23 Sep 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[Pieces of code that I made and that I use often and that I find useful.]]></description>
+            <content:encoded><![CDATA[
+# ~
+
+Here are some pieces of code that I have done in Python and that I use quite often in my projects.
+
+# Collection
+
+### Repeater
+
+```python
+import threading
+from typing import Callable
+
+class RepeatCall:
+    """
+        Optimized object that will call a function every n seconds
+    """
+
+    def __init__(
+      self, n: float,
+      callback: Callable,
+      *args: list, **kwargs: dict
+    ):
+        self._timer = None
+        self.n = n
+        self.callback = callback
+        self.args = args
+        self.kwargs = kwargs
+        self.callback(*self.args, **self.kwargs)
+        self.is_running = False
+
+        self.start()
+
+    def _run(self):
+        """
+            Call the function
+        """
+
+        self.is_running = False
+        self.start()
+        self.callback(*self.args, **self.kwargs)
+
+    def start(self):
+        """
+            Start the reapeater
+        """
+
+        self._timer = threading.Timer(self.n, self._run)
+        self._timer.start()
+        self.is_running = True
+
+    def stop(self):
+        """
+            Cancel the thread, then it stops the "loop"
+        """
+
+        self._timer.cancel()
+```
+
+### Checking bytes (used for file signature)
+
+```python
+def signature_check(data: bytes, sig: bytes) -> bool:
+    """
+        Check file signature
+    """
+
+    return data[:len(sig)] == sig
+```
+
+### Fill lists
+
+```python
+from typing import Tuple, List, Any
+
+def fill_min(*args: Tuple[List[Any]]) -> List[Any]:
+    """
+        Set every list with the same length
+    """
+
+    length = len(max(*args, key=len))
+    args = list(args)
+    
+    for i in range(len(args)):
+        args[i] += (length - len(args[i])) * [" "]
+
+    return args
+```
+
+### Create a list of list from a list
+
+```python
+from typing import List, Any
+
+def make_groups(arr: List[Any], size: int) -> List[List[Any]]:
+    """
+        Makes list of iterable with a constant size
+    """
+
+    return [arr[i:i + size] for i in range(0, len(arr), size)]
+```
+
+### Key value system object + manager
+
+```python
+from typing import Union, Any, Callable
+
+class Bind:
+    """
+        Describing combination (key -- callback)
+    """
+
+    def __init__(
+        self,
+        key: Any,
+        callback: Callable, *args: list, **kwargs: dict
+    ):
+        self.key = key
+        self.callback = callback
+        self.args = args
+        self.kwargs = kwargs
+
+    async def try_call(
+        self,
+        *additional_args: list, **additional_kwargs: dict
+    ) -> Any:
+        """
+            Tries to call the stored function
+        """
+
+        args = [*self.args, *additional_args]
+        kwargs = {**self.kwargs, **additional_kwargs}
+
+        try:
+            ret = await self.callback(*args, **kwargs)
+        except:
+            ret = self.callback(*args, **kwargs)
+
+        return ret
+
+class Binds:
+    """
+        Manages the Bind objects
+        hotkey --> function
+    """
+
+    def __init__(self):
+        self.key_binding = {}
+
+    def __getitem__(self, key: Any) -> Union[Bind, None]:
+        if not key in self.key_binding.keys():
+            return None
+
+        return self.key_binding[key]
+
+    def add_bind(
+        self,
+        key: Any,
+        function: callable, *args: list, **kwargs: dict
+    ):
+        """
+            Add a Bind to the dictionnary
+        """
+
+        bind = Bind(key, function, *args, **kwargs)
+
+        self.key_binding[key] = bind
+
+    async def try_call_from_bind(
+        self,
+        key: Any,
+        *add_args: list, **add_kwargs: dict
+    ) -> Any:
+        """
+            If the dictionnary key is found,
+            then it tries to call the associated function
+        """
+
+        bind = self[key]
+
+        if not bind:
+            return False
+
+        return await bind.try_call(*add_args, **add_kwargs)
+```
+]]></content:encoded>
+            <author>theo1.bori@epitech.eu (Théo Bori)</author>
+        </item>
+        <item>
+            <title><![CDATA[NES library]]></title>
+            <link>http://localhost:3000/post/nes-utilities</link>
+            <guid>http://localhost:3000/post/nes-utilities</guid>
+            <pubDate>Thu, 22 Sep 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[The library contains useful features like a disassembler, graphic extraction (to PNG) from CHR ROM and a Game Genie encoder/decoder.]]></description>
+            <content:encoded><![CDATA[
+# ~
+
+I wanted to learn more about how the NES works, so I consulted the resources on [Nesdev Wiki](https://www.nesdev.org/wiki/Nesdev_Wiki) and I discovered that from an NES program (`.nes` file) you could do cool stuff like extracting some tilesets from the **CHR ROM** (**Character Read-Only Memory**) or a **PRNG** (**Pseudorandom Number Generator**) with the instructions interpreted by the NES.
+
+# `nes-utils-cli`
+
+I made an example binary that can run all the main features of the `nes-utils` library to make it more convenient to test.
+
+[*Source*](https://github.com/theobori/nes-utils-cli)
+
+# Tilesets dumping
+
+A NES program include a **16 bytes** header, we can represent it like this:
+
+```rust
+const NES_HEADER_FIELDS_ORDER: [(&str, usize, usize); 9] = {
+    [
+        ("magic", 0, 4),
+        ("len_prg_rom", 4, 1),
+        ("len_chr_rom", 5, 1),
+        ("f6", 6, 1),
+        ("f7", 7, 1),
+        ("len_prg_ram", 8, 1),
+        ("f9", 9, 1),
+        ("f10", 10, 1),
+        ("reserved", 11, 5)
+    ]
+};
+```
+
+In this example, the field **magic** is at position **0** and has a lenght of **4** bytes.
+
+The **CHR ROM** is linked to the **PPU** (**Picture Process Unit**), it means if the **CHR ROM** length is superior to zero, it contains some graphics.
+
+There are not all the tilesets of the game in the CHR, you can find `0x2000 * len_chr_rom` bytes in it, with two **banks** of `0x1000` bytes, which makes two **images** of 8 kilobytes, there is one bank for one image.
+
+So, let's take the example of **`Kirby's Adventure`**, below are the graphical data of the CHR rom:
+
+<p align="center" width="100%">
+  <img src="/kirby1.png">
+  <img src="/kirby2.png">
+</p>
+
+There are only four colors because the rest is calculated at runtime.
+Below are the main parts of code that generate this 2 images:
+
+### Colors
+```rust
+type Rgb = (u8, u8, u8);
+
+const BLACK_PIXEL: Rgb = (0, 0, 0);
+const COLOR_SCHEME: [Rgb; 4] = [
+    (0, 0, 0),
+    (126, 126, 126),
+    (189, 189, 189),
+    (255, 255, 255)
+];
+
+fn bits_to_rgb(left: u8, right: u8) -> Rgb {
+    let color = right << 1 | left;
+
+    COLOR_SCHEME[color as usize]
+}
+```
+
+### Bytes to RGB
+```rust
+pub fn fill_with_bank(&mut self, bank: &[u8]) {
+    let mut mem_x = 0;
+    let mut mem_y = 0;
+
+    for byte in (0..bank.len()).step_by(16) {
+        for y in 0..8 {
+            if mem_x >= NesImage::W {
+                mem_y += NesImage::TILE_H;
+                mem_x = 0;
+            }
+
+            let lower = bank[byte + y];
+            let upper = bank[byte + y + 8];
+
+            for bit in 0..8 {
+                let pixel = bits_to_rgb(
+                    lower >> (7 - bit) & 1,
+                    upper >> (7 - bit) & 1
+                );
+                self.put_pixel(bit + mem_x, y + mem_y, pixel);
+            }
+        }
+        mem_x += NesImage::TILE_W;
+    }
+}
+```
+
+# Disassembling
+
+The bytecodes are in the **PGR ROM** (**Program Read-Only Memory**) of size `0x4000 * len_chr_rom` (value in the header) bytes.
+
+So, for **`Kirby's Adventure`**, the assembler code should looks like:
+
+```asm6502
+; Mapped registers
+
+SQ1_VOL equ $4000
+SQ1_SWEEP equ $4001
+PPUMASK equ $2001
+SQ1_LO equ $4002
+SQ1_HI equ $4003
+SQ2_SWEEP equ $4005
+...
+
+; Header
+
+hex 4e 45 53 1a
+hex 20
+hex 20
+hex 43
+hex 00
+hex 00
+hex 00
+hex 00
+hex 00 00 00 00 00
+
+; PRG ROM
+
+and ($0f, x)      ; 21 0f
+slo $280f         ; 0f 0f 28
+slo $2121         ; 0f 21 21
+jsr $2020         ; 20 20 20
+jsr $0221         ; 20 21 02
+slo $200f         ; 0f 0f 20
+and ($0f, x)      ; 21 0f
+...
+```
+
+# Game Genie code
+
+- *The Game Genie is a enhancement cart for the NES designed by Camerica and distributed by Galoob and Cameric*
+- *it provides a simple interface to enter up to three cheat codes*
+
+*Source: [NesDev Wiki](https://www.nesdev.org/wiki/Game_Genie)*
+
+Obviously I didn't buy the enhancement cart, so I can't use the available codes. But on some emulators it is possible to access the memory and inject values.
+
+So I made a feature that decodes the **Game Genie** codes.
+
+For example for **`Kirby's Adventure`**, it is possible to have infinite energy with the following code:
+
+```
+$ nes-utils-cli --code SZEPSVSE    
+Address 0x1e05
+Value 0xad
+Compare value 0x8d
+```
+]]></content:encoded>
+            <author>theo1.bori@epitech.eu (Théo Bori)</author>
+        </item>
+    </channel>
+</rss>
