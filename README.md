@@ -24,6 +24,7 @@ The `Gemtext` version for `Gemini` has been test with the [lagrange](https://git
 
 ## 🎉 Tasks
 
-- [ ] Dockerfile
+- [x] Dockerfile
+- [x] CI/CD pipeline
 - [ ] Update the scripts
 - [ ] Update the Gopher and Gemini version
