@@ -1,5 +1,8 @@
 # ☕ theobori.cafe
 
+![build](https://github.com/theobori-cafe/theobori.cafe/actions/workflows/build.yml/badge.svg)
+
+
 ## ℹ️ About
 
 Personal website + archives / blog

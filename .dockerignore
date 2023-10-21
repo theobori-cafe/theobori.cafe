@@ -1,0 +1,7 @@
+_site
+bak
+node_modules
+scripts
+public_*
+README.md
+.gitignore
