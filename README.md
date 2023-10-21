@@ -1,6 +1,7 @@
 # ☕ theobori.cafe
 
 ![build](https://github.com/theobori-cafe/theobori.cafe/actions/workflows/build.yml/badge.svg)
+![publish](https://github.com/theobori-cafe/theobori.cafe/actions/workflows/publish.yml/badge.svg)
 
 ## ℹ️ About
 
