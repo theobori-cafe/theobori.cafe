@@ -18,6 +18,13 @@ Personal website + archives / blog
 
 In `scripts` are some useful scripts like `convert.py` that convert markdown text for other documents format (Gemini, Gopher).
 
+## 🐋 Docker
+
+```bash
+docker build -t theobori .
+docker run -d -p 8080:8080 theobori
+```
+
 ## 📡 Other protocols
 
 The `Gemtext` version for `Gemini` has been test with the [lagrange](https://github.com/skyjake/lagrange) client.  For `Gopher` it works well with the [phfetch](https://github.com/xvxx/phetch) client.
@@ -26,5 +33,6 @@ The `Gemtext` version for `Gemini` has been test with the [lagrange](https://git
 
 - [x] Dockerfile
 - [x] CI/CD pipeline
-- [ ] Update the scripts
+- [x] Migrate every post from the old website GitHub archive
+- [ ] Update the script
 - [ ] Update the Gopher and Gemini version
