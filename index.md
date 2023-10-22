@@ -17,14 +17,12 @@ I also have a [CTFtime](https://ctftime.org/user/67138) and a [LinkedIn](https:/
 &nbsp;
 Currently I'm maintaining [teedata.net](https://teedata.net) ([skins.tw](https://skins.tw) until 2024).
 
-<h2 class="category" style="margin-top: 40px;" nonce="Fg4i6piWbxQWdgGv66UX1V1B5zwNWL4Om8vSTS4QG4I">Contact</h2>
+<h2 class="category category-home ">Contact</h2>
 
 I can be reached via Discord (`b0th`) or via email at one of the following addresses, <a href="mailto:theo1.bori@epitech.eu">theo1.bori@epitech.eu</a>, <a href="mailto:nagi@tilde.team">nagi@tilde.team</a>, <a href="mailto:nagi@cock.li">nagi@cock.li</a>, <a href="mailto:contact@theobori.cafe">contact@theobori.cafe</a>.
 &nbsp;
 [PGP](/pgp.asc) - `EEFBCC3AC529CFD1943DA75CBDD57BE99D555965`
 
-<h2 class="category" style="margin-top: 40px;" nonce="Fg4i6piWbxQWdgGv66UX1V1B5zwNWL4Om8vSTS4QG4I">Other protocols</h2>
+<h2 class="category category-home ">Other protocols</h2>
 
 This website also offers a version for the [Gemini](gemini://tilde.pink/~nagi) and [Gopher](gopher://tilde.pink:70/1/~nagi) minimal web protocols.
-
-
