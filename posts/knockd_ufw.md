@@ -1,6 +1,6 @@
 ---
 title: OpenSSH port knocking with UFW on Debian
-date: "2023-10-10"
+date: "2023-10-21"
 ---
 
 <center>
