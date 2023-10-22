@@ -111,15 +111,15 @@ import {
 } from 'teeworlds-utilities';
 
 const mergeTest = async () => {
-  const skin = new Skin();
-  await skin.load('https://teedata.net/databasev2/skins/teedata/teedata.png');
+  const teedata = new Skin();
+  await teedata.load('https://teedata.net/databasev2/skins/teedata/teedata.png');
 
-  const skin_src = new Skin();
-  await skin_src.load('https://teedata.net/databasev2/skins/irradiated%20sunny/irradiated%20sunny.png');
+  const sunny = new Skin();
+  await sunny.load('https://teedata.net/databasev2/skins/irradiated%20sunny/irradiated%20sunny.png');
 
-  skin
+  teedata
     .copyParts(
-      skin_src,
+      sunny,
       SkinPart.FOOT,
       SkinPart.FOOT_SHADOW,
       SkinPart.DEFAULT_EYE,
