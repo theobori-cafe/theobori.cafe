@@ -58,8 +58,8 @@ try {
 ### Result (4K)
 
 <p align="center" width="100%">
-  <img src="/render_color.png" width="30%" style="margin-right: 40px">
-  <img src="/render_default.png" width="30%" style="margin-left: 40px">
+  <img src="/render_color.png" width="30%" style="margin-right: 40px" nonce="Fg4i6piWbxQWdgGv66UX1V1B5zwNWL4Om8vSTS4QG4I">
+  <img src="/render_default.png" width="30%" style="margin-left: 40px" nonce="Fg4i6piWbxQWdgGv66UX1V1B5zwNWL4Om8vSTS4QG4I">
 </p>
 
 &nbsp;
@@ -99,8 +99,8 @@ Here we are going to merge specific parts from a skin (right) to another (left).
 Any Teeworlds asset should works.
 
 <p align="center" width="100%">
-  <img src="/teedata_skin.png" style="margin-right: 20px">
-  <img src="/alien_skin.png" style="margin-left: 20px">
+  <img src="/teedata_skin.png" style="margin-right: 20px" nonce="Fg4i6piWbxQWdgGv66UX1V1B5zwNWL4Om8vSTS4QG4I">
+  <img src="/alien_skin.png" style="margin-left: 20px" nonce="Fg4i6piWbxQWdgGv66UX1V1B5zwNWL4Om8vSTS4QG4I">
 </p>
 
 
@@ -147,8 +147,8 @@ try {
 ### Result
 
 <p align="center" width="100%">
-  <img src="/render_new_skin.png" style="margin-right: 40px">
-  <img src="/new_skin.png" style="margin-left: 40px">
+  <img src="/render_new_skin.png" style="margin-right: 40px" nonce="Fg4i6piWbxQWdgGv66UX1V1B5zwNWL4Om8vSTS4QG4I">
+  <img src="/new_skin.png" style="margin-left: 40px" nonce="Fg4i6piWbxQWdgGv66UX1V1B5zwNWL4Om8vSTS4QG4I">
 </p>
 
 ### Other result
