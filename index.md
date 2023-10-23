@@ -6,12 +6,11 @@ title: Théo Bori
 # ☕ Théo Bori
 
 &nbsp;
-&nbsp;
-&nbsp;
 
 Hello, I'm Théo,
 &nbsp;
 I support FOSS, FLOSS and pubnix(es) values, I love Linux and UNIX systems.
+&nbsp;
 Everything I develop and/or automate is open source and available on [GitHub](https://github.com/theobori).
 I also have a [CTFtime](https://ctftime.org/user/67138) and a [LinkedIn](https://www.linkedin.com/in/theo-bori) profile.
 &nbsp;
