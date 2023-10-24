@@ -12,7 +12,6 @@ RUN rm -rf \
     _includes \
     assets \
     posts \
-    styles \
     feed.njk \
     index.md
 
