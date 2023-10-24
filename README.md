@@ -14,10 +14,6 @@ Personal website + archives / blog
 3. Install the dependencies with `npm i`
 4. Run as`npm run build && npm run serve`
 
-## 📜 Scripts
-
-In `scripts` are some useful scripts like `convert.py` that convert markdown text for other documents format (Gemini, Gopher).
-
 ## 🐋 Docker
 
 ```bash
