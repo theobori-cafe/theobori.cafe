@@ -1,5 +1,5 @@
 ---
-title: Debian OpenSSH port knocking with UFW
+title: OpenSSH port knocking with UFW
 date: "2023-10-21"
 ---
 
@@ -28,6 +28,8 @@ This can be done directly by configuring `iptables`, but I've opted to use `ufw`
 
 ## Installation
 
+The whole installation have been done on a Debian system (Debian 12).
+&nbsp;
 So first, install the packages for both of them
 ```bash
 apt install ufw knockd
