@@ -1,5 +1,5 @@
 ---
-title: DOOM modding
+title: DOOM modding library
 date: "2023-05-03"
 ---
 
