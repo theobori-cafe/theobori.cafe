@@ -1,12 +1,6 @@
 # Collection of useful Python stuff
-## Pieces of code that I made and that I use often and that I find useful.
-###  Python
-By Théo Bori, edited 2022-09-23
-# ~
-
-Here are some pieces of code that I have done in Python and that I use quite often in my projects.
-
-# Collection
+## 2022-09-23
+Here are some pieces of code that I have done in Python and that I use quite often in my projects. It is just small blocks of code, but they are still useful.
 
 ### Repeater
 

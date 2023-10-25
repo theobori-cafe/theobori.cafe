@@ -1,22 +1,18 @@
-# NES library
-## The library contains useful features like a disassembler, graphic extraction (to PNG) from CHR ROM and a Game Genie encoder/decoder.
-###  Rust - Nes
-By Théo Bori, edited 2022-09-22
-# ~
-
+# NES Library
+## 2022-09-22
 I wanted to learn more about how the NES works, so I consulted the resources on 
 => https://www.nesdev.org/wiki/Nesdev_Wiki Nesdev Wiki
-and I discovered that from an NES program (.nes file) you could do cool stuff like extracting some tilesets from the **CHR ROM** (**Character Read-Only Memory**) or a **PRNG** (**Pseudorandom Number Generator**) with the instructions interpreted by the NES.
+and I discovered that from an NES program (.nes file) you could do cool stuff like extracting some tilesets from the CHR ROM (Character Read-Only Memory) or a PRNG (Pseudorandom Number Generator) with the instructions interpreted by the NES.
 
-# nes-utils-cli
+## nes-utils-cli
 
 I made an example binary that can run all the main features of the nes-utils library to make it more convenient to test.
 
 => https://github.com/theobori/nes-utils-cli *Source*
 
-# Tilesets dumping
+## Tilesets dumping
 
-A NES program include a **16 bytes** header, we can represent it like this:
+A NES program include a 16 bytes header, we can represent it like this:
 
 ```rust
 const NES_HEADER_FIELDS_ORDER: [(&str, usize, usize); 9] = {
@@ -34,15 +30,13 @@ const NES_HEADER_FIELDS_ORDER: [(&str, usize, usize); 9] = {
 };
 ```
 
-In this example, the field **magic** is at position **0** and has a lenght of **4** bytes.
+In this example, the field magic is at position 0 and has a lenght of 4 bytes.
 
-The **CHR ROM** is linked to the **PPU** (**Picture Process Unit**), it means if the **CHR ROM** length is superior to zero, it contains some graphics.
+The CHR ROM is linked to the PPU (Picture Process Unit), it means if the CHR ROM length is superior to zero, it contains some graphics.
 
-There are not all the tilesets of the game in the CHR, you can find 0x2000 * len_chr_rom bytes in it, with two **banks** of 0x1000 bytes, which makes two **images** of 8 kilobytes, there is one bank for one image.
+There are not all the tilesets of the game in the CHR, you can find 0x2000 * len_chr_rom bytes in it, with two banks of 0x1000 bytes, which makes two images of 8 kilobytes, there is one bank for one image.
 
-So, let's take the example of **Kirby's Adventure**, below are the graphical data of the CHR rom:
-
-
+So, let's take the example of Kirby's Adventure, below are the graphical data of the CHR rom:
 
 There are only four colors because the rest is calculated at runtime. Below are the main parts of code that generate this 2 images:
 
@@ -96,11 +90,11 @@ pub fn fill_with_bank(&mut self, bank: &[u8]) {
 }
 ```
 
-# Disassembling
+## Disassembling
 
-The bytecodes are in the **PGR ROM** (**Program Read-Only Memory**) of size 0x4000 * len_chr_rom (value in the header) bytes.
+The bytecodes are in the PGR ROM (Program Read-Only Memory) of size 0x4000 * len_chr_rom (value in the header) bytes.
 
-So, for **Kirby's Adventure**, the assembler code should looks like:
+So, for Kirby's Adventure, the assembler code should looks like:
 
 ```asm6502
 ; Mapped registers
@@ -137,7 +131,7 @@ and ($0f, x)      ; 21 0f
 ...
 ```
 
-# Game Genie code
+## Game Genie code
 
 * *The Game Genie is a enhancement cart for the NES designed by Camerica and distributed by Galoob and Cameric*
 * *it provides a simple interface to enter up to three cheat codes*
@@ -148,13 +142,15 @@ and ($0f, x)      ; 21 0f
 
 Obviously I didn't buy the enhancement cart, so I can't use the available codes. But on some emulators it is possible to access the memory and inject values.
 
-So I made a feature that decodes the **Game Genie** codes.
+So I made a feature that decodes the Game Genie codes.
 
-For example for **Kirby's Adventure**, it is possible to have infinite energy with the following code:
+For example for Kirby's Adventure, it is possible to have infinite energy with the following code:
 
-```
+```text
 $ nes-utils-cli --code SZEPSVSE    
 Address 0x1e05
 Value 0xad
 Compare value 0x8d
 ```
+
+=> https://github.com/theobori/nes-utils *Source*

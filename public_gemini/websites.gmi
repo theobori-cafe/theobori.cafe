@@ -1,0 +1,97 @@
+# Interesting websites
+## 2023-03-08
+By losing myself on the Internet, I find some very interesting things, most of them in the form of websites (HTTP or not), so I've decided to compile a non-exhaustive list.
+
+## Clearnet
+
+* 
+=> https://tilde.team tilde.team
+* 
+=> https://tilde.pink tilde.pink
+* 
+=> https://landchad.net landchad.net
+* 
+=> https://rawtext.club rawtext.club
+* 
+=> https://suckless.org suckless.org
+* 
+=> https://libreboot.org libreboot.org
+* 
+=> https://hashbang.sh hashbang.sh
+* 
+=> https://nostr.com nostr.com
+* 
+=> https://roadmap.sh roadmap.sh
+* 
+=> https://0x0.st 0x0.st
+* 
+=> https://anonfiles.com anonfiles.com
+* 
+=> https://syncthing.net syncthing.net
+* 
+=> https://wiby.me wiby.me
+* 
+=> https://xn--rpa.cc ʞ.cc
+* 
+=> https://cmpxchg8b.com cmpxchg8b.com
+* 
+=> https://xkcd.com xkcd.com
+* 
+=> https://swizec.com swizec.com
+* 
+=> https://thenewstack.io thenewstack.io
+* 
+=> https://sectordisk.pw sectordisk.pw
+* 
+=> https://cock.li cock.li
+* 
+=> https://ewalthert.com ewalthert.com
+* 
+=> http://www.rosaliewagner.com/ rosaliewagner.com
+* 
+=> https://www.scummvm.org/ scummvm.org
+* 
+=> https://tilde.news/ tilde.news
+* 
+=> https://webring.xxiivv.com webring.xxiivv.com
+* 
+=> https://punk.ist punk.ist
+* 
+=> https://cadence.moe/ cadence.moe
+* 
+=> gemini://unbon.cafe unbon.cafe
+* 
+=> https://automario.eu/ automario.eu
+* 
+=> https://www.chatons.org/ chatons.org
+* 
+=> https://wwwwwwwwwwwwwwwwwwwwww.bitnik.org/ wwwwwwwwwwwwwwwwwwwwww.bitnik.org
+* 
+=> https://www.marginalia.nu/ marginalia.nu
+* 
+=> https://fr.crimethinc.com/ crimethinc.com
+* 
+=> https://3hg.fr/ 3hg.fr
+* 
+=> https://tor.taxi tor.taxi
+* 
+=> https://git.immae.eu/cgit/ git.immae.eu
+* 
+=> https://libraryoferis.org/ libraryoferis.org
+* 
+=> https://annas-archive.org/ annas-archive.org
+
+## Tor
+
+* 
+=> http://g66ol3eb5ujdckzqqfmjsbpdjufmjd5nsgdipvxmsh7rckzlhywlzlqd.onion/ Dead private mirror
+* 
+=> http://q3o3hdjbf6vwxdnpskyhxw7w7rnmnfhz2szbuala4q24x6csbp7adiad.onion/ Hidden Services Today
+* 
+=> https://y7yea4pmqqtznb33qiugvysyn2bob5v62e4pvoadoibrwkq3tsddjeyd.onion/ Surveillance Self-Defense
+* 
+=> http://tortimeswqlzti2aqbjoieisne4ubyuoeiiugel2layyudcfrwln76qd.onion/ The Tor Times
+* 
+=> http://pitchprash4aqilfr7sbmuwve3pnkpylqwxjbj2q5o4szcfeea6d27yd.onion Pitch
+* 
+=> http://biblemeowimkh3utujmhm6oh2oeb3ubjw2lpgeq3lahrfr2l6ev6zgyd.onion/ Darknet Bible

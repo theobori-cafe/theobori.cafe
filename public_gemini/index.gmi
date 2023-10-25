@@ -1,31 +1,48 @@
 ```
-  .-~~-.                         _
-,|`-__-'|    /\/|._ _  ___  ___ <_>
-||      |   |/\/ | ' |<_> |/ . || |
-`|      |        |_|_|<___|\_. ||_|
-  `-__-'                   <___'
+  .-~~-.
+,|`-__-'| ___             _          
+||      |  | |_  _  _    |_) _  __ o
+`|      |  | | |(/_(_)   |_)(_) |  |
+  `-__-' 
 ```
 
+Hello, I'm Théo,
+ 
+I support FOSS, FLOSS and pubnix(es) values, I love Linux and UNIX systems.
+ 
+Everything I develop and/or automate is open source and available on GitHub.
+I also have a CTFtime and a LinkedIn profile.
 
-=> pgp.gmi PGP
-=> posts.gmi Posts
-=> projects.gmi OSS projects
+Currently I'm maintaining teedata.net (skins.tw until 2024).
 
-# 💬 About
-* FOSS & pubnix enthoutiast
-* ex CTF player
-* Love Linux, Rust, Typescript & Python
-* Maintaining skins.tw
+=> https://www.github.com/theobori GitHub
+=> https://www.linkedin.com/in/theo-bori/ LinkedIn
+=> https://ctftime.org/user/67138/ CTFtime
+=> https://teedata.net teedata.net
+=> https://teedata.net skins.tw
 
-# 🖇️ Profiles
-=>  https://www.github.com/theobori GitHub
-=>  https://www.linkedin.com/in/theo-bori/ LinkedIn
-=>  https://ctftime.org/user/67138/ CTFtime
+## Contact
+I can be reached via Discord (b0th) or via nagi@cock.li.
+=> /pgp.gmi PGP
 
-# 🧾 Contact
-* theo1.bori@epitech.eu
-* b0th#6474
-
-# 📡 Other protocols
-=> https://theobori.vercel.app HTTPS 
+## Other protocols
+=> https://theobori.cafe HTTPS
 => gopher://tilde.pink:70/1/~nagi Gopher
+
+## Posts
+=> /notes-taking.gmi Personal notes taking with synchronization - oct 2023
+=> /pubnix.gmi Public access UNIX systems - oct 2023
+=> /teeworlds.gmi Play Teeworlds through Docker - oct 2023
+=> /mozilla.gmi NGINX for Mozilla HTTP Observatory - oct 2023
+=> /tf-ovh.gmi Terraform OVH external DNS records - oct 2023
+=> /knockd_ufw.gmi OpenSSH port knocking with UFW - oct 2023
+=> /theoboricafe.gmi FOSS accessible services - sep 2023
+=> /teeworlds-utilities.gmi Teeworlds utilities - jul 2023
+=> /tf-neuvector.gmi Terraform NeuVector provider - jun 2023
+=> /tf-doom.gmi Terraform chaos engineering - jun 2023
+=> /tinywad.gmi DOOM modding library - may 2023
+=> /websites.gmi Interesting websites - mar 2023
+=> /tinychip.gmi CHIP-8 emulator - mar 2023
+=> /linux-config.gmi Linux environment - feb 2023
+=> /python-useful.gmi Collection of useful Python stuff - sep 2022
+=> /nes-utilities.gmi NES Library - sep 2022
