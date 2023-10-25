@@ -1,0 +1,25 @@
+FOSS accessible services
+2023-09-24
+Last edit: 2023-09-24
+---------------------
+
+The aim of the project is to provide FOSS (Free Open Source Software) services to anyone who wants to use them. For the moment, the machine(s) used are small and consequently there are a limited number of services and features. This can of course evolve over time, depending on resources and motivation.So, if you're looking for performance above all else, I'd recommend 
+[h|deuxfleurs.fr](https://deuxfleurs.fr/) or [chatons.org|URL:https://www.chatons.org/|tilde.pink|70]
+.
+
+If you want to use some of my services that required an authentification, feel free to send me an email with one of the addresses listed on the [homepage](/).
+
+It's all about privacy and security. The aim is to be able to use simple and efficient services such as 
+[h|Nextcloud](https://nextcloud.com/) or [SearXNG](https://docs.searxng.org/), but also to avoid Google, Microsoft, etc. Server configuration and DNS entries are automated and open source on GitHub. See [theobori-cafe organization|URL:https://github.com/theobori-cafe|tilde.pink|70]
+.
+
+Every services status can be checked at 
+[h|status.theobori.cafe|URL:https://status.theobori.cafe|tilde.pink|70]
+.
+
+While setting up the server(s) and services, I learned some interesting things about network and system security. By the way, an onion 
+[h|hidden service|URL:https://lojtlkafmrphjhmmksiqsabghyia353ueyfszo6mgqttxaczuata7aid.onion|tilde.pink|70]
+ is available.
+
+This project will continue and evolve over time.
+

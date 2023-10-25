@@ -30,19 +30,19 @@ I can be reached via Discord (b0th) or via nagi@cock.li.
 => gopher://tilde.pink:70/1/~nagi Gopher
 
 ## Posts
-=> /notes-taking.gmi Personal notes taking with synchronization - oct 2023
-=> /pubnix.gmi Public access UNIX systems - oct 2023
-=> /teeworlds.gmi Play Teeworlds through Docker - oct 2023
-=> /mozilla.gmi NGINX for Mozilla HTTP Observatory - oct 2023
-=> /tf-ovh.gmi Terraform OVH external DNS records - oct 2023
-=> /knockd_ufw.gmi OpenSSH port knocking with UFW - oct 2023
-=> /theoboricafe.gmi FOSS accessible services - sep 2023
-=> /teeworlds-utilities.gmi Teeworlds utilities - jul 2023
-=> /tf-neuvector.gmi Terraform NeuVector provider - jun 2023
-=> /tf-doom.gmi Terraform chaos engineering - jun 2023
-=> /tinywad.gmi DOOM modding library - may 2023
-=> /websites.gmi Interesting websites - mar 2023
-=> /tinychip.gmi CHIP-8 emulator - mar 2023
-=> /linux-config.gmi Linux environment - feb 2023
-=> /python-useful.gmi Collection of useful Python stuff - sep 2022
-=> /nes-utilities.gmi NES Library - sep 2022
+=> /~nagi/notes-taking.gmi Personal notes taking with synchronization - oct 2023
+=> /~nagi/pubnix.gmi Public access UNIX systems - oct 2023
+=> /~nagi/teeworlds.gmi Play Teeworlds through Docker - oct 2023
+=> /~nagi/mozilla.gmi NGINX for Mozilla HTTP Observatory - oct 2023
+=> /~nagi/tf-ovh.gmi Terraform OVH external DNS records - oct 2023
+=> /~nagi/knockd_ufw.gmi OpenSSH port knocking with UFW - oct 2023
+=> /~nagi/theoboricafe.gmi FOSS accessible services - sep 2023
+=> /~nagi/teeworlds-utilities.gmi Teeworlds utilities - jul 2023
+=> /~nagi/tf-neuvector.gmi Terraform NeuVector provider - jun 2023
+=> /~nagi/tf-doom.gmi Terraform chaos engineering - jun 2023
+=> /~nagi/tinywad.gmi DOOM modding library - may 2023
+=> /~nagi/websites.gmi Interesting websites - mar 2023
+=> /~nagi/tinychip.gmi CHIP-8 emulator - mar 2023
+=> /~nagi/linux-config.gmi Linux environment - feb 2023
+=> /~nagi/python-useful.gmi Collection of useful Python stuff - sep 2022
+=> /~nagi/nes-utilities.gmi NES Library - sep 2022

@@ -1,20 +1,13 @@
 Collection of useful Python stuff
-Pieces of code that I made and that I use often and that I find useful.
-Python
-By Théo Bori
+2022-09-23
 Last edit: 2022-09-23
 ---------------------
 
-
-# ~
-
-Here are some pieces of code that I have done in Python and that I use quite often in my projects.
-
-# Collection
+Here are some pieces of code that I have done in Python and that I use quite often in my projects. It is just small blocks of code, but they are still useful.
 
 ### Repeater
 
-
+```python
 import threading
 from typing import Callable
 
@@ -62,22 +55,22 @@ class RepeatCall:
         """
 
         self._timer.cancel()
-
+```
 
 ### Checking bytes (used for file signature)
 
-
+```python
 def signature_check(data: bytes, sig: bytes) -> bool:
     """
         Check file signature
     """
 
     return data[:len(sig)] == sig
-
+```
 
 ### Fill lists
 
-
+```python
 from typing import Tuple, List, Any
 
 def fill_min(*args: Tuple[List[Any]]) -> List[Any]:
@@ -92,11 +85,11 @@ def fill_min(*args: Tuple[List[Any]]) -> List[Any]:
         args[i] += (length - len(args[i])) * [" "]
 
     return args
-
+```
 
 ### Create a list of list from a list
 
-
+```python
 from typing import List, Any
 
 def make_groups(arr: List[Any], size: int) -> List[List[Any]]:
@@ -105,11 +98,11 @@ def make_groups(arr: List[Any], size: int) -> List[List[Any]]:
     """
 
     return [arr[i:i + size] for i in range(0, len(arr), size)]
-
+```
 
 ### Key value system object + manager
 
-
+```python
 from typing import Union, Any, Callable
 
 class Bind:
@@ -189,5 +182,5 @@ class Binds:
             return False
 
         return await bind.try_call(*add_args, **add_kwargs)
-
+```
 

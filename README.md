@@ -30,4 +30,4 @@ The `Gemtext` version for `Gemini` has been test with the [lagrange](https://git
 - [x] Dockerfile
 - [x] CI/CD pipeline
 - [x] Migrate every post from the old website GitHub archive
-- [ ] Update the Gopher and Gemini version
+- [x] Update the Gopher and Gemini version
