@@ -40,6 +40,19 @@ services:
       - MYSQL_PASSWORD={{ nextcloud_db_password }}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER={{ nextcloud_db_user }}
+    networks:
+      - nextcloud_net
+  
+  redis:
+    image: "redis:alpine"
+    restart: always
+    command: redis-server --requirepass {{ nextcloud_cache_password }}
+    volumes:
+      - ./redis/data:/var/lib/redis
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      - nextcloud_net
 
   app:
     image: nextcloud
@@ -49,12 +62,16 @@ services:
     volumes:
       - nextcloud:/var/www/html
     environment:
+      - MYSQL_HOST=db
       - MYSQL_PASSWORD={{ nextcloud_db_password }}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER={{ nextcloud_db_user }}
-      - MYSQL_HOST=db
+      - REDIS_HOST=redis
+      - REDIS_HOST_PASSWORD={{ nextcloud_cache_password }}
+      - DEFAULT_PHONE_REGION=FR
     networks:
       - ldap_net
+      - nextcloud_net
 
 volumes:
   nextcloud:
@@ -63,6 +80,7 @@ volumes:
 networks:
   ldap_net:
     external: true
+  nextcloud_net:
 ```
 &nbsp;
 The port 8000 of the container `app` is exposed to internet thanks to an NGINX instance on the system.
