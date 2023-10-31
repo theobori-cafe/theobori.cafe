@@ -18,7 +18,7 @@ Currently I'm maintaining [teedata.net](https://teedata.net) ([skins.tw](https:/
 
 <h2 class="category category-home ">Contact</h2>
 
-I can be reached via Discord (`b0th`) or via <a href="mailto:nagi@cock.li">email</a> ([PGP](/pgp.asc)).
+I can be reached via Discord (`b0th`) or via <a href="mailto:nagi@tilde.team">email</a> ([PGP](/pgp.asc)).
 
 <h2 class="category category-home ">Other protocols</h2>
 
