@@ -17,8 +17,8 @@ Personal website + archives / blog
 ## 🐋 Docker
 
 ```bash
-docker build -t theobori .
-docker run -d -p 8080:8080 theobori
+docker build -t website:1.0 -f ./docker/Dockerfile ./
+docker run -d -p 127.0.0.1:8080:80 website:1.0
 ```
 
 ## 📡 Other protocols
