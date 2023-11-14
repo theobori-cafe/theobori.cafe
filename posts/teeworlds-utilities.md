@@ -165,7 +165,64 @@ try {
   <img src="/new_skin.png" class="ml-40" >
 </p>
 
-### Other result
+&nbsp;
+
+### More skin configuration
+
+Here we are using the `SkinFull` object to render some in-game feature like the weapon, hands and emote.
+
+```typescript
+import {
+  Skin,
+  Gameskin,
+  ColorRGB,
+  Emoticon,
+  SkinFull,
+  GameskinPart,
+  EmoticonPart
+} from 'teeworlds-utilities';
+
+const fullSkinRenderConfiguration = async () => {
+  const teedataSunny = new Skin();
+  await teedataSunny.load('skin.png');
+
+  const napolitano = new Gameskin();
+  await napolitano.load('https://teedata.net/databasev2/gameskins/napolitano/napolitano.png');
+
+  const emoticon = new Emoticon();
+  await emoticon.load('https://teedata.net/databasev2/emoticons/default/default.png');
+
+  teedataSunny
+    .colorTee(
+      new ColorRGB(255, 255, 255),
+      new ColorRGB(255, 255, 255),
+    )
+    .setOrientation(345);
+    
+  new SkinFull()
+    .setSkin(teedataSunny)
+    .setGameskin(napolitano, GameskinPart.HAMMER)
+    .setEmoticon(emoticon, EmoticonPart.PART_1_2)
+    .process()
+    .saveAs('skin_with_weapon_and_emote.png', true);
+}
+
+try {
+  fullSkinRenderConfiguration();
+} catch (err) {
+  console.error(err);
+}
+```
+
+### Result
+
+<p align="center" width="100%">
+  <img src="/skin_with_weapon_and_emote.png" >
+</p>
+
+&nbsp;
+
+### Other possible result
 
 <p align="center" width="100%">
   <img src="/board.png">
