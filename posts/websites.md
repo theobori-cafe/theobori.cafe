@@ -45,6 +45,8 @@ By losing myself on the Internet, I find some very interesting things, most of t
 - [git.immae.eu](https://git.immae.eu/cgit/)
 - [libraryoferis.org](https://libraryoferis.org/)
 - [annas-archive.org](https://annas-archive.org/)
+- [tmpout.sh](https://tmpout.sh/)
+- [n0.lol](https://n0.lol/)
 
 &nbsp;
 
