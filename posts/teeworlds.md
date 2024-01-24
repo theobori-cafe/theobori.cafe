@@ -150,4 +150,5 @@ If you already had Teeworlds data in an user directory on your host system. You 
 ```bash
 -v "$HOME/.teeworlds:/home/tee/.local/share/teeworlds"
 ```
+
 &nbsp;

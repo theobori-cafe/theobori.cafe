@@ -110,3 +110,5 @@ The CSP header in the HTTP response will therefore indicate that style tags with
 &nbsp;
 
 Just like `sha256-2daR3BDHUgNt2bWp/u+3CNDJtsIDrpz+22+QPnNNS5c=` which represents and authorizes a JavaScript source to be loaded by the browser.
+
+&nbsp;

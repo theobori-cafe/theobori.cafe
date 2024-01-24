@@ -191,3 +191,11 @@ resource "ovh_domain_zone_record" "autoconfig" {
   target    = "mail"
 }
 ```
+
+&nbsp;
+
+## Links
+
+[https://github.com/theobori-cafe/dns](https://github.com/theobori-cafe/dns)
+
+&nbsp;

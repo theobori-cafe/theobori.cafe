@@ -247,4 +247,8 @@ fn main() -> Result<(), WadError> {
 
 &nbsp;
 
-[*Source*](https://github.com/theobori/tinywad)
+## Links
+
+[https://github.com/theobori/tinywad](https://github.com/theobori/tinywad)
+
+&nbsp;

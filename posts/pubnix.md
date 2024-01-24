@@ -39,3 +39,5 @@ Documentation (technical and other) can be consulted on the [wiki](https://tilde
 &nbsp;
 
 [tilde.team](https://tilde.team) is a pubnix among others, it makes people aware of the use of their data, the software they use and it proposes alternative solutions to other bigger solutions in general ethically not very correct.
+
+&nbsp;

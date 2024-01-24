@@ -230,4 +230,8 @@ try {
 
 &nbsp;
 
-[*Source*](https://github.com/teeworlds-utilities/teeworlds-utilities)
+## Links
+
+[https://github.com/teeworlds-utilities/teeworlds-utilities](https://github.com/teeworlds-utilities/teeworlds-utilities)
+
+&nbsp;

@@ -15,7 +15,8 @@ So I decided to create a Terraform provider to handle all this cleanly. The lang
     <img src="/terraform_provider.png" width="90%">
 </p>
 
-So I created a Go SDK for NeuVector before using it in the provider, you can find it out [here](https://github.com/theobori/go-neuvector).
+So I created a Go SDK for NeuVector before using it in the provider.
+
 &nbsp;
 Now the provider is able to fully manage the implemented resources (create, delete, update and import).
 
@@ -85,5 +86,10 @@ resource "neuvector_service_config" "service_config_test" {
   not_scored = true
 }
 ```
+&nbsp;
 
-[*Source*](https://github.com/theobori/terraform-provider-neuvector)
+## Links
+
+[https://github.com/theobori/terraform-provider-neuvector](https://github.com/theobori/terraform-provider-neuvector)
+
+&nbsp;

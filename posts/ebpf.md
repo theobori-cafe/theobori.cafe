@@ -127,3 +127,5 @@ XDP programs can make decision (drop, pass, etc..) on the received packets.
 The capabilities are a way of dividing Linux root privileged into smaller "units".
 
 Seccomp means Secure Computing and is a security layer in Linux that allow to filter specific syscalls.
+
+&nbsp;

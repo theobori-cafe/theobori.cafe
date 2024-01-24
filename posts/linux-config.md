@@ -27,4 +27,10 @@ The Nix installation assumes that SELinux is disabled, because Nix has made its 
   <img src="/nix_security.png">
 </p>
 
-[*Source*](https://github.com/theobori/self-config)
+&nbsp;
+
+## Links
+
+[https://github.com/theobori/self-config](https://github.com/theobori/self-config)
+
+&nbsp;
