@@ -129,3 +129,14 @@ The capabilities are a way of dividing Linux root privileged into smaller "units
 Seccomp means Secure Computing and is a security layer in Linux that allow to filter specific syscalls.
 
 &nbsp;
+
+## Links
+
+Here are some of my XDP projects.
+
+&nbsp;
+
+[https://github.com/theobori/tinyknock](https://github.com/theobori/tinyknock)
+[https://github.com/theobori/tinyfilter](https://github.com/theobori/tinyfilter)
+
+&nbsp;
