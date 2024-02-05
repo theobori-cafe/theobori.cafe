@@ -7,11 +7,11 @@ I wanted to learn more about how the NES works, so I consulted the resources on
 [h|Nesdev Wiki|URL:https://www.nesdev.org/wiki/Nesdev_Wiki|tilde.pink|70]
  and I discovered that from an NES program (`.nes` file) you could do cool stuff like extracting some tilesets from the CHR ROM (Character Read-Only Memory) or a PRNG (Pseudorandom Number Generator) with the instructions interpreted by the NES.
 
-## nes-utils-cli
+## CLI
 
 I made an example binary that can run all the main features of the `nes-utils` library to make it more convenient to test.
 
-[h|Source|URL:https://github.com/theobori/nes-utils-cli|tilde.pink|70]
+[h|https://github.com/theobori/nes-utils-cli|URL:https://github.com/theobori/nes-utils-cli|tilde.pink|70]
 
 ## Tilesets dumping
 
@@ -154,5 +154,7 @@ Value 0xad
 Compare value 0x8d
 ```
 
-[h|Source|URL:https://github.com/theobori/nes-utils|tilde.pink|70]
+## Links
+
+[h|https://github.com/theobori/nes-utils|URL:https://github.com/theobori/nes-utils|tilde.pink|70]
 

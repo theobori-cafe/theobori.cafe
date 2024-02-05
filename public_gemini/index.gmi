@@ -10,11 +10,12 @@ Hello, I'm Théo,
  
 I support FOSS, FLOSS and pubnix(es) values, I love Linux and UNIX systems.
  
-Everything I develop and/or automate is open source and available on GitHub.
+Everything I make is open source and available on GitHub and Gitea.
 I also have a CTFtime and a LinkedIn profile.
 
 Currently I'm maintaining teedata.net (skins.tw until 2024).
 
+=> https://git.theobori.cafe/nagi Gitea
 => https://www.github.com/theobori GitHub
 => https://www.linkedin.com/in/theo-bori/ LinkedIn
 => https://ctftime.org/user/67138/ CTFtime
@@ -30,7 +31,7 @@ I can be reached via Discord (b0th) or via nagi@cock.li.
 => gopher://tilde.pink:70/1/~nagi Gopher
 
 ## Posts
-=> /~nagi/notes-taking.gmi Personal notes taking with synchronization - oct 2023
+=> /~nagi/ebpf.gmi eBPF essentials - jan 2024
 => /~nagi/pubnix.gmi Public access UNIX systems - oct 2023
 => /~nagi/teeworlds.gmi Play Teeworlds through Docker - oct 2023
 => /~nagi/mozilla.gmi NGINX for Mozilla HTTP Observatory - oct 2023
@@ -43,6 +44,4 @@ I can be reached via Discord (b0th) or via nagi@cock.li.
 => /~nagi/tinywad.gmi DOOM modding library - may 2023
 => /~nagi/websites.gmi Interesting websites - mar 2023
 => /~nagi/tinychip.gmi CHIP-8 emulator - mar 2023
-=> /~nagi/linux-config.gmi Linux environment - feb 2023
-=> /~nagi/python-useful.gmi Collection of useful Python stuff - sep 2022
 => /~nagi/nes-utilities.gmi NES Library - sep 2022

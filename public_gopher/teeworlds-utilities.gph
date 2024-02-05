@@ -121,7 +121,58 @@ try {
 
 ### Result
 
-### Other result
+### More skin configuration
 
-[h|Source|URL:https://github.com/teeworlds-utilities/teeworlds-utilities|tilde.pink|70]
+Here we are using the `SkinFull` object to render some in-game feature like the weapon, hands and emote.
+
+```typescript
+import {
+  Skin,
+  Gameskin,
+  ColorRGB,
+  Emoticon,
+  SkinFull,
+  GameskinPart,
+  EmoticonPart
+} from 'teeworlds-utilities';
+
+const fullSkinRenderConfiguration = async () => {
+  const teedataSunny = new Skin();
+  await teedataSunny.load('skin.png');
+
+  const napolitano = new Gameskin();
+  await napolitano.load('https://teedata.net/databasev2/gameskins/napolitano/napolitano.png');
+
+  const emoticon = new Emoticon();
+  await emoticon.load('https://teedata.net/databasev2/emoticons/default/default.png');
+
+  teedataSunny
+    .colorTee(
+      new ColorRGB(255, 255, 255),
+      new ColorRGB(255, 255, 255),
+    )
+    .setOrientation(345);
+    
+  new SkinFull()
+    .setSkin(teedataSunny)
+    .setGameskin(napolitano, GameskinPart.HAMMER)
+    .setEmoticon(emoticon, EmoticonPart.PART_1_2)
+    .process()
+    .saveAs('skin_with_weapon_and_emote.png', true);
+}
+
+try {
+  fullSkinRenderConfiguration();
+} catch (err) {
+  console.error(err);
+}
+```
+
+### Result
+
+### Other possible result
+
+## Links
+
+[h|https://github.com/teeworlds-utilities/teeworlds-utilities|URL:https://github.com/teeworlds-utilities/teeworlds-utilities|tilde.pink|70]
 

@@ -20,4 +20,6 @@ psdoom will continuously write to the UNIX socket to signal tf-doom to send Terr
 
 This demo has been realized with the test Terraform project, every steps to reproduce it are detailed in the README file on the repository.
 
-=> https://github.com/theobori/tf-doom *Source*
+## Links
+
+=> https://github.com/theobori/tf-doom https://github.com/theobori/tf-doom

@@ -204,5 +204,7 @@ fn main() -> Result<(), WadError> {
 
 ### `D_E1M1` converted from MIDI to MP3
 
-[h|Source|URL:https://github.com/theobori/tinywad|tilde.pink|70]
+## Links
+
+[h|https://github.com/theobori/tinywad|URL:https://github.com/theobori/tinywad|tilde.pink|70]
 

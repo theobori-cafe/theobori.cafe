@@ -8,11 +8,12 @@ Hello, I'm Théo,
  
 I support FOSS, FLOSS and pubnix(es) values, I love Linux and UNIX systems.
  
-Everything I develop and/or automate is open source and available on GitHub.
+Everything I make is open source and available on GitHub and Gitea.
 I also have a CTFtime and a LinkedIn profile.
 
 Currently I'm maintaining teedata.net (skins.tw until 2024).
 
+[h|Gitea|URL:https://git.theobori.cafe/nagi|tilde.pink|70]
 [h|GitHub|URL:https://www.github.com/theobori|tilde.pink|70]
 [h|LinkedIn|URL:https://www.linkedin.com/in/theo-bori|tilde.pink|70]
 [h|CTFtime|URL:https://ctftime.org/user/67138|tilde.pink|70]
@@ -28,7 +29,7 @@ I can be reached via Discord (b0th) or via nagi@cock.li.
 gemini://tilde.pink/~nagi
 
 ## Posts
-[1|Personal notes taking with synchronization - oct 2023|/~nagi/notes-taking.gph|tilde.pink|70]
+[1|eBPF essentials - jan 2024|/~nagi/ebpf.gph|tilde.pink|70]
 [1|Public access UNIX systems - oct 2023|/~nagi/pubnix.gph|tilde.pink|70]
 [1|Play Teeworlds through Docker - oct 2023|/~nagi/teeworlds.gph|tilde.pink|70]
 [1|NGINX for Mozilla HTTP Observatory - oct 2023|/~nagi/mozilla.gph|tilde.pink|70]
@@ -41,6 +42,4 @@ gemini://tilde.pink/~nagi
 [1|DOOM modding library - may 2023|/~nagi/tinywad.gph|tilde.pink|70]
 [1|Interesting websites - mar 2023|/~nagi/websites.gph|tilde.pink|70]
 [1|CHIP-8 emulator - mar 2023|/~nagi/tinychip.gph|tilde.pink|70]
-[1|Linux environment - feb 2023|/~nagi/linux-config.gph|tilde.pink|70]
-[1|Collection of useful Python stuff - sep 2022|/~nagi/python-useful.gph|tilde.pink|70]
 [1|NES Library - sep 2022|/~nagi/nes-utilities.gph|tilde.pink|70]

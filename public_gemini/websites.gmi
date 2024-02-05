@@ -80,6 +80,10 @@ By losing myself on the Internet, I find some very interesting things, most of t
 => https://libraryoferis.org/ libraryoferis.org
 * 
 => https://annas-archive.org/ annas-archive.org
+* 
+=> https://tmpout.sh/ tmpout.sh
+* 
+=> https://n0.lol/ n0.lol
 
 ## Tor
 
@@ -95,3 +99,5 @@ By losing myself on the Internet, I find some very interesting things, most of t
 => http://pitchprash4aqilfr7sbmuwve3pnkpylqwxjbj2q5o4szcfeea6d27yd.onion Pitch
 * 
 => http://biblemeowimkh3utujmhm6oh2oeb3ubjw2lpgeq3lahrfr2l6ev6zgyd.onion/ Darknet Bible
+* 
+=> http://it7otdanqu7ktntxzm427cba6i53w6wlanlh23v5i3siqmos47pzhvyd.onion Darktea

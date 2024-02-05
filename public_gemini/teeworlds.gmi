@@ -2,7 +2,7 @@
 ## 2023-10-24
 Many Teeworlds servers currently in use are containerized. However, it is also possible to containerize the Teeworlds client using Docker.
 
-The Dockerfile is available below, it compiles and executes the ELF in the Docker container. I've also published the image on Docker's public registry, Docker Hub.
+The Dockerfile is available below, it compiles and executes the ELF file in the Docker container. I've also published the image on Docker's public registry, Docker Hub.
 
 ## Build the Docker image
 

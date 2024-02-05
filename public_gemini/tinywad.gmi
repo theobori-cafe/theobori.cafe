@@ -202,4 +202,6 @@ fn main() -> Result<(), WadError> {
 
 ### D_E1M1 converted from MIDI to MP3
 
-=> https://github.com/theobori/tinywad *Source*
+## Links
+
+=> https://github.com/theobori/tinywad https://github.com/theobori/tinywad

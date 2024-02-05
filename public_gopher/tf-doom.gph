@@ -23,5 +23,7 @@ The binaries `Xvfb` and `x11vnc` are used to create a cross-platform graphical a
 
 This demo has been realized with the test Terraform project, every steps to reproduce it are detailed in the README file on the repository.
 
-[h|Source|URL:https://github.com/theobori/tf-doom|tilde.pink|70]
+## Links
+
+[h|https://github.com/theobori/tf-doom|URL:https://github.com/theobori/tf-doom|tilde.pink|70]
 
