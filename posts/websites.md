@@ -47,6 +47,10 @@ By losing myself on the Internet, I find some very interesting things, most of t
 - [annas-archive.org](https://annas-archive.org/)
 - [tmpout.sh](https://tmpout.sh/)
 - [n0.lol](https://n0.lol/)
+- [webzine.puffy.cafe](https://webzine.puffy.cafe/)
+- [analognowhere.com](https://www.analognowhere.com/)
+- [si3t.ch](https://si3t.ch/)
+- [why-openbsd.rocks](https://why-openbsd.rocks/)
 
 &nbsp;
 
