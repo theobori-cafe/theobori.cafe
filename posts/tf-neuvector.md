@@ -91,5 +91,6 @@ resource "neuvector_service_config" "service_config_test" {
 ## Links
 
 [https://github.com/theobori/terraform-provider-neuvector](https://github.com/theobori/terraform-provider-neuvector)
+[https://registry.terraform.io/providers/theobori/neuvector](https://registry.terraform.io/providers/theobori/neuvector/latest)
 
 &nbsp;
