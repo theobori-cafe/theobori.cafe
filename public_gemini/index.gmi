@@ -31,13 +31,13 @@ I can be reached via Discord (b0th) or via nagi@cock.li.
 => gopher://tilde.pink:70/1/~nagi Gopher
 
 ## Posts
+=> /~nagi/chezmoi.gmi Manage dotfiles with chezmoi - mar 2024
 => /~nagi/ebpf.gmi eBPF essentials - jan 2024
 => /~nagi/pubnix.gmi Public access UNIX systems - oct 2023
 => /~nagi/teeworlds.gmi Play Teeworlds through Docker - oct 2023
 => /~nagi/mozilla.gmi NGINX for Mozilla HTTP Observatory - oct 2023
 => /~nagi/tf-ovh.gmi Terraform OVH external DNS records - oct 2023
 => /~nagi/knockd_ufw.gmi OpenSSH port knocking with UFW - oct 2023
-=> /~nagi/theoboricafe.gmi FOSS accessible services - sep 2023
 => /~nagi/teeworlds-utilities.gmi Teeworlds utilities - jul 2023
 => /~nagi/tf-neuvector.gmi Terraform NeuVector provider - jun 2023
 => /~nagi/tf-doom.gmi Terraform chaos engineering - jun 2023

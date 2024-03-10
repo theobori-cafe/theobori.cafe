@@ -31,7 +31,7 @@ Indirectly, other people use it, for example, to render skins in a Discord chann
 </p>
 &nbsp;
 
-## Use cases
+## Use case examples
 &nbsp;
 ### Teeworlds skin rendering
 
@@ -72,8 +72,8 @@ try {
 ### Result (4K)
 
 <p align="center" width="100%">
-  <img src="/render_color.png" width="30%" class="mr-40" >
-  <img src="/render_default.png" width="30%" class="ml-40" >
+  <img src="/render_default.png" width="30%" class="mr-20" >
+  <img src="/render_color.png" width="30%" class="ml-20" >
 </p>
 
 &nbsp;

@@ -13,7 +13,7 @@ Indirectly, other people use it, for example, to render skins in a Discord chann
 => https://teeassembler.developer.li/ TeeAssembler 2.0
 that used some part of the **teeworlds-utilites** code.
 
-## Use cases
+## Use case examples
 
 ### Teeworlds skin rendering
 
