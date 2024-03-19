@@ -6,7 +6,7 @@
   `-__-' 
 ```
 
-Hello, I'm Théo,
+Hi, I'm Théo,
  
 I support FOSS, FLOSS and pubnix(es) values, I love Linux and UNIX systems.
  
@@ -31,6 +31,7 @@ I can be reached via Discord (b0th) or via nagi@cock.li.
 => gopher://tilde.pink:70/1/~nagi Gopher
 
 ## Posts
+=> /~nagi/openbsd_ports.gmi Porting X11 apps to OpenBSD - mar 2024
 => /~nagi/chezmoi.gmi Manage dotfiles with chezmoi - mar 2024
 => /~nagi/ebpf.gmi eBPF essentials - jan 2024
 => /~nagi/pubnix.gmi Public access UNIX systems - oct 2023

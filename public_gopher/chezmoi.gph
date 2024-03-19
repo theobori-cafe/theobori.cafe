@@ -19,6 +19,35 @@ Something interesting about
 
 My configuration template looks like this (below) in the `.chezmoi.yaml.tmpl` file.
 
+{% raw %}
+```jinja2
+{{ $has_age := false }}
+{{ $sudo := "sudo" }}
+{{ $font := "Comic Code" }}
+
+{{ if stdinIsATTY }}
+{{ $has_age = promptBool "do you have age " }}
+{{ $sudo = promptString "sudo or doas " }}
+{{ $font = promptString "font name " }}
+{{ end }}
+
+{{ if and (ne $sudo "sudo") (ne $sudo "doas") }}
+{{ $sudo = "sudo" }}
+{{ end }}
+
+{{ if $has_age }}
+encryption: "age"
+age:
+    identity: "/home/nagi/.config/age/key.txt"
+    recipient: "age14m06fd3svs9neg2w97ccw3c8470hckl95qxr6jw8fgm4ex65352q6tun06"
+{{ end }}
+
+data:
+    sudo: {{ $sudo }}
+    font: {{ $font }}
+```
+{% endraw %}
+
 For the moment the repository is only compatible with Fedora only, however it is easy to implement other distributions.
 
 ## Apply from a different machine

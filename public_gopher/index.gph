@@ -4,7 +4,7 @@
 `|      |  | | |(/_(_)   |_)(_) |  |
   `-__-' 
 
-Hello, I'm Théo,
+Hi, I'm Théo,
  
 I support FOSS, FLOSS and pubnix(es) values, I love Linux and UNIX systems.
  
@@ -29,6 +29,7 @@ I can be reached via Discord (b0th) or via nagi@cock.li.
 gemini://tilde.pink/~nagi
 
 ## Posts
+[1|Porting X11 apps to OpenBSD - mar 2024|/~nagi/openbsd_ports.gph|70]
 [1|Manage dotfiles with chezmoi - mar 2024|/~nagi/chezmoi.gph|70]
 [1|eBPF essentials - jan 2024|/~nagi/ebpf.gph|tilde.pink|70]
 [1|Public access UNIX systems - oct 2023|/~nagi/pubnix.gph|tilde.pink|70]
