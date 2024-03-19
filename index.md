@@ -7,6 +7,7 @@ title: Théo Bori
 
 &nbsp;
 I support F(L)OSS and pubnixes values, I love UNIX systems.
+I'm an Arch Linux enthusiast.
 &nbsp;
 Everything I make is open source and available on [GitHub](https://github.com/theobori) and [Gitea](https://git.theobori.cafe/nagi).
 I also have a [CTFtime](https://ctftime.org/user/67138) and a [LinkedIn](https://www.linkedin.com/in/theo-bori) profile.

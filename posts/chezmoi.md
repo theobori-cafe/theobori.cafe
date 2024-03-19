@@ -27,12 +27,11 @@ My configuration template looks like this (below) in the `.chezmoi.yaml.tmpl` fi
 
 {{ if stdinIsATTY }}
 {{ $has_age = promptBool "do you have age " }}
-{{ $sudo = promptString "sudo or doas " }}
-{{ $font = promptString "font name " }}
-{{ end }}
 
-{{ if and (ne $sudo "sudo") (ne $sudo "doas") }}
-{{ $sudo = "sudo" }}
+{{- $sudo_choices := list "sudo" "doas" -}}
+{{- $sudo = promptChoiceOnce . "choice" "choose" $sudo_choices -}}
+
+{{ $font = promptString "font name " }}
 {{ end }}
 
 {{ if $has_age }}
@@ -49,7 +48,7 @@ data:
 {% endraw %}
 &nbsp;
 
-For the moment the repository is only compatible with Fedora only, however it is easy to implement other distributions.
+For the moment the repository is only compatible with Fedora and Arch Linux, however it is easy to implement other distributions.
 
 ## Apply from a different machine
 &nbsp;
