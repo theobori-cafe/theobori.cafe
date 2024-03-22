@@ -14,7 +14,7 @@ Before making the game compatible with the distribution, it's best to fetch the 
 ## OpenBSD environment
 &nbsp;
 
-My test environment is just a virtual machine managed by VirtualBox on which [OpenBSD 7.4](https://www.openbsd.org/74.html) has been installed, following the steps [here](https://www.openbsdhandbook.com/installation/).
+My test environment is a virtual machine managed by `virt-manager` (using libvirt to interact with KVM) on which [OpenBSD 7.4](https://www.openbsd.org/74.html) has been installed, following the steps [here](https://www.openbsdhandbook.com/installation/).
 
 &nbsp;
 
