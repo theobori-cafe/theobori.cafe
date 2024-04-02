@@ -12,6 +12,7 @@ Everything I make is open source and available on GitHub and Gitea.
 I also have a CTFtime and a LinkedIn profile.
 
 Currently I'm maintaining teedata.net (skins.tw until 2024).
+I offer free services that respect privacy.
 
 [h|Gitea|URL:https://git.theobori.cafe/nagi|tilde.pink|70]
 [h|GitHub|URL:https://www.github.com/theobori|tilde.pink|70]
@@ -19,6 +20,7 @@ Currently I'm maintaining teedata.net (skins.tw until 2024).
 [h|CTFtime|URL:https://ctftime.org/user/67138|tilde.pink|70]
 [h|teedata.net|URL:https://teedata.net|tilde.pink|70]
 [h|skins.tw|URL:https://teedata.net|tilde.pink|70]
+[h|services|URL:https://services.theobori.cafe|tilde.pink|70]
 
 ## Contact
 I can be reached via Discord (b0th) or via nagi@cock.li.
@@ -29,8 +31,8 @@ I can be reached via Discord (b0th) or via nagi@cock.li.
 gemini://tilde.pink/~nagi
 
 ## Posts
-[1|Porting X11 apps to OpenBSD - mar 2024|/~nagi/openbsd_ports.gph|70]
-[1|Manage dotfiles with chezmoi - mar 2024|/~nagi/chezmoi.gph|70]
+[1|Porting X11 apps to OpenBSD - mar 2024|/~nagi/openbsd_ports.gph|tilde.pink|70]
+[1|Manage dotfiles with chezmoi - mar 2024|/~nagi/chezmoi.gph|tilde.pink|70]
 [1|eBPF essentials - jan 2024|/~nagi/ebpf.gph|tilde.pink|70]
 [1|Public access UNIX systems - oct 2023|/~nagi/pubnix.gph|tilde.pink|70]
 [1|Play Teeworlds through Docker - oct 2023|/~nagi/teeworlds.gph|tilde.pink|70]

@@ -13,6 +13,7 @@ Everything I make is open source and available on [GitHub](https://github.com/th
 I also have a [CTFtime](https://ctftime.org/user/67138) and a [LinkedIn](https://www.linkedin.com/in/theo-bori) profile.
 &nbsp;
 Currently I'm maintaining [teedata.net](https://teedata.net) ([skins.tw](https://skins.tw) until 2024).
+I offer free [services](https://services.theobori.cafe) that respect privacy.
 
 <h2 class="category category-home ">Contact</h2>
 

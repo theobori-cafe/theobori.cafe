@@ -14,6 +14,7 @@ Everything I make is open source and available on GitHub and Gitea.
 I also have a CTFtime and a LinkedIn profile.
 
 Currently I'm maintaining teedata.net (skins.tw until 2024).
+I offer free services that respect privacy.
 
 => https://git.theobori.cafe/nagi Gitea
 => https://www.github.com/theobori GitHub
@@ -21,6 +22,7 @@ Currently I'm maintaining teedata.net (skins.tw until 2024).
 => https://ctftime.org/user/67138/ CTFtime
 => https://teedata.net teedata.net
 => https://teedata.net skins.tw
+=> https://services.theobori.cafe services
 
 ## Contact
 I can be reached via Discord (b0th) or via nagi@cock.li.
