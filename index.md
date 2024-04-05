@@ -17,7 +17,7 @@ I offer free [services](https://services.theobori.cafe) that respect privacy.
 
 <h2 class="category category-home ">Contact</h2>
 
-I can be reached via Discord (`b0th`) or via <a href="mailto:nagi@tilde.team">email</a> ([PGP](/pgp.asc)).
+I can be reached via Discord (b0th) or via <a href="mailto:nagi@tilde.team">email</a> ([PGP](/pgp.asc)).
 
 <h2 class="category category-home ">Other protocols</h2>
 
