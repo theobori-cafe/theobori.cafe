@@ -5,7 +5,7 @@ date: "2023-03-08"
 
 I wanted to learn the basics of emulator development and emulation in general. So I decided to make a CHIP-8 emulator.
 
-In fact it's a misuse of language to say that it's an "emulator" because CHIP-8 is a language, so we should rather say "interpreter".
+In fact it's a misuse of language to say that it's an `emulator` because CHIP-8 is a language, so we should rather say `interpreter`.
 
 ## How does it works ?
 

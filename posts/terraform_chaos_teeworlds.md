@@ -22,7 +22,7 @@ ec_output_level 2
 
 These are prefixed with `ec_` because they are associated with the `econ` server. This configuration binds a TCP port which will expose the Telnet protocol-based econ server.
 
-Through the latter, we'll be able to retrieve events from the Teeworlds server, such as a message sent, a player killed or a flag captured!
+Through the latter, we'll be able to retrieve events from the Teeworlds server, such as a message sent, a player killed or a flag captured !
 
 &nbsp;
 
