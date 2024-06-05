@@ -24,7 +24,7 @@ The ones that existed didn't suit me, as they didn't really respect the in-game 
 &nbsp;
 So I decided to make my own toolbox to manipulate Teeworlds assets, which we use on [teedata.net](https://teedata.net) and for the Teedata Discord bot. 
 &nbsp;
-Indirectly, other people use it, for example, to render skins in a Discord channel that displays messages in real time (fokkonaut's Discord server) or in other projects like [TeeAssembler 2.0](https://teeassembler.developer.li/) that used some part of the **`teeworlds-utilites`** code.
+Indirectly, other people use it, for example, to render skins in a Discord channel that displays messages in real time (fokkonaut's Discord server) or in other projects like [TeeAssembler 2.0](https://teeassembler.developer.li/) that used some part of the Teeworlds utilities code.
 &nbsp;
 <p align="center" width="100%">
   <img src="/fokkonaut_bridge.png">
@@ -32,7 +32,6 @@ Indirectly, other people use it, for example, to render skins in a Discord chann
 &nbsp;
 
 ## Use case examples
-&nbsp;
 ### Teeworlds skin rendering
 
 Render a Teeworlds 4K skin with default and custom colors.

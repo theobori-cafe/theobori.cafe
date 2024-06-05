@@ -88,9 +88,9 @@ Now we can create and start a new container with the teeworlds client image we j
 I consider that you're using X as your windowing system, rather than something like Wayland or something else.
 &nbsp;
 
-### X Window System
+### X display server
 
-So that the game can work and we can play it. I assume you are using the X window system and that you have a X server listening at a UNIX domain socket.
+So that the game can work and we can play it. I assume you are using an X display server and that it is listening at a UNIX domain socket.
 &nbsp;
 That is why we are forwarding the `/tmp/.X11-unix/` directory that contains the UNIX domain socket(s) for the X server.
 &nbsp;

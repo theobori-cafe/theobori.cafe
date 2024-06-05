@@ -5,9 +5,9 @@ date: "2023-05-03"
 
 This project is a WAD library/manager, it can be used as a base for other WAD projects like a GUI, a CLI, etc..
 &nbsp;
-I have played around with some well known `IWAD` like `doom.wad` and `doom2.wad` (registered).
+I have played around with some well known IWAD like `doom.wad` and `doom2.wad` (registered).
 &nbsp;
-To test the `IWAD`/`PWAD` generated, I have used two engines:
+To test the IWAD/PWAD generated, I have used two engines:
 - [GZDoom](https://zdoom.org/index) (tests + screenshots)
 - [WAD Commander](https://wadcmd.com/) (tests + preview in multiple contexts)
 
@@ -39,7 +39,7 @@ fn main() -> Result<(), WadError> {
 }
 ```
 
-So basically (above) it loads a first `IWAD` file, in our case it is `doom2.wad`. It borrows a lump (`GATE3`) into the variable `gate`, then we load a second `IWAD` which is `doom1.wad`, it selects desired lumps, then it update the selected lumps in `DOOM1` and finally overwrite the file.
+So basically (above) it loads a first IWAD file, in our case it is `doom2.wad`. It borrows a lump (`GATE3`) into the variable `gate`, then we load a second IWAD which is `doom1.wad`, it selects desired lumps, then it update the selected lumps in `DOOM1` and finally overwrite the file.
 
 &nbsp;
 ### Screenhot(s)
@@ -196,7 +196,7 @@ fn main() -> Result<(), WadError> {
 }
 ```
 
-To take the screenshot (below) `doom1_patch.wad` has been injected into GZDOOM with the `IWAD` `doom.wad` (registered).
+To take the screenshot (below) `doom1_patch.wad` has been injected into GZDOOM with the IWAD `doom.wad` (registered).
 
 &nbsp;
 
@@ -214,7 +214,7 @@ To take the screenshot (below) `doom1_patch.wad` has been injected into GZDOOM w
 
 ### Extracting MIDI lumps
 
-Extracting every musics from the `IWAD` `doom.wad`.
+Extracting every musics from the IWAD `doom.wad`.
 
 &nbsp;
 

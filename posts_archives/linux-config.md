@@ -2,7 +2,6 @@
 title: Linux environment
 date: "2023-02-20"
 ---
-
 I've been using only Linux for years now, I've almost always used GNOME and even i3 but without any real configuration effort. Now I have a working environment that I find very practical and that allows me to be fast and more comfortable.
 
 ## Overview
