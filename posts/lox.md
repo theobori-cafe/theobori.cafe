@@ -21,12 +21,14 @@ For the moment I'm not quite done, I've implemented the features below.
 - *Functions with parameters*
 - *Closures*
 - *Static variable resolution and error detection*
+&nbsp;
 
 ## What is lox ?
 
 To sum up [this page](https://craftinginterpreters.com/the-lox-language.html), Lox is a small, high-level scripting language, with dynamic types and automatic memory management. It is similar to Javascript, Lua and Scheme.
 
 A cool fact is that Lox is Turing complete, it means it is able to run a Turing machine.
+&nbsp;
 
 ## Essentials basics
 
@@ -109,8 +111,6 @@ We use rules to generate strings that are in the grammar, it is called derivatio
 
 Each production has a head (its name) and a body (a list of symbols).
 
-&nbsp;
-
 A symbol can be:
 - A terminal, it is like an endpoint, it simply produces it.
 - A non-terminal, it refers to other rule in the grammar.
@@ -131,6 +131,7 @@ bread → "toast" | "biscuits" | "English muffin" ;
 ```
 
 The ponctuations is based on the regex behaviors, as example, the `?` means it is optional.
+&nbsp;
 
 So here, a valid strings could be the one below.
 

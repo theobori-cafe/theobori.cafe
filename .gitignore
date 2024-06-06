@@ -7,3 +7,5 @@ _site
 .certificates
 scripts/deploy.sh
 /bak
+
+graphs/

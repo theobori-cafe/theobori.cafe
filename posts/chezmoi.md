@@ -49,9 +49,9 @@ data:
 &nbsp;
 
 For the moment the repository is only compatible with Fedora and Arch Linux, however it is easy to implement other distributions.
+&nbsp;
 
 ## Apply from a different machine
-&nbsp;
 
 To apply my configuration from another machine, simply run the following commands.
 
@@ -59,6 +59,8 @@ To apply my configuration from another machine, simply run the following command
 chezmoi init https://github.com/theobori/dotfiles.git
 chezmoi apply -v
 ```
+
+&nbsp;
 
 ## Links
 

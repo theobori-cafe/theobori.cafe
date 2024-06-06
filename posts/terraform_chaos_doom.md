@@ -4,8 +4,9 @@ date: "2023-06-03"
 ---
 
 I first saw [kubedoom](https://github.com/storax/kubedoom) and thought it was pretty cool, so I decided to do the same for Terraform, knowing that I was working with it for professional projects. 
-&nbsp;
+
 The principle is very simple, each enemy represents a Terraform resource, if an enemy dies, the associated resource is destroyed.
+&nbsp;
 
 ## How does it work?
 

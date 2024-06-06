@@ -6,11 +6,11 @@ date: "2024-06-05"
 After doing some [chaos engineering for Terraform with the DOOM game](/posts/terraform_chaos_doom/), I wanted to make a version for Teeworlds, specifically for its version 0.7 (its latest version).
 
 The difference with the DOOM version is that in this project, a player must capture the flag for a Terraform resource to be randomly destroyed.
+&nbsp;
 
 ## How does it work?
 
 When configuring a Teeworlds server, the values below can be entered.
-&nbsp;
 
 ```bash
 # Econ configuration

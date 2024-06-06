@@ -113,6 +113,7 @@ The verification process ensures the eBPF bytecode is safe.
 It tests every possible execution paths, it pushes copy of the regs onto a stack and explore one of the possible paths.
 
 It is optimized to avoid evaluating the instructions with something called state pruning, it avoids reevaluating path (record registers state and if it arrives on the same instruction with a matching state, there is no need to verify the rest of path).
+&nbsp;
 
 ## XDP
 
@@ -121,6 +122,7 @@ XDP stands for eXpress Data Path, it is a programmable kernel-integrated packet 
 > *"The packet processor is the in-kernel component for XDP programs that processes packets on the receive (RX) queue directly as they are presented by the NIC.*"
 
 XDP programs can make decision (drop, pass, etc..) on the received packets.
+&nbsp;
 
 ## Important Linux concepts
 

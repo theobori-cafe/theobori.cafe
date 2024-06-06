@@ -10,13 +10,11 @@ I was getting interested in BSD systems, more specifically OpenBSD, its firewall
 I thought it could be interesting to port/package some games I've played during my childhood such as [Super Mario War](http://smwstuff.net) or [VVVVVV](https://thelettervsixtim.es/index.html).
 
 Before making the game compatible with the distribution, it's best to fetch the port tree ([doc](https://www.openbsd.org/faq/ports/ports.html)) and read the official documentation ([doc](https://www.openbsd.org/faq/ports/guide.html)) to get the essentials.
+&nbsp;
 
 ## OpenBSD environment
-&nbsp;
 
 My test environment is a virtual machine managed by `virt-manager` (using libvirt to interact with KVM) on which [OpenBSD 7.4](https://www.openbsd.org/74.html) has been installed, following the steps [here](https://www.openbsdhandbook.com/installation/).
-
-&nbsp;
 
 To manage X displays, I used `xenodm` which is installed by default on OpenBSD. You can activate its system service with the following command.
 
@@ -26,6 +24,7 @@ rcctl enable xenodm
 &nbsp;
 
 And for the windows manager, there's a basic one (cwm) but I opted for i3wm anyway.
+&nbsp;
 
 ## Porting VVVVVV
 
