@@ -7,6 +7,8 @@ I've got an old laptop that I don't use anymore, so I thought I'd turn it into a
 
 The aim is to create a private homelab, i.e. the machine should only be accessible via the local network. None of the services are exposed to the Internet, with the exception of Wireguard, which lets me access the services from the outside.
 
+The aim of this post is to present the main steps I've taken and explain how the homelab works.
+
 My laptop is an [ASUS ROG G750](https://laptopmedia.com/series/asus-rog-g750/) with 8GB of memory and 2 HDDs of around 600GB each. It hasn't been used for about five or six years and the battery is dead.
 &nbsp;
 
