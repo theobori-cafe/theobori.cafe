@@ -27,7 +27,7 @@ Through the latter, we'll be able to retrieve events from the Teeworlds server, 
 &nbsp;
 
 <p align="center">
-  <img src="/terraform_teeworlds_graph.png" style="max-width: 100%; width: auto;">
+  <img src="/terraform_teeworlds_graph.png" class="img-center">
 </p>
 
 &nbsp;

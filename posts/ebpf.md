@@ -3,8 +3,15 @@ title: eBPF essentials
 date: "2024-01-11"
 ---
 
+<style nonce="Fg4i6piWbxQWdgGv66UX1V1B5zwNWL4Om8vSTS4QG4I">
+  .img-center-w400px {
+    max-width: 100%;
+    width: 400px;
+  }
+</style>
+
 <center>
-    <img src="/ebpf.png" style="max-width: 100%; width: 400px;">
+    <img src="/ebpf.png" class="img-center-w400px">
 </center>
 &nbsp;
 
@@ -18,7 +25,7 @@ eBPF stands for extended Berkeley Packet Filter. It's a virtual machine with a m
 &nbsp;
 
 <center>
-    <img src="/basic_ebpf_scheme.png" style="max-width: 100%; width: auto;">
+    <img src="/basic_ebpf_scheme.png" class="img-center">
 </center>
 
 &nbsp;
@@ -45,7 +52,7 @@ An eBPF program is nothing else than a set of eBPF instructions in a bytecode fo
 &nbsp;
 
 <center>
-    <img src="/ebpf_build_chain.png" style="max-width: 100%; width: auto;">
+    <img src="/ebpf_build_chain.png" class="img-center">
 </center>
 
 &nbsp;

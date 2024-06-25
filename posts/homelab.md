@@ -97,7 +97,7 @@ Here's a diagram of several services trying to retrieve the identity of an [Auth
 &nbsp;
 
 <p align="center">
-  <img src="/authentik_users.png" style="max-width: 100%; width: auto;>
+  <img src="/authentik_users.png" class="img-center">
 </p>
 
 &nbsp;
@@ -118,7 +118,7 @@ Let's say I want to access [duplicati.theobori.duckdns.org](https://duplicati.th
 &nbsp;
 
 <p align="center">
-  <img src="/authentik_proxy.png" style="max-width: 100%; width: auto;">
+  <img src="/authentik_proxy.png" class="img-center">
 </p>
 &nbsp;
 
@@ -132,7 +132,7 @@ Here's what the media stack looks like.
 &nbsp;
 
 <p align="center">
-  <img src="/media_stack.png" style="max-width: 100%; width: auto;">
+  <img src="/media_stack.png" class="img-center">
 </p>
 &nbsp;
 
@@ -152,7 +152,7 @@ I also have a [Prometheus](https://prometheus.io/) and [Grafana](https://grafana
 This is how the monitoring stack looks.
 
 <p align="center" width="100%">
-  <img src="/monitoring_stack.png" style="max-width: 100%; width: auto;">
+  <img src="/monitoring_stack.png" class="img-center">
 </p>
 
 &nbsp;
@@ -162,7 +162,7 @@ This is how the monitoring stack looks.
 Here's an overview of the dashboard, featuring all the services exposed to the local network. In a way it's the end result of service implementation.
 
 <p align="center" width="100%">
-  <img src="/dashy.png" width="650px" style="max-width: 100%; width: auto;">
+  <img src="/dashy.png" width="650px" class="img-center">
 </p>
 
 &nbsp;

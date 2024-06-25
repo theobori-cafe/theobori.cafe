@@ -10,7 +10,7 @@ This is a tool set up by Mozilla in the form of a website. It assigns a security
 For the technical part with NGINX, I've chosen to use [this website](/) as an example, which has obtained a satisfactory security rating.
 
 <center>
-    <img src="/theoboricafe_a.png" style="max-width: 100%; width: auto;">
+    <img src="/theoboricafe_a.png" class="img-center">
 </center>
 &nbsp;
 

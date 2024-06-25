@@ -1,0 +1,435 @@
+---
+title: My Nix exploration
+date: "2024-06-24"
+---
+
+<center>
+    <img src="/nix_logo.svg" width="40%">
+</center>
+&nbsp;
+
+Here I share some notes and other things I've learned about Nix that I find interesting. The content of this post is mainly about me learning Nix, it's not about understanding the whole tool and language.
+&nbsp;
+
+## What is Nix?
+
+Nix is actually several things!
+
+It's a cross platform package manager. It would be a little more accurate to say that it's a deployment tool used as a package manager.
+
+And it's also a purely functional programming language, dynamically typed and lazily evaluated.
+&nbsp;
+
+## Learning the programming language
+
+I started by learning the basics of the language and then went on to explore it in a bit more depth.
+&nbsp;
+
+### The basics
+
+I read [Nix language basics](https://nix.dev/tutorials/nix-language#reading-nix-language) and to get used to the language I practised with [A tour of Nix](https://nixcloud.io/tour) which has several levels of difficulty from "easy" to "hard".
+
+One interesting thing about this language is that it has only one argument per function. To simulate several arguments, you can, for example, write a function with one argument that returns a function with one argument that returns a function with one argument, and so on. The syntax of the language makes it easy to do this.
+
+I was taught that it has a name, it's called [Currying](https://en.wikipedia.org/wiki/Currying). It's the transformation of a function with several arguments into a function with one argument that returns a function on the rest of the arguments. Here's an example with arguments `3` and `4`.
+
+```nix
+nix-repl> (a: b: a + b) 3 4
+7
+```
+&nbsp;
+
+A Python equivalent might be something like the following.
+
+```python
+>>> (lambda a: lambda b: a + b)(3)(4)
+7
+```
+&nbsp;
+
+Another solution that is often used, particularly in [Nixpkgs](https://github.com/NixOS/nixpkgs), is to have an attribute set as a parameter to the function, and to use the attributes as arguments. For example, this might look like the expression below.
+
+```nix
+nix-repl> ({a, b}: a + b){a = 3; b = 4;}
+7
+```
+&nbsp;
+
+### Fake dynamic binding
+
+Although the blog post [How to Fake Dynamic Binding in Nix](http://r6.ca/blog/20140422T142911Z.html) talks about this very well, I find it interesting to offer my own thoughts and approach.
+
+The language is statically scoped, i.e. binding decisions are made according to the scope at declaration time.
+
+Let's look at the `rec` keyword, which allows an attribute set to access its own attributes (recursive binding). Here's an example.
+
+```nix
+nix-repl> rec { a = 1; b = a + 1;}
+{
+  a = 1;
+  b = 2;
+}
+```
+&nbsp;
+
+This is an interesting feature, but it remains static because the binding is done before the runtime. This poses problems, particularly when it comes to overriding attributes, as shown in the example below.
+
+```nix
+nix-repl> rec { a = 1; b = a + 1; } // { a = 10; }
+{
+  a = 10;
+  b = 2;
+}
+```
+&nbsp;
+
+In this example, we would like `b` to be equal to `11`, not `2`. 
+
+To solve this problem, we can look at the concept of a fixed point. A fixed point is a value of `x` that validates the equation `x = f(x)`.
+
+We can therefore write the following function.
+
+```nix
+nix-repl> fix = f: let
+  result = f result;
+in
+  result
+```
+&nbsp;
+
+So here we have the function `fix` which takes a function `f` as a parameter and returns the fixed point `result` of the function `f`.
+
+You might be tempted to say that the `f` function calls itself ad infinitum (`f(f(f(f(..))))`), but Nix evaluates expressions lazily, so this isn't the case.
+
+We can literally see that the `f` function returns a fixed point (`result`), because `result = f result`, which respects the definition of a fixed point.
+
+The `fix` function will allow us to emulate the `rec` keyword, as shown in the example below.
+```nix
+nix-repl> fix (self: { a = 3; b = 4; c = self.a + self.b; })
+{
+  a = 3;
+  b = 4;
+  c = 7;
+}
+```
+&nbsp;
+
+To better understand how it works, I've written the result of the `fix` function differently with the argument used previously.
+
+```nix
+nix-repl> let
+  result = { a = 3; b = 4; c = result.a + result.b;};
+in
+  { a = 3; b = 4; c = result.a + result.b;}
+{
+  a = 3;
+  b = 4;
+  c = 7;
+}
+```
+&nbsp;
+
+Finally, I've written the following function, which will allow the attributes to be overridden dynamically as initially intended.
+
+```nix
+nix-repl> fix = let
+  fixWithOverride = f: overrides: let
+      result = (f result) // overrides;
+    in
+      result // { override = x: fixWithOverride f x; };
+in
+f: fixWithOverride f {}
+
+attrFunction = self: { a = 3; b = 4; c = self.a+self.b; }
+
+attrFunctionFixedPoint = fix attrFunction
+
+nix-repl> attrFunctionFixedPoint
+{
+  a = 3;
+  b = 4;
+  c = 7;
+  override = «lambda override @ «string»:5:30»;
+}
+
+nix-repl> attrFunctionFixedPoint.override { b = 1; }
+{
+  a = 3;
+  b = 1;
+  c = 4;
+  override = «lambda override @ «string»:5:30»;
+}
+```
+&nbsp;
+
+## The essential Nix tool
+
+As already mentioned, the main use of Nix is cross platform package management. In this section I'm just trying to share and summarise some of the essential parts of my notes. If you want more details, I recommend you read the excellent [Nix Pills](https://nixos.org/guides/nix-pills/). It's rather long but well worth the read!
+&nbsp;
+
+### How does it work ?
+
+To sum up, I'd say that the Nix language has a very interesting native function called `derivation` ([see documentation](https://nix.dev/manual/nix/2.22/language/derivations)) on which many Nix expressions are based. I'm not going to redefine the term because the documentation has a very comprehensible version, but the important thing to remember is that a derivation is a construction specification, it's an immutable Nix building block. With another package manager, you could see it as a literal package.
+
+Nix technology will enable us to build these derivations, in the following stages.
+
+<center>
+    <img src="/nix_graph.png" width="100%">
+</center>
+&nbsp;
+
+The `.drv` files contain specifications on how to build the derivation, they are intermediate files comparable to `.o` files, and the `.nix` files are comparable to `.c` files.
+
+The construction result is immutable and will be stored in `/nix/store/`, a synchronisation with the [SQLite](https://www.sqlite.org/) database. I said it was immutable, in fact it is because Nix creates a hash for the path in the `/nix/store/` from the input derivation (not from the construction result).
+
+It's pretty hard to imagine all this, so I'll give you a concrete example. Let's imagine I want to create a derivation for the famous software [GNU Hello](https://www.gnu.org/software/hello/). The Nix derivation could look something like this.
+
+```nix
+# default.nix
+
+let
+  pkgs = import <nixpkgs> { };
+in
+  {
+    hello = pkgs.stdenv.mkDerivation {
+      pname = "hello";
+      version = "2.12.1";
+
+      src = fetchTarball {
+        url = "https://ftp.gnu.org/gnu/hello/hello-2.12.1.tar.gz";
+        sha256 = "1kJjhtlsAkpNB7f6tZEs+dbKd8z7KoNHyDHEJ0tmhnc=";
+      };
+    };
+  }
+```
+&nbsp;
+
+> The `mkDerivation` function is based on the `derivation` builtin function.
+
+It can be built with the following command.
+
+```bash
+nix-build
+```
+&nbsp;
+
+The build result has been created in `/nix/store/x9cc4jsylk5q01iaxmxf941b59chws5h-hello-2.12.1` and a symbolic link named `result` pointing to this folder has been created in the current folder. We can then find the binary in `./result/bin/hello`.
+
+Before the build, a `.drv` file was created, which can be found by running the following command.
+```bash
+nix derivation show ./result | jq "keys[0]"
+```
+&nbsp;
+
+The full path to the `.drv` file is found in the first key of the JSON object, so the path to the `.drv` file is `/nix/store/dp5z62k3chf019biikg77p2acmz17phx-hello-2.12.1.drv`.
+
+As it is in binary format we can use `nix derivation show` to display the construction information it contains with the following command.
+
+```bash
+nix derivation show (nix derivation show ./result | jq "keys[0]" | tr -d "\"")
+# Or
+nix derivation show /nix/store/dp5z62k3chf019biikg77p2acmz17phx-hello-2.12.1.drv
+# ^
+# | Same output
+# v
+nix derivation show ./result
+```
+&nbsp;
+
+### Nixpkgs
+
+In the Nix expression used previously (the [GNU Hello](https://www.gnu.org/software/hello/) derivation), I used the `mkDerivation` function from `stdenv`.
+
+This function is not builtin, it comes from the `pkgs` identifier which has the value `import <nixpkgs> { };`.
+
+Before explaining this import, I think it's very important to understand what [Nixpkgs](https://github.com/NixOS/nixpkgs) is. It's a Git repository that contains all the Nix expressions and modules. When this folder is evaluated, it produces an attribute set containing `stdenv`, which is itself an attribute set containing our `mkDerivation` function.
+
+Getting back to `pkgs`, `<nixpkgs>` is just a special Nix syntax, which, when evaluated, gives a path to a folder containing a collection of Nix expressions, i.e. Nixpkgs.
+
+Incidentally `<nixpkgs>` has an equivalence in Nix as shown below.
+
+```nix
+nix-repl> <nixpkgs>
+/home/nagi/.nix-defexpr/channels/nixpkgs
+
+nix-repl> builtins.findFile builtins.nixPath "nixpkgs"
+/home/nagi/.nix-defexpr/channels/nixpkg
+
+nix-repl> :p builtins.nixPath
+[
+  {
+    path = "/home/nagi/.nix-defexpr/channels";
+    prefix = "";
+  }
+]
+```
+&nbsp;
+
+### Managing multiple Python versions
+
+One of the advantages of Nix is that it naturally offers the possibility of managing several versions of the same application. Taking [Python](https://www.python.org/) as an example, let's say I want a Nix shell with version 3.7 and version 3.13.
+
+To do this, we can check for which version of [Nixpkgs](https://github.com/NixOS/nixpkgs) Python was built on version 3.7 and target a specific version of [Nixpkgs](https://github.com/NixOS/nixpkgs) in our Nix expression.
+
+To do this, there's the [flox](https://floxdev.com/) tool which works very well, but to make it easier to understand I prefer to use [nixhub.io](https://www.nixhub.io).
+
+So I'm looking for a version of the Nix packages that corresponds to Python version 3.7, and I find `nixpkgs/aca0bbe791c220f8360bd0dd8e9dce161253b341#python37`.
+
+```nix
+# shell.nix
+
+let
+  pkgs = import (fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11") { };
+  nixpkgs-python = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/aca0bbe791c220f8360bd0dd8e9dce161253b341.tar.gz") { };
+in
+  pkgs.mkShell {
+    buildInputs = [
+      nixpkgs-python.python37
+      pkgs.python313
+    ];
+  }
+```
+&nbsp;
+
+You can build Python derivations and enter a Nix shell with the following command.
+
+```bash
+nix-shell
+```
+&nbsp;
+
+And we see that we have access to the two versions requested with the commands `python3.7` and `python3.13` !
+
+## A Virtual environment in Python with Nix flakes
+
+I've recently created a development environment with Nix flakes ([see documentation](https://nixos.wiki/wiki/Flakes)), it's very handy as it provides a ready to use environment for Python 3.11 with the desired modules.
+
+Below is a Nix expression I wrote for the Python module [callviz](https://pypi.org/project/callviz/), it has all the necessary dependencies and a virtual Python environment.
+
+```nix
+# flake.nix
+
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  };
+
+  outputs = { self, nixpkgs }:
+    let
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+
+      forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
+        pkgs = import nixpkgs { inherit system; };
+      });
+    in
+    {
+      packages = forEachSupportedSystem ({ pkgs }: {
+        default = pkgs.callPackage ./. { inherit (pkgs) python311; };
+      });
+
+      devShells = forEachSupportedSystem ({ pkgs }: {
+        default = pkgs.mkShell {
+          venvDir = ".venv";
+          packages = with pkgs; [ python311 ] ++
+            (with pkgs.python311Packages; [
+              pip
+              venvShellHook
+              graphviz
+            ]);
+        };
+      });
+    };
+}
+```
+&nbsp;
+
+Note that the default package and the default development shell are compatible with all systems (`supportedSystems`)!
+
+To realise the derivations and enter the Nix shell, I can run the following command.
+```bash
+nix develop
+```
+&nbsp;
+
+## Nixpkgs contribution
+
+Once I'd finished exploring and learning Nix, I wanted to make a package for [Super Mario War](http://smwstuff.net/game) and add it to [Nixpkgs](https://github.com/NixOS/nixpkgs).
+
+Here's what the package looks like.
+
+```nix
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  cmake,
+  pkg-config,
+  enet,
+  yaml-cpp,
+  SDL2,
+  SDL2_image,
+  SDL2_mixer,
+  zlib,
+  unstableGitUpdater,
+}:
+
+stdenv.mkDerivation (finalAttrs: {
+  pname = "supermariowar";
+  version = "2.0-unstable-2024-06-22";
+
+  src = fetchFromGitHub {
+    owner = "mmatyas";
+    repo = "supermariowar";
+    rev = "e646679c119a3b6c93c48e505564e8d24441fe4e";
+    hash = "sha256-bA/Pu47Rm1MrnJHIrRvOevI3LXj207GFcJloP94/LOA=";
+    fetchSubmodules = true;
+  };
+
+  nativeBuildInputs = [
+    cmake
+    pkg-config
+  ];
+
+  buildInputs = [
+    enet
+    yaml-cpp
+    SDL2
+    SDL2_image
+    SDL2_mixer
+    zlib
+  ];
+
+  cmakeFlags = [ "-DBUILD_STATIC_LIBS=OFF" ];
+
+  postInstall = ''
+    mkdir -p $out/bin
+
+    for app in smw smw-leveledit smw-worldedit; do
+      chmod +x $out/games/$app
+
+      cat << EOF > $out/bin/$app
+      $out/games/$app --datadir $out/share/games/smw
+    EOF
+      chmod +x $out/bin/$app
+    done
+
+    ln -s $out/games/smw-server $out/bin/smw-server
+  '';
+  passthru.updateScript = unstableGitUpdater { };
+  meta = {
+    description = "A fan-made multiplayer Super Mario Bros. style deathmatch game";
+    homepage = "https://github.com/mmatyas/supermariowar";
+    changelog = "https://github.com/mmatyas/supermariowar/blob/${finalAttrs.src.rev}/CHANGELOG";
+    license = lib.licenses.gpl2Plus;
+    maintainers = with lib.maintainers; [ theobori ];
+    mainProgram = "smw";
+    platforms = lib.platforms.linux;
+  };
+})
+```
+&nbsp;

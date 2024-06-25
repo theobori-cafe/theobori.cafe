@@ -37,7 +37,7 @@ I've learned some important key concepts, and here are a few of the most importa
 &nbsp;
 
 <center>
-    <img src="/mountain_lang.png" style="max-width: 100%; width: auto;">
+    <img src="/mountain_lang.png" class="img-center">
 </center>
 
 &nbsp;

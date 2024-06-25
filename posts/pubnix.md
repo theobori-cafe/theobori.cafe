@@ -3,8 +3,15 @@ title: Public access UNIX systems
 date: "2023-10-25"
 ---
 
+<style nonce="Fg4i6piWbxQWdgGv66UX1V1B5zwNWL4Om8vSTS4QG4I">
+  .img-center-w200px {
+    max-width: 100%;
+    width: 200px;
+  }
+</style>
+
 <center>
-    <img src="/openbsd.png" style="max-width: 100%; width: 200px;">
+    <img src="/openbsd.png" class="img-center-w200px">
 </center>
 
 As I explored the more "hidden" corners of the Internet, I began to find some interesting things. Networks of hand-crafted sites, neocities, webrings or even websites indexed on anonymous networks like i2p (The Invisible Internet Project), and so on.
@@ -24,7 +31,7 @@ These servers promote important values such as open source, knowledge sharing, p
 ## Tildeverse
 
 <center>
-    <img src="/tildeverse.png" style="max-width: 100%; width: 200px;">
+    <img src="/tildeverse.png" class="img-center-w200px">
 </center>
 &nbsp;
 

@@ -21,14 +21,14 @@ There are approximately n instructions executed per second for a frequency of n 
 &nbsp;
 
 <p align="center" width="100%">
-  <img src="/breakout_320_160.png" style="max-width: 100%; width: auto;">
-  <img src="/space_invaders_320_160.png" style="max-width: 100%; width: auto;">
+  <img src="/breakout_320_160.png" class="img-center">
+  <img src="/space_invaders_320_160.png" class="img-center">
 </p>
 
 &nbsp;
 
 <p align="center" width="100%">
-  <img src="/ibm_logo_640_320.png" style="max-width: 100%; width: auto;">
+  <img src="/ibm_logo_640_320.png" class="img-center">
 </p>
 
 &nbsp;

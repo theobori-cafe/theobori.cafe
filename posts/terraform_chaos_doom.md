@@ -20,7 +20,7 @@ Everything we've just described will be encapsulated in a Docker container.
 &nbsp;
 
 <p align="center">
-    <img src="/terraform_doom_graph.png" style="max-width: 100%; width: auto;">
+    <img src="/terraform_doom_graph.png" class="img-center">
 </p>
 
 &nbsp;
