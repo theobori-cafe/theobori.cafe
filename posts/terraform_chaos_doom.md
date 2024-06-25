@@ -19,8 +19,8 @@ At runtime `psdoom` will continuously write to the UNIX socket to signal `terraf
 Everything we've just described will be encapsulated in a Docker container.
 &nbsp;
 
-<p align="center" width="100%">
-    <img src="/terraform_doom_graph.png">
+<p align="center">
+    <img src="/terraform_doom_graph.png" style="max-width: 100%; width: auto;">
 </p>
 
 &nbsp;

@@ -26,8 +26,8 @@ So I decided to make my own toolbox to manipulate Teeworlds assets, which we use
 &nbsp;
 Indirectly, other people use it, for example, to render skins in a Discord channel that displays messages in real time (fokkonaut's Discord server) or in other projects like [TeeAssembler 2.0](https://teeassembler.developer.li/) that used some part of the Teeworlds utilities code.
 &nbsp;
-<p align="center" width="100%">
-  <img src="/fokkonaut_bridge.png">
+<p align="center">
+  <img src="/fokkonaut_bridge.png" style="max-width: 100%; width: auto;">
 </p>
 &nbsp;
 
@@ -100,7 +100,7 @@ sceneTest();
 
 ### Result
 
-<p align="center" width="100%">
+<p align="center">
   <img src="/scene.png" width="80%">
 </p>
 
@@ -215,16 +215,16 @@ try {
 
 ### Result
 
-<p align="center" width="100%">
-  <img src="/skin_with_weapon_and_emote.png" >
+<p align="center">
+  <img src="/skin_with_weapon_and_emote.png" style="max-width: 100%; width: auto;">
 </p>
 
 &nbsp;
 
 ### Other possible result
 
-<p align="center" width="100%">
-  <img src="/board.png">
+<p align="center" >
+  <img src="/board.png" style="max-width: 100%; width: auto;">
 </p>
 
 &nbsp;

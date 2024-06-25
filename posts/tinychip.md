@@ -7,7 +7,7 @@ I wanted to learn the basics of emulator development and emulation in general. S
 
 In fact it's a misuse of language to say that it's an `emulator` because CHIP-8 is a language, so we should rather say `interpreter`.
 
-## How does it works ?
+## How does it work ?
 
 So, basically there are three main components that make it works. The CPU, the API and the Core (kernel).
 &nbsp;
@@ -21,14 +21,14 @@ There are approximately n instructions executed per second for a frequency of n 
 &nbsp;
 
 <p align="center" width="100%">
-  <img src="/breakout_320_160.png" width="40%">
-  <img src="/space_invaders_320_160.png" width="40%">
+  <img src="/breakout_320_160.png" style="max-width: 100%; width: auto;">
+  <img src="/space_invaders_320_160.png" style="max-width: 100%; width: auto;">
 </p>
 
 &nbsp;
 
 <p align="center" width="100%">
-  <img src="/ibm_logo_640_320.png" width="60%">
+  <img src="/ibm_logo_640_320.png" style="max-width: 100%; width: auto;">
 </p>
 
 &nbsp;

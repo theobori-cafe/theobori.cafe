@@ -44,7 +44,7 @@ So basically (above) it loads a first IWAD file, in our case it is `doom2.wad`. 
 &nbsp;
 ### Screenhot(s)
 
-<img src="/doom_gate3.png" width="60%">
+<img src="/doom_gate3.png" style="max-width: 100%; width: auto;">
 
 &nbsp;
 
@@ -84,7 +84,7 @@ In this part of code, it extracts as PNG the selected lumps with different palet
 
 ### Extracted lumps (as PNGs)
 
-<p float="left">
+<p float="left" style="max-width: 100%; width: auto;">
   <img src="/doom2/pal_0/BOSFB0.png">
   <img src="/doom2/pal_1/BOSFB0.png">
   <img src="/doom2/pal_2/BOSFB0.png">
@@ -202,7 +202,7 @@ To take the screenshot (below) `doom1_patch.wad` has been injected into GZDOOM w
 
 ### Result
 
-<img src="/doom_floor6_1.png" width="60%">
+<img src="/doom_floor6_1.png" style="max-width: 100%; width: auto;">
 
 ### Files
 

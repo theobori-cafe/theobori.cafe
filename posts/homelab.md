@@ -96,8 +96,8 @@ Here's a diagram of several services trying to retrieve the identity of an [Auth
 
 &nbsp;
 
-<p align="center" width="100%">
-  <img src="/authentik_users.png">
+<p align="center">
+  <img src="/authentik_users.png" style="max-width: 100%; width: auto;>
 </p>
 
 &nbsp;
@@ -117,8 +117,8 @@ I added middleware to the reverse proxy to enable HTTP ForwardAuth with [Authent
 Let's say I want to access [duplicati.theobori.duckdns.org](https://duplicati.theobori.duckdns.org), it could be schematized as follows.
 &nbsp;
 
-<p align="center" width="100%">
-  <img src="/authentik_proxy.png">
+<p align="center">
+  <img src="/authentik_proxy.png" style="max-width: 100%; width: auto;">
 </p>
 &nbsp;
 
@@ -131,8 +131,8 @@ So I set up a stack for managing and downloading media, which would then be stre
 Here's what the media stack looks like.
 &nbsp;
 
-<p align="center" width="100%">
-  <img src="/media_stack.png">
+<p align="center">
+  <img src="/media_stack.png" style="max-width: 100%; width: auto;">
 </p>
 &nbsp;
 
@@ -152,7 +152,7 @@ I also have a [Prometheus](https://prometheus.io/) and [Grafana](https://grafana
 This is how the monitoring stack looks.
 
 <p align="center" width="100%">
-  <img src="/monitoring_stack.png">
+  <img src="/monitoring_stack.png" style="max-width: 100%; width: auto;">
 </p>
 
 &nbsp;
@@ -162,7 +162,7 @@ This is how the monitoring stack looks.
 Here's an overview of the dashboard, featuring all the services exposed to the local network. In a way it's the end result of service implementation.
 
 <p align="center" width="100%">
-  <img src="/dashy.png" width="650px">
+  <img src="/dashy.png" width="650px" style="max-width: 100%; width: auto;">
 </p>
 
 &nbsp;
