@@ -48,5 +48,5 @@ This demonstration has been realized with the example Terraform project, every s
 ## Links
 
 [https://github.com/theobori/terraform-teeworlds](https://github.com/theobori/terraform-teeworlds)
-
+[https://github.com/theobori/teeworlds-econ](https://github.com/theobori/teeworlds-econ)
 &nbsp;
