@@ -1,5 +1,5 @@
 ---
-title: eBPF essentials
+title: My eBPF exploration
 date: "2024-01-11"
 ---
 
@@ -16,6 +16,8 @@ date: "2024-01-11"
 &nbsp;
 
 Having discovered eBPF and read a few books about it, I'm writing here the essentials to remember about the basics. It's mainly a mix of my personal notes from the books "Learning eBPF" by Liz Rice and "Linux Observability with BPF" by David Calavera. The aim is to write down the essentials without going into too much technical detail, a sort of memo.
+
+You can find my eBPF (XDP) projects at the bottom of the page.
 &nbsp;
 
 ## What is eBPF ?
