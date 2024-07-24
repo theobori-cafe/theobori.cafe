@@ -3,9 +3,7 @@
 ![build](https://github.com/theobori-cafe/theobori.cafe/actions/workflows/build.yml/badge.svg)
 ![publish](https://github.com/theobori-cafe/theobori.cafe/actions/workflows/publish.yml/badge.svg)
 
-## ℹ️ About
-
-Personal website + archives / blog
+My personal website with blog.
 
 ## 📖 How to build and run ?
 
@@ -17,8 +15,8 @@ Personal website + archives / blog
 ## 🐋 Docker
 
 ```bash
-docker build -t website:1.0 -f ./docker/Dockerfile ./
-docker run -d -p 127.0.0.1:8080:80 website:1.0
+docker build -t theobori-website ./
+docker run -d -p 127.0.0.1:8080:80 theobori-website
 ```
 
 ## 📡 Other protocols
