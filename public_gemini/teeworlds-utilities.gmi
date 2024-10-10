@@ -11,7 +11,7 @@ and for the Teedata Discord bot.
 
 Indirectly, other people use it, for example, to render skins in a Discord channel that displays messages in real time (fokkonaut's Discord server) or in other projects like 
 => https://teeassembler.developer.li/ TeeAssembler 2.0
-that used some part of the **teeworlds-utilites** code.
+that used some part of the Teeworlds utilities code.
 
 ## Use case examples
 

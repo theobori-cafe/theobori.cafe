@@ -1,5 +1,5 @@
 ---
-title: Yet another Lox interpreter
+title: My Tree-Walker Lox interpreter
 date: "2024-03-22"
 ---
 
@@ -7,21 +7,7 @@ I wanted to learn more about designing an interpreter, so I looked around and fo
 
 I read parts I and II, which focus on concepts, common techniques and language behavior. Since I have recently read these parts, writing helps me to better understand and even re-understand certain things.
   
-For the moment I'm not quite done, I've implemented the features below.
-
-- *Tokens and lexing*
-- *Abstract syntax trees*
-- *Recursive descent parsing*
-- *Prefix and infix expressions*
-- *Runtime representation of objects*
-- *Interpreting code using the Visitor pattern*
-- *Lexical scope*
-- *Environment chains for storing variables*
-- *Control flow*
-- *Functions with parameters*
-- *Closures*
-- *Static variable resolution and error detection*
-&nbsp;
+The aim was to have a Lox interpreter that at least supported functions and closures, so we could have a taste of the basics.
 
 ## What is lox ?
 
@@ -48,45 +34,6 @@ Scanning is also known as lexing or lexical analysis. It takes a linear stream o
 
 The scanner must group characters into the smalles possible sequence that represents something. This blobs of characters are called lexemes.
 
-Here are some examples of token kinds.
-
-```python
-...
-from enum import Enum
-...
-
-class TokenKind(Enum):
-    """
-        Represents every available token kinds
-    """
-
-    # Single-character tokens
-    LEFT_PAREN = "left_paren",
-    RIGHT_PAREN = "right_paren",
-    LEFT_BRACE = "left_brace",
-    RIGHT_BRACE = "right_brace",
-    ...
-
-    # One or two character tokens
-    BANG = "bang",
-    BANG_EQUAL = "bang_equal",
-    EQUAL = "equal",
-    ...
-        
-    # Literals
-    IDENTIFIER = "identifier",
-    STRING = "string",
-    NUMBER = "number",
-    
-    # Keywords
-    AND = "and",
-    CLASS = "class",
-    ELSE = "else",
-    FALSE = "false",
-    ...
-    
-    EOF = "eof"
-```
 &nbsp;
 
 ### Parsing
@@ -146,7 +93,40 @@ So here, a valid strings could be the one below.
 The best explanation here is probably the one in the book.
 
 > *Recursive descent is considered a top-down parser because it starts from the top or outermost grammar rule (here expression ) and works its way down into the nested subexpressions before finally reaching the leaves of the syntax tree.*
+&nbsp;
 
+## Examples
+
+Here are some Lox examples that can be evaluated by my interpreter.
+
+```text
+var b = 1;
+var a = "hello";
+
+{
+    var a = b + b;
+
+    print a;
+}
+
+print a;
+
+fun fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+print fibonacci(5);
+
+print "helo" + "world";
+
+fun echo(n) {
+    print n;
+    return n;
+}
+
+print echo(echo(1) + echo(2)) + echo(echo(4) + echo(5));
+```
 
 &nbsp;
 

@@ -8,31 +8,32 @@
 
 Hi, I'm Théo,
  
-I support FOSS, FLOSS and pubnix(es) values, I love Linux and UNIX systems.
+I support F(L)OSS and pubnixes values, I love UNIX systems and I also really like Arch Linux and Nix.
+Currently I'm maintaining teedata.net (skins.tw until 2024) and I offer free services that respect privacy.
  
-Everything I make is open source and available on GitHub and Gitea.
-I also have a CTFtime and a LinkedIn profile.
-
-Currently I'm maintaining teedata.net (skins.tw until 2024).
-I offer free services that respect privacy.
+If you're interested you can have a look at my blog posts, everything I make is open source and available on GitHub and Gitea.
 
 => https://git.theobori.cafe/nagi Gitea
 => https://www.github.com/theobori GitHub
-=> https://www.linkedin.com/in/theo-bori/ LinkedIn
-=> https://ctftime.org/user/67138/ CTFtime
 => https://teedata.net teedata.net
 => https://teedata.net skins.tw
 => https://services.theobori.cafe services
 
 ## Contact
-I can be reached via Discord (b0th) or via nagi@cock.li.
-=> /pgp.gmi PGP
+My links and contact details are available here.
+=> https://links.theobori.cafe LinkStack
 
 ## Other protocols
 => https://theobori.cafe HTTPS
 => gopher://tilde.pink:70/1/~nagi Gopher
 
 ## Posts
+=> /~nagi/clox.gmi My bytecode VM Lox interpreter - nov 2024
+=> /~nagi/callviz.gmi A toy to visualize recursive function calls - jun 2024
+=> /~nagi/nix.gmi My Nix exploration - jun 2024
+=> /~nagi/homelab.gmi My homelab - jun 2024
+=> /~nagi/terraform_chaos_teeworlds.gmi Teeworlds Terraform chaos engineering - mar 2024
+=> /~nagi/jlox.gmi My Tree-Walker Lox interpreter - jun 2024
 => /~nagi/openbsd_ports.gmi Porting X11 apps to OpenBSD - mar 2024
 => /~nagi/chezmoi.gmi Manage dotfiles with chezmoi - mar 2024
 => /~nagi/ebpf.gmi eBPF essentials - jan 2024
@@ -43,7 +44,7 @@ I can be reached via Discord (b0th) or via nagi@cock.li.
 => /~nagi/knockd_ufw.gmi OpenSSH port knocking with UFW - oct 2023
 => /~nagi/teeworlds-utilities.gmi Teeworlds utilities - jul 2023
 => /~nagi/tf-neuvector.gmi Terraform NeuVector provider - jun 2023
-=> /~nagi/tf-doom.gmi Terraform chaos engineering - jun 2023
+=> /~nagi/terraform_chaos_doom.gmi Terraform chaos engineering - jun 2023
 => /~nagi/tinywad.gmi DOOM modding library - may 2023
 => /~nagi/websites.gmi Interesting websites - mar 2023
 => /~nagi/tinychip.gmi CHIP-8 emulator - mar 2023

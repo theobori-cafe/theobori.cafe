@@ -13,10 +13,9 @@ So I decided to make my own toolbox to manipulate Teeworlds assets, which we use
 
 Indirectly, other people use it, for example, to render skins in a Discord channel that displays messages in real time (fokkonaut's Discord server) or in other projects like 
 [h|TeeAssembler 2.0|URL:https://teeassembler.developer.li/|tilde.pink|70]
- that used some part of the **`teeworlds-utilites`** code.
+ that used some part of the Teeworlds utilities code.
 
 ## Use case examples
-
 ### Teeworlds skin rendering
 
 Render a Teeworlds 4K skin with default and custom colors.

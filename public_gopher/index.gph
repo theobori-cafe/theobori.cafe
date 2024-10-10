@@ -6,31 +6,32 @@
 
 Hi, I'm Théo,
  
-I support FOSS, FLOSS and pubnix(es) values, I love Linux and UNIX systems.
+I support F(L)OSS and pubnixes values, I love UNIX systems and I also really like Arch Linux and Nix.
+Currently I'm maintaining teedata.net (skins.tw until 2024) and I offer free services that respect privacy.
  
-Everything I make is open source and available on GitHub and Gitea.
-I also have a CTFtime and a LinkedIn profile.
-
-Currently I'm maintaining teedata.net (skins.tw until 2024).
-I offer free services that respect privacy.
+If you're interested you can have a look at my blog posts, everything I make is open source and available on GitHub and Gitea.
 
 [h|Gitea|URL:https://git.theobori.cafe/nagi|tilde.pink|70]
 [h|GitHub|URL:https://www.github.com/theobori|tilde.pink|70]
-[h|LinkedIn|URL:https://www.linkedin.com/in/theo-bori|tilde.pink|70]
-[h|CTFtime|URL:https://ctftime.org/user/67138|tilde.pink|70]
 [h|teedata.net|URL:https://teedata.net|tilde.pink|70]
 [h|skins.tw|URL:https://teedata.net|tilde.pink|70]
 [h|services|URL:https://services.theobori.cafe|tilde.pink|70]
 
-## Contact
-I can be reached via Discord (b0th) or via nagi@cock.li.
-[1|PGP|/~nagi/pgp.gph|tilde.pink|70]
+Contact
+My links and contact details are available here.
+[h|LinkStack|URL:https://links.theobori.cafe|tilde.pink|70]
 
-## Other protocols
+Other protocols
 [h|HTTPS|URL:https://theobori.cafe|tilde.pink|70]
 gemini://tilde.pink/~nagi
 
-## Posts
+Posts
+[1|My bytecode VM Lox interpreter - nov 2024|/~nagi/clox.gph|tilde.pink|70]
+[1|A toy to visualize recursive function calls - jun 2024|/~nagi/callviz.gph|tilde.pink|70]
+[1|My Nix exploration - jun 2024|/~nagi/nix.gph|tilde.pink|70]
+[1|My homelab - jun 2024|/~nagi/homelab.gph|tilde.pink|70]
+[1|Teeworlds Terraform chaos engineering - mar 2024|/~nagi/terraform_chaos_teeworlds.gph|tilde.pink|70]
+[1|My Tree-Walker Lox interpreter - jun 2024|/~nagi/jlox.gph|tilde.pink|70]
 [1|Porting X11 apps to OpenBSD - mar 2024|/~nagi/openbsd_ports.gph|tilde.pink|70]
 [1|Manage dotfiles with chezmoi - mar 2024|/~nagi/chezmoi.gph|tilde.pink|70]
 [1|eBPF essentials - jan 2024|/~nagi/ebpf.gph|tilde.pink|70]
@@ -41,7 +42,7 @@ gemini://tilde.pink/~nagi
 [1|OpenSSH port knocking with UFW - oct 2023|/~nagi/knockd_ufw.gph|tilde.pink|70]
 [1|Teeworlds utilities - jul 2023|/~nagi/teeworlds-utilities.gph|tilde.pink|70]
 [1|Terraform NeuVector provider - jun 2023|/~nagi/tf-neuvector.gph|tilde.pink|70]
-[1|Terraform chaos engineering - jun 2023|/~nagi/tf-doom.gph|tilde.pink|70]
+[1|Terraform chaos engineering - jun 2023|/~nagi/terraform_chaos_doom.gph|tilde.pink|70]
 [1|DOOM modding library - may 2023|/~nagi/tinywad.gph|tilde.pink|70]
 [1|Interesting websites - mar 2023|/~nagi/websites.gph|tilde.pink|70]
 [1|CHIP-8 emulator - mar 2023|/~nagi/tinychip.gph|tilde.pink|70]
