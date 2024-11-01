@@ -1,6 +1,6 @@
 ---
 title: My bytecode VM Lox interpreter
-date: "2024-11-06"
+date: "2024-10-06"
 ---
 
 The aim of this post is to describe the general operation of the program and some of the mechanisms that we consider to be of interest. For full details, a link to the source code is available at the bottom of the page.
