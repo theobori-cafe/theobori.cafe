@@ -9,3 +9,5 @@ scripts/deploy.sh
 /bak
 
 graphs/
+.direnv
+result
