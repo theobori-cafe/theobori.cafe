@@ -52,7 +52,7 @@ By losing myself on the Internet, I find some very interesting things, most of t
 - [si3t.ch](https://si3t.ch/)
 - [why-openbsd.rocks](https://why-openbsd.rocks/)
 
-&nbsp;
+
 
 ## Tor
 
@@ -64,4 +64,4 @@ By losing myself on the Internet, I find some very interesting things, most of t
 - [Darknet Bible](http://biblemeowimkh3utujmhm6oh2oeb3ubjw2lpgeq3lahrfr2l6ev6zgyd.onion/)
 - [Darktea](http://it7otdanqu7ktntxzm427cba6i53w6wlanlh23v5i3siqmos47pzhvyd.onion)
 
-&nbsp;
+

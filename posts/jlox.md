@@ -6,7 +6,7 @@ date: "2024-03-22"
 I wanted to learn more about designing an interpreter, so I looked around and found the free "Crafting Interpreters" by Robert Nystrom.
 
 I read parts I and II, which focus on concepts, common techniques and language behavior. Since I have recently read these parts, writing helps me to better understand and even re-understand certain things.
-  
+
 The aim was to have a Lox interpreter that at least supported functions and closures, so we could have a taste of the basics.
 
 ## What is lox ?
@@ -14,19 +14,19 @@ The aim was to have a Lox interpreter that at least supported functions and clos
 To sum up [this page](https://craftinginterpreters.com/the-lox-language.html), Lox is a small, high-level scripting language, with dynamic types and automatic memory management. It is similar to Javascript, Lua and Scheme.
 
 A cool fact is that Lox is Turing complete, it means it is able to run a Turing machine.
-&nbsp;
+
 
 ## Essentials basics
 
 I've learned some important key concepts, and here are a few of the most important.
 
-&nbsp;
+
 
 <center>
     <img src="/mountain_lang.png" class="img-center">
 </center>
 
-&nbsp;
+
 
 ### Scanning
 
@@ -34,7 +34,7 @@ Scanning is also known as lexing or lexical analysis. It takes a linear stream o
 
 The scanner must group characters into the smalles possible sequence that represents something. This blobs of characters are called lexemes.
 
-&nbsp;
+
 
 ### Parsing
 
@@ -42,13 +42,13 @@ It takes the flat sequence of tokens and builds a tree structure that represent 
 
 The Lox interpreter I made is a Tree-Walk Interpreter, it means it traverses the AST one branch and leaf at a time and it evaluates.
 
-&nbsp;
+
 
 ### Context-Free Grammars
 
 It is a formal grammar, it allows us to define an infinite set of rules that are in the grammar, it specicies which strings are valid and which are not.
 
-&nbsp;
+
 
 ### Rules for grammars
 
@@ -62,7 +62,7 @@ A symbol can be:
 - A terminal, it is like an endpoint, it simply produces it.
 - A non-terminal, it refers to other rule in the grammar.
 
-&nbsp;
+
 
 A grammar example from the book, see below.
 
@@ -78,7 +78,7 @@ bread → "toast" | "biscuits" | "English muffin" ;
 ```
 
 The ponctuations is based on the regex behaviors, as example, the `?` means it is optional.
-&nbsp;
+
 
 So here, a valid strings could be the one below.
 
@@ -86,14 +86,14 @@ So here, a valid strings could be the one below.
 "poached" "eggs" "with" "toast" "on the side"
 ```
 
-&nbsp;
+
 
 ### Recursive Descent Parsing
 
 The best explanation here is probably the one in the book.
 
 > *Recursive descent is considered a top-down parser because it starts from the top or outermost grammar rule (here expression ) and works its way down into the nested subexpressions before finally reaching the leaves of the syntax tree.*
-&nbsp;
+
 
 ## Examples
 
@@ -128,10 +128,10 @@ fun echo(n) {
 print echo(echo(1) + echo(2)) + echo(echo(4) + echo(5));
 ```
 
-&nbsp;
+
 
 ## Links
 
 [https://github.com/theobori/tinylox](https://github.com/theobori/tinylox)
 
-&nbsp;
+

@@ -4,9 +4,9 @@ date: "2023-05-03"
 ---
 
 This project is a WAD library/manager, it can be used as a base for other WAD projects like a GUI, a CLI, etc..
-&nbsp;
+
 I have played around with some well known IWAD like `doom.wad` and `doom2.wad` (registered).
-&nbsp;
+
 To test the IWAD/PWAD generated, I have used two engines:
 - [GZDoom](https://zdoom.org/index) (tests + screenshots)
 - [WAD Commander](https://wadcmd.com/) (tests + preview in multiple contexts)
@@ -14,7 +14,7 @@ To test the IWAD/PWAD generated, I have used two engines:
 ## Use cases
 
 Some use cases you could use in a DOOM modding context.
-&nbsp;
+
 ### IWAD patching
 
 ```rust
@@ -41,12 +41,12 @@ fn main() -> Result<(), WadError> {
 
 So basically (above) it loads a first IWAD file, in our case it is `doom2.wad`. It borrows a lump (`GATE3`) into the variable `gate`, then we load a second IWAD which is `doom1.wad`, it selects desired lumps, then it update the selected lumps in `DOOM1` and finally overwrite the file.
 
-&nbsp;
+
 ### Screenhot(s)
 
 <img src="/doom_gate3.png" class="img-center">
 
-&nbsp;
+
 
 ### Lumps extracting
 
@@ -66,7 +66,7 @@ fn main() -> Result<(), WadError> {
         doom_2.set_palette(pal);
         doom_2.reload()?;
         doom_2.select("^BOSF");
-        
+
         let dirpath = format!("doom2/pal_{}", pal);
 
         fs::create_dir_all(dirpath.clone()).unwrap();
@@ -80,7 +80,7 @@ fn main() -> Result<(), WadError> {
 
 In this part of code, it extracts as PNG the selected lumps with different palettes (13).
 
-&nbsp;
+
 
 ### Extracted lumps (as PNGs)
 
@@ -100,7 +100,7 @@ In this part of code, it extracts as PNG the selected lumps with different palet
   <img src="/doom2/pal_12/BOSFB0.png">
 </p>
 
-&nbsp;
+
 
 ### Dumping metadata
 
@@ -118,7 +118,7 @@ fn main() -> Result<(), WadError> {
     Ok(())
 }
 ```
-&nbsp;
+
 
 ### Output
 
@@ -135,7 +135,7 @@ Name: TRANTBL2, Size: 256, Offset: 258628
 ...
 ```
 
-&nbsp;
+
 
 ### Building a PWAD from scratch
 
@@ -198,7 +198,7 @@ fn main() -> Result<(), WadError> {
 
 To take the screenshot (below) `doom1_patch.wad` has been injected into GZDOOM with the IWAD `doom.wad` (registered).
 
-&nbsp;
+
 
 ### Result
 
@@ -206,17 +206,17 @@ To take the screenshot (below) `doom1_patch.wad` has been injected into GZDOOM w
 
 ### Files
 
-[doom1_patch.wad](/doom1_patch.wad)  
-[doom1_patch.asc](/doom1_patch.asc)  
+[doom1_patch.wad](/doom1_patch.wad)
+[doom1_patch.asc](/doom1_patch.asc)
 [checksum](/checksum.txt)
 
-&nbsp;
+
 
 ### Extracting MIDI lumps
 
 Extracting every musics from the IWAD `doom.wad`.
 
-&nbsp;
+
 
 ```rust
 use tinywad::error::WadError;
@@ -234,7 +234,7 @@ fn main() -> Result<(), WadError> {
 }
 ```
 
-&nbsp;
+
 
 ### `D_E1M1` converted from MIDI to MP3
 
@@ -245,10 +245,10 @@ fn main() -> Result<(), WadError> {
     </audio>
 </figure>
 
-&nbsp;
+
 
 ## Links
 
 [https://github.com/theobori/tinywad](https://github.com/theobori/tinywad)
 
-&nbsp;
+

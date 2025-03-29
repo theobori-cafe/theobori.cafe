@@ -19,17 +19,17 @@ date: "2023-07-26"
 </style>
 
 This idea came to me when I was looking for a Teeworlds skin renderer.
-&nbsp;
+
 The ones that existed didn't suit me, as they didn't really respect the in-game rendering. Either the feet were too far out or the colors were wrong.
-&nbsp;
-So I decided to make my own toolbox to manipulate Teeworlds assets, which we use on [teedata.net](https://teedata.net) and for the Teedata Discord bot. 
-&nbsp;
+
+So I decided to make my own toolbox to manipulate Teeworlds assets, which we use on [teedata.net](https://teedata.net) and for the Teedata Discord bot.
+
 Indirectly, other people use it, for example, to render skins in a Discord channel that displays messages in real time (fokkonaut's Discord server) or in other projects like [TeeAssembler 2.0](https://teeassembler.developer.li/) that used some part of the Teeworlds utilities code.
-&nbsp;
+
 <p align="center">
   <img src="/fokkonaut_bridge.png" class="img-center">
 </p>
-&nbsp;
+
 
 ## Use case examples
 ### Teeworlds skin rendering
@@ -66,7 +66,7 @@ try {
 }
 ```
 
-&nbsp;
+
 
 ### Result (4K)
 
@@ -75,7 +75,7 @@ try {
   <img src="/render_color.png" width="30%" class="ml-20" >
 </p>
 
-&nbsp;
+
 
 ### Scene
 
@@ -96,7 +96,7 @@ const sceneTest = async () => {
 sceneTest();
 ```
 
-&nbsp;
+
 
 ### Result
 
@@ -104,7 +104,7 @@ sceneTest();
   <img src="/scene.png" width="80%">
 </p>
 
-&nbsp;
+
 
 ### Merge asset parts
 
@@ -164,7 +164,7 @@ try {
   <img src="/new_skin.png" class="ml-40" >
 </p>
 
-&nbsp;
+
 
 ### More skin configuration
 
@@ -197,7 +197,7 @@ const fullSkinRenderConfiguration = async () => {
       new ColorRGB(255, 255, 255),
     )
     .setOrientation(345);
-    
+
   new SkinFull()
     .setSkin(teedataSunny)
     .setGameskin(napolitano, GameskinPart.HAMMER)
@@ -219,7 +219,7 @@ try {
   <img src="/skin_with_weapon_and_emote.png" class="img-center">
 </p>
 
-&nbsp;
+
 
 ### Other possible result
 
@@ -227,10 +227,10 @@ try {
   <img src="/board.png" class="img-center">
 </p>
 
-&nbsp;
+
 
 ## Links
 
 [https://github.com/teeworlds-utilities/teeworlds-utilities](https://github.com/teeworlds-utilities/teeworlds-utilities)
 
-&nbsp;
+

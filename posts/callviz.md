@@ -10,12 +10,12 @@ It takes the form of a [Python](https://python.org) decorator applied to the des
 To generate a visual and have an overview of all the function calls, I used [Graphviz](https://graphviz.org/) to manage a graph and save it as a file (DOT, SVG, PNG, etc.).
 
 The decorator also supports memoization, which can also be represented on the final visual.
-&nbsp;
+
 
 ## How is it used?
 
 These are two clear examples of how the decorator is used.
-&nbsp;
+
 
 ```python
 from callviz.core import callviz, set_output_dir
@@ -44,16 +44,16 @@ def rev(arr, new):
 fib(5)
 rev(list(range(6, 0, -1)), [])
 ```
-&nbsp;
+
 
 <center>
     <img src="/callviz_fib.png" class="img-center">
     <img src="/callviz_rev.png" class="img-center">
 </center>
-&nbsp;
+
 
 ## Links
 
 [https://github.com/theobori/callviz](https://github.com/theobori/callviz)
 
-&nbsp;
+

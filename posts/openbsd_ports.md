@@ -10,7 +10,7 @@ I was getting interested in BSD systems, more specifically OpenBSD, its firewall
 I thought it could be interesting to port/package some games I've played during my childhood such as [Super Mario War](http://smwstuff.net) or [VVVVVV](https://thelettervsixtim.es/index.html).
 
 Before making the game compatible with the distribution, it's best to fetch the port tree ([doc](https://www.openbsd.org/faq/ports/ports.html)) and read the official documentation ([doc](https://www.openbsd.org/faq/ports/guide.html)) to get the essentials.
-&nbsp;
+
 
 ## OpenBSD environment
 
@@ -21,10 +21,10 @@ To manage X displays, I used `xenodm` which is installed by default on OpenBSD. 
 ```bash
 rcctl enable xenodm
 ```
-&nbsp;
+
 
 And for the windows manager, there's a basic one (cwm) but I opted for i3wm anyway.
-&nbsp;
+
 
 ## Porting VVVVVV
 
@@ -32,7 +32,7 @@ Few years ago, VVVVVV has released an open source version (engine + levels). The
 
 So that the user doesn't have to fill in all this information himself, I've created a shell script with the appropriate values.
 
-&nbsp;
+
 ```bash
 #!/bin/sh
 
@@ -48,11 +48,11 @@ exec ./${NAME} \
      ${@}
 ```
 
-&nbsp;
+
 
 Note that `${TRUEPREFIX}` is not defined in the script, this is normal, it will be replaced by `${SUBST_CMD}` defined in **`/usr/ports/infrastructure/mk/bsd.port.mk`**.
 
-&nbsp;
+
 
 This is what the game's makefile looks like.
 
@@ -117,7 +117,7 @@ post-install:
 .include <bsd.port.mk>
 ```
 
-&nbsp;
+
 
 As you can see, I had to override some of the BSD port makefile targets, because, actually this ports is a little bit special. It must download multiple distfiles from different sites (see below).
 
@@ -129,7 +129,7 @@ DISTFILES=	${PKGNAME}${EXTRACT_SUFX}
 DISTFILES.a=	vvvvvv-mp-linux-02132024${EXTRACT_SUFX}
 ```
 
-&nbsp;
+
 
 Moreover, there were conflicts with the extracted files names, so I had to rename the directory containing **`data.zip`**.
 
@@ -139,18 +139,18 @@ do-extract:
 	unzip ${FULLDISTDIR}/vvvvvv-mp-linux-02132024${EXTRACT_SUFX} -d ${WRKDIR}/${PKGNAME}-data
 ```
 
-&nbsp;
+
 
 Also, we didn't want to build the dependencies using the github modules, because obviously, the released zip file doesn't have a **`.git`** folder inside.
 
-&nbsp;
+
 
 I've also patched a few source files, the full port is available  [here](https://github.com/theobori/openbsd-ports/tree/main/games/VVVVVV).
 
-&nbsp;
+
 
 ## Links
 
 [My OpenBSD ports](https://github.com/theobori/openbsd-ports)
 
-&nbsp;
+

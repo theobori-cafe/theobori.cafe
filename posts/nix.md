@@ -6,26 +6,20 @@ date: "2024-06-24"
 <center>
     <img src="/nix_logo.svg" width="40%">
 </center>
-&nbsp;
 
 Here I share some notes and other things I've learned about Nix that I find interesting. The content of this post is mainly about me learning Nix, it's not about understanding the whole tool and language.
 
 Also, it's important to note that I use Nix as a non-NixOS user.
-&nbsp;
 
 ## What is Nix?
 
-Nix is actually several things!
-
-It's a cross platform package manager. It would be a little more accurate to say that it's a deployment tool used as a package manager.
+Nix is actually several things! It's a cross platform package manager. It would be a little more accurate to say that it's a deployment tool used as a package manager.
 
 And it's also a purely functional programming language, dynamically typed and lazily evaluated.
-&nbsp;
 
 ## Learning the programming language
 
 I started by learning the basics of the language and then went on to explore it in a bit more depth.
-&nbsp;
 
 ### The basics
 
@@ -39,7 +33,6 @@ I was taught that it has a name, it's called [Currying](https://en.wikipedia.org
 nix-repl> (a: b: a + b) 3 4
 7
 ```
-&nbsp;
 
 A Python equivalent might be something like the following.
 
@@ -47,7 +40,6 @@ A Python equivalent might be something like the following.
 >>> (lambda a: lambda b: a + b)(3)(4)
 7
 ```
-&nbsp;
 
 Another solution that is often used, particularly in [Nixpkgs](https://github.com/NixOS/nixpkgs), is to have an attribute set as a parameter to the function, and to use the attributes as arguments. For example, this might look like the expression below.
 
@@ -55,7 +47,6 @@ Another solution that is often used, particularly in [Nixpkgs](https://github.co
 nix-repl> ({a, b}: a + b){a = 3; b = 4;}
 7
 ```
-&nbsp;
 
 ### Fake dynamic binding
 
@@ -72,7 +63,6 @@ nix-repl> rec { a = 1; b = a + 1;}
   b = 2;
 }
 ```
-&nbsp;
 
 This is an interesting feature, but it remains static because the binding is done before the runtime. This poses problems, particularly when it comes to overriding attributes, as shown in the example below.
 
@@ -83,9 +73,8 @@ nix-repl> rec { a = 1; b = a + 1; } // { a = 10; }
   b = 2;
 }
 ```
-&nbsp;
 
-In this example, we would like `b` to be equal to `11`, not `2`. 
+In this example, we would like `b` to be equal to `11`, not `2`.
 
 To solve this problem, we can look at the concept of a fixed point. A fixed point is a value of `x` that validates the equation `x = f(x)`.
 
@@ -97,7 +86,6 @@ nix-repl> fix = f: let
 in
   result
 ```
-&nbsp;
 
 So here we have the function `fix` which takes a function `f` as a parameter and returns the fixed point `result` of the function `f`.
 
@@ -114,7 +102,7 @@ nix-repl> fix (self: { a = 3; b = 4; c = self.a + self.b; })
   c = 7;
 }
 ```
-&nbsp;
+
 
 To better understand how it works, I've written the result of the `fix` function differently with the argument used previously.
 
@@ -129,7 +117,7 @@ in
   c = 7;
 }
 ```
-&nbsp;
+
 
 Finally, I've written the following function, which will allow the attributes to be overridden dynamically as initially intended.
 
@@ -162,12 +150,12 @@ nix-repl> attrFunctionFixedPoint.override { b = 1; }
   override = «lambda override @ «string»:5:30»;
 }
 ```
-&nbsp;
+
 
 ## The essential Nix tool
 
 As already mentioned, the main use of Nix is cross platform package management. In this section I'm just trying to share and summarise some of the essential parts of my notes. If you want more details, I recommend you read the excellent [Nix Pills](https://nixos.org/guides/nix-pills/). It's rather long but well worth the read!
-&nbsp;
+
 
 ### How does it work ?
 
@@ -178,7 +166,7 @@ Nix technology will enable us to build these derivations, in the following stage
 <center>
     <img src="/nix_graph.png" width="100%">
 </center>
-&nbsp;
+
 
 The `.drv` files contain specifications on how to build the derivation, they are intermediate files comparable to `.o` files, and the `.nix` files are comparable to `.c` files.
 
@@ -204,7 +192,7 @@ in
     };
   }
 ```
-&nbsp;
+
 
 > The `mkDerivation` function is based on the `derivation` builtin function.
 
@@ -213,7 +201,7 @@ It can be built with the following command.
 ```bash
 nix-build
 ```
-&nbsp;
+
 
 The build result has been created in `/nix/store/x9cc4jsylk5q01iaxmxf941b59chws5h-hello-2.12.1` and a symbolic link named `result` pointing to this folder has been created in the current folder. We can then find the binary in `./result/bin/hello`.
 
@@ -221,7 +209,7 @@ Before the build, a `.drv` file was created, which can be found by running the f
 ```bash
 nix derivation show ./result | jq "keys[0]"
 ```
-&nbsp;
+
 
 The full path to the `.drv` file is found in the first key of the JSON object, so the path to the `.drv` file is `/nix/store/dp5z62k3chf019biikg77p2acmz17phx-hello-2.12.1.drv`.
 
@@ -236,7 +224,7 @@ nix derivation show /nix/store/dp5z62k3chf019biikg77p2acmz17phx-hello-2.12.1.drv
 # v
 nix derivation show ./result
 ```
-&nbsp;
+
 
 ### Nixpkgs
 
@@ -265,7 +253,7 @@ nix-repl> :p builtins.nixPath
   }
 ]
 ```
-&nbsp;
+
 
 ### Managing multiple Python versions
 
@@ -291,14 +279,14 @@ in
     ];
   }
 ```
-&nbsp;
+
 
 You can build Python derivations and enter a Nix shell with the following command.
 
 ```bash
 nix-shell
 ```
-&nbsp;
+
 
 And we see that we have access to the two versions requested with the commands `python3.7` and `python3.13` !
 
@@ -354,7 +342,7 @@ Below is a Nix expression I wrote for the Python module [callviz](https://pypi.o
     };
 }
 ```
-&nbsp;
+
 
 Note that the default package and the default development shell are compatible with all systems (`supportedSystems`)!
 
@@ -362,7 +350,7 @@ To realise the derivations and enter the Nix shell, I can run the following comm
 ```bash
 nix develop
 ```
-&nbsp;
+
 
 ## Nixpkgs contribution
 
@@ -439,4 +427,3 @@ stdenv.mkDerivation (finalAttrs: {
   };
 })
 ```
-&nbsp;

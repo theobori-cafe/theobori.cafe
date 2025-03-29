@@ -4,9 +4,9 @@ date: "2023-10-22"
 ---
 
 Environment replication is always very useful, and I've always made sure that all my operations and work can be automated and replicated. For example, I've written Terraform configuration files for OVH DNS entries.
-&nbsp;
+
 This turned out to be more useful than expected, given that I had to change server, I had to move everything and the automations saved me a lot of time, especially those linked to the machine's IP address.
-&nbsp;
+
 
 ## Requirements
 
@@ -15,14 +15,14 @@ The Terraform OVH provider requires certain environment variables:
 - `OVH_APPLICATION_KEY`
 - `OVH_APPLICATION_SECRET`
 - `OVH_CONSUMER_KEY`
-&nbsp;
+
 
 To access them, simply go to [OVH's API token creation page](https://www.ovh.com/auth/api/createToken).
 
 ## Use cases
 
 For [theobori.cafe](https://theobori.cafe), I used the following configurations.
-&nbsp;
+
 **`providers.tf`**
 ```hcl
 terraform {
@@ -39,7 +39,7 @@ provider "ovh" {
 }
 ```
 
-&nbsp;
+
 
 **`variables.tf`**
 ```hcl
@@ -90,7 +90,7 @@ variable "smtp_tlsa" {
 }
 ```
 
-&nbsp;
+
 
 **`main.tf`**
 ```hcl
@@ -192,10 +192,10 @@ resource "ovh_domain_zone_record" "autoconfig" {
 }
 ```
 
-&nbsp;
+
 
 ## Links
 
 [https://github.com/theobori-cafe/dns](https://github.com/theobori-cafe/dns)
 
-&nbsp;
+

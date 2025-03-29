@@ -13,7 +13,7 @@ This version is written in C, which means we have to write a lot of code ourselv
 
 The primary purpose of our compiler is to generate a chunk of code in bytecode form for interpretation by our bytecode virtual machine. Here are a few interesting features of the front end.
 
-### Scanner 
+### Scanner
 
 The token scanner is very classic, with only one thing to say: the function responsible for identifying the language's native keywords is very dirty. The author has chosen to use a large switch statement instead of implementing a sorting function, which is certainly powerful but not very elegant.
 
@@ -73,4 +73,4 @@ print fib(10);
 
 [https://github.com/theobori/lox-virtual-machine](https://github.com/theobori/lox-virtual-machine)
 
-&nbsp;
+

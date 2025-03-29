@@ -10,7 +10,7 @@ The aim is to create a private homelab, i.e. the machine should only be accessib
 The aim of this post is to present the main steps I've taken and explain how the homelab works.
 
 My laptop is an [ASUS ROG G750](https://laptopmedia.com/series/asus-rog-g750/) with 8GB of memory and 2 HDDs of around 600GB each. It hasn't been used for about five or six years and the battery is dead.
-&nbsp;
+
 
 ## First steps
 
@@ -19,14 +19,14 @@ First, I decided to make an old USB key bootable. I install [Ventoy](https://www
 I put [Memtest86+](https://www.memtest.org/) to test the memory, [shredos.x86_64](https://github.com/PartialVolume/shredos.x86_64) to wipe the HDDs and finally [Debian 12](https://cdimage.debian.org/debian-cd/12.5.0/amd64/iso-cd/) which will be the main OS.
 
 So when I boot on the USB key, it loads the "multiboot" boot-loader (Ventoy) and I can then load one of the three programs.
-&nbsp;
+
 
 ## Pre configuration
 
 To be able to deploy the system configuration and reproduce it later, I'm writing an Ansible playbook and testing it on a local VM (`virt-manager` + KVM).
 
 The entire configuration is available at the bottom of the page.
-&nbsp;
+
 
 ## TLS certificates
 
@@ -37,14 +37,14 @@ For the domain name I used [Duck DNS](https://www.duckdns.org/) and reserved the
 In fact, I only need to manage one certificate with two SANs:
 - `theobori.duckdns.org`
 - `*.theobori.duckdns.org`
-&nbsp;
+
 
 ## Services
 
 Every application is deployed with the Ansible playbook are conteuneurized and managed with Docker.
 
 They are accessible only through port 443 managed by [Traefik](https://traefik.io/). Each sub-domain of [theobori.duckdns.org](https://theobori.duckdns.org) corresponds to a service, with the exception of the homepage, which is associated with the domain itself.
-&nbsp;
+
 
 ## Firewall
 
@@ -82,7 +82,7 @@ To filter incoming network traffic, I manipulate iptables with the ufw tool. The
   IPT_SYSCTL: /etc/ufw/sysctl.conf
   IPT_MODULES: ""
 ```
-&nbsp;
+
 
 ## Identity provider
 
@@ -94,13 +94,13 @@ If I remember correctly, the OAuth2 Outpost is embedded in the application by de
 
 Here's a diagram of several services trying to retrieve the identity of an [Authentik](https://goauthentik.io/) user.
 
-&nbsp;
+
 
 <p align="center">
   <img src="/authentik_users.png" class="img-center">
 </p>
 
-&nbsp;
+
 
 ## Access management
 
@@ -115,12 +115,12 @@ I also used [Traefik](https://traefik.io/) and [Authentik](https://goauthentik.i
 I added middleware to the reverse proxy to enable HTTP ForwardAuth with [Authentik](https://goauthentik.io/). In practical terms, this places a connection portal in front of the targeted web services.
 
 Let's say I want to access [duplicati.theobori.duckdns.org](https://duplicati.theobori.duckdns.org), it could be schematized as follows.
-&nbsp;
+
 
 <p align="center">
   <img src="/authentik_proxy.png" class="img-center">
 </p>
-&nbsp;
+
 
 ## Media stack
 
@@ -129,19 +129,19 @@ One of the main objectives was to be able to manage movies and series and watch 
 So I set up a stack for managing and downloading media, which would then be streamed to devices by [Jellyfin](https://jellyfin.org/).
 
 Here's what the media stack looks like.
-&nbsp;
+
 
 <p align="center">
   <img src="/media_stack.png" class="img-center">
 </p>
-&nbsp;
+
 
 ## Backup and restore
 
 To back up container data, I use [Duplicati](https://duplicati.com/). It lets you encrypt data and manage retention very easily via a web interface.
 
 These backups can then be restored on my old computer.
-&nbsp;
+
 
 ## Monitoring
 
@@ -155,8 +155,6 @@ This is how the monitoring stack looks.
   <img src="/monitoring_stack.png" class="img-center">
 </p>
 
-&nbsp;
-
 ## Final home page
 
 Here's an overview of the dashboard, featuring all the services exposed to the local network. In a way it's the end result of service implementation.
@@ -165,10 +163,6 @@ Here's an overview of the dashboard, featuring all the services exposed to the l
   <img src="/dashy.png" width="650px" class="img-center">
 </p>
 
-&nbsp;
-
 ## Links
 
 [https://github.com/theobori/homelab](https://github.com/theobori/homelab)
-
-&nbsp;
