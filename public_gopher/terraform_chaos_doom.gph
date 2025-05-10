@@ -5,13 +5,13 @@ Last edit: 2023-06-03
 
 I first saw 
 [h|kubedoom|URL:https://github.com/storax/kubedoom|tilde.pink|70]
- and thought it was pretty cool, so I decided to do the same for Terraform, knowing that I was working with it for professional projects. 
+ and thought it was pretty cool, so I decided to do the same for Terraform, knowing that I was working with it for professional projects.
 
 The principle is very simple, each enemy represents a Terraform resource, if an enemy dies, the associated resource is destroyed.
 
 ## How does it work?
 
-The main program is `terraform-doom`, which creates a UNIX socket, listens to it and simultaneously launches an X11 virtual server (Xvfb), a VNC server (x11vnc) attached to this X session and `psdoom` (DOOM writing to the UNIX socket). 
+The main program is `terraform-doom`, which creates a UNIX socket, listens to it and simultaneously launches an X11 virtual server (Xvfb), a VNC server (x11vnc) attached to this X session and `psdoom` (DOOM writing to the UNIX socket).
 
 The binaries `Xvfb` and `x11vnc` are used to create a cross-platform graphical access to `psdoom` inside the container.
 

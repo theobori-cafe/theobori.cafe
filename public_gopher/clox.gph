@@ -1,6 +1,6 @@
 My bytecode VM Lox interpreter
-2024-11-06
-Last edit: 2024-11-06
+2024-10-06
+Last edit: 2024-10-06
 ---------------------
 
 The aim of this post is to describe the general operation of the program and some of the mechanisms that we consider to be of interest. For full details, a link to the source code is available at the bottom of the page.
@@ -13,7 +13,7 @@ This version is written in C, which means we have to write a lot of code ourselv
 
 The primary purpose of our compiler is to generate a chunk of code in bytecode form for interpretation by our bytecode virtual machine. Here are a few interesting features of the front end.
 
-### Scanner 
+### Scanner
 
 The token scanner is very classic, with only one thing to say: the function responsible for identifying the language's native keywords is very dirty. The author has chosen to use a large switch statement instead of implementing a sorting function, which is certainly powerful but not very elegant.
 

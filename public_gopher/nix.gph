@@ -9,9 +9,7 @@ Also, it's important to note that I use Nix as a non-NixOS user.
 
 ## What is Nix?
 
-Nix is actually several things!
-
-It's a cross platform package manager. It would be a little more accurate to say that it's a deployment tool used as a package manager.
+Nix is actually several things! It's a cross platform package manager. It would be a little more accurate to say that it's a deployment tool used as a package manager.
 
 And it's also a purely functional programming language, dynamically typed and lazily evaluated.
 
@@ -80,7 +78,7 @@ nix-repl> rec { a = 1; b = a + 1; } // { a = 10; }
 }
 ```
 
-In this example, we would like `b` to be equal to `11`, not `2`. 
+In this example, we would like `b` to be equal to `11`, not `2`.
 
 To solve this problem, we can look at the concept of a fixed point. A fixed point is a value of `x` that validates the equation `x = f(x)`.
 

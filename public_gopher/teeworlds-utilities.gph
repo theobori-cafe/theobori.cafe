@@ -9,7 +9,7 @@ The ones that existed didn't suit me, as they didn't really respect the in-game 
 
 So I decided to make my own toolbox to manipulate Teeworlds assets, which we use on 
 [h|teedata.net|URL:https://teedata.net|tilde.pink|70]
- and for the Teedata Discord bot. 
+ and for the Teedata Discord bot.
 
 Indirectly, other people use it, for example, to render skins in a Discord channel that displays messages in real time (fokkonaut's Discord server) or in other projects like 
 [h|TeeAssembler 2.0|URL:https://teeassembler.developer.li/|tilde.pink|70]
@@ -151,7 +151,7 @@ const fullSkinRenderConfiguration = async () => {
       new ColorRGB(255, 255, 255),
     )
     .setOrientation(345);
-    
+
   new SkinFull()
     .setSkin(teedataSunny)
     .setGameskin(napolitano, GameskinPart.HAMMER)

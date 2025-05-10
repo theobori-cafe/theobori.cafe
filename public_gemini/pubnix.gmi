@@ -33,4 +33,4 @@ and other knowledge can be shared on the
 or by chatting with other people via the IRC channels.
 
 => https://tilde.team tilde.team
- is a pubnix among others, it makes people aware of the use of their data, the software they use and it proposes alternative solutions to other bigger solutions in general ethically not very correct.
+is a pubnix among others, it makes people aware of the use of their data, the software they use and it proposes alternative solutions to other bigger solutions in general ethically not very correct.

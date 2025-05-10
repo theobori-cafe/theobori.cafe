@@ -65,7 +65,7 @@ fn main() -> Result<(), WadError> {
         doom_2.set_palette(pal);
         doom_2.reload()?;
         doom_2.select("^BOSF");
-        
+
         let dirpath = format!("doom2/pal_{}", pal);
 
         fs::create_dir_all(dirpath.clone()).unwrap();
@@ -178,8 +178,8 @@ To take the screenshot (below) `doom1_patch.wad` has been injected into GZDOOM w
 
 ### Files
 
-[doom1_patch.wad](/doom1_patch.wad)  
-[doom1_patch.asc](/doom1_patch.asc)  
+[doom1_patch.wad](/doom1_patch.wad)
+[doom1_patch.asc](/doom1_patch.asc)
 [checksum](/checksum.txt)
 
 ### Extracting MIDI lumps

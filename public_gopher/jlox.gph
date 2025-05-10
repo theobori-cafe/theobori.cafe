@@ -6,7 +6,7 @@ Last edit: 2024-03-22
 I wanted to learn more about designing an interpreter, so I looked around and found the free "Crafting Interpreters" by Robert Nystrom.
 
 I read parts I and II, which focus on concepts, common techniques and language behavior. Since I have recently read these parts, writing helps me to better understand and even re-understand certain things.
-  
+
 The aim was to have a Lox interpreter that at least supported functions and closures, so we could have a taste of the basics.
 
 ## What is lox ?

@@ -1,16 +1,16 @@
 ```
   .-~~-.
-,|`-__-'| ___             _          
+,|`-__-'| ___             _
 ||      |  | |_  _  _    |_) _  __ o
 `|      |  | | |(/_(_)   |_)(_) |  |
-  `-__-' 
+  `-__-'
 ```
 
 Hi, I'm Théo,
- 
+
 I support F(L)OSS and pubnixes values, I love UNIX systems and I also really like Arch Linux and Nix.
 Currently I'm maintaining teedata.net (skins.tw until 2024) and I offer free services that respect privacy.
- 
+
 If you're interested you can have a look at my blog posts, everything I make is open source and available on GitHub and Gitea.
 
 => https://git.theobori.cafe/nagi Gitea
@@ -28,7 +28,11 @@ My links and contact details are available here.
 => gopher://tilde.pink:70/1/~nagi Gopher
 
 ## Posts
-=> /~nagi/clox.gmi My bytecode VM Lox interpreter - nov 2024
+=> /~nagi/lfs.gmi My Linux From Scratch system - mar 2025
+=> /~nagi/emacs.gmi A GNU Emacs experience throught NixOS - feb 2025
+=> /~nagi/nix-teeworlds.gmi My NixOS Teeworlds servers management module - nov 2024
+=> /~nagi/nixcord.gmi Declarative Vencord configuration on NixOS - nov 2024
+=> /~nagi/clox.gmi My bytecode VM Lox interpreter - oct 2024
 => /~nagi/callviz.gmi A toy to visualize recursive function calls - jun 2024
 => /~nagi/nix.gmi My Nix exploration - jun 2024
 => /~nagi/homelab.gmi My homelab - jun 2024
@@ -48,4 +52,3 @@ My links and contact details are available here.
 => /~nagi/tinywad.gmi DOOM modding library - may 2023
 => /~nagi/websites.gmi Interesting websites - mar 2023
 => /~nagi/tinychip.gmi CHIP-8 emulator - mar 2023
-=> /~nagi/nes-utilities.gmi NES Library - sep 2022

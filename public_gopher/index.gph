@@ -1,14 +1,14 @@
   .-~~-.
-,|`-__-'| ___             _          
+,|`-__-'| ___             _
 ||      |  | |_  _  _    |_) _  __ o
 `|      |  | | |(/_(_)   |_)(_) |  |
-  `-__-' 
+  `-__-'
 
 Hi, I'm Théo,
- 
+
 I support F(L)OSS and pubnixes values, I love UNIX systems and I also really like Arch Linux and Nix.
 Currently I'm maintaining teedata.net (skins.tw until 2024) and I offer free services that respect privacy.
- 
+
 If you're interested you can have a look at my blog posts, everything I make is open source and available on GitHub and Gitea.
 
 [h|Gitea|URL:https://git.theobori.cafe/nagi|tilde.pink|70]
@@ -26,7 +26,11 @@ Other protocols
 gemini://tilde.pink/~nagi
 
 Posts
-[1|My bytecode VM Lox interpreter - nov 2024|/~nagi/clox.gph|tilde.pink|70]
+[1|My Linux From Scratch system - mar 2025|/~nagi/lfs.gph|tilde.pink|70]
+[1|A GNU Emacs experience throught NixOS - feb 2025|/~nagi/emacs.gph|tilde.pink|70]
+[1|My NixOS Teeworlds servers management module - nov 2024|/~nagi/nix-teeworlds.gph|tilde.pink|70]
+[1|Declarative Vencord configuration on NixOS - nov 2024|/~nagi/nixcord.gph|tilde.pink|70]
+[1|My bytecode VM Lox interpreter - oct 2024|/~nagi/clox.gph|tilde.pink|70]
 [1|A toy to visualize recursive function calls - jun 2024|/~nagi/callviz.gph|tilde.pink|70]
 [1|My Nix exploration - jun 2024|/~nagi/nix.gph|tilde.pink|70]
 [1|My homelab - jun 2024|/~nagi/homelab.gph|tilde.pink|70]
@@ -46,4 +50,3 @@ Posts
 [1|DOOM modding library - may 2023|/~nagi/tinywad.gph|tilde.pink|70]
 [1|Interesting websites - mar 2023|/~nagi/websites.gph|tilde.pink|70]
 [1|CHIP-8 emulator - mar 2023|/~nagi/tinychip.gph|tilde.pink|70]
-[1|NES Library - sep 2022|/~nagi/nes-utilities.gph|tilde.pink|70]

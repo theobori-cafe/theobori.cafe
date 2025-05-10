@@ -73,17 +73,10 @@ CO-RE stands for Compile Once, Run Everywhere, the idea behing is to compile a p
 We can list some CO-RE elements:
 
 * BTF
-* Kernel headers
-
- * Including individual header files
- * Generating kernel headers (vmlinux.h) with bpftool
+* Kernel headers * Including individual header files * Generating kernel headers (vmlinux.h) with bpftool
 * Compiler support flags like -g
-* Data structure relocations support for libraries
-
- * Information relocation based on destination machine data structure difference, it is used to compensates
-* BPF skeleton
-
- * Generated with bpftool, it allows the programmer to call functions to manage the BPF program lifecycle
+* Data structure relocations support for libraries * Information relocation based on destination machine data structure difference, it is used to compensates
+* BPF skeleton * Generated with bpftool, it allows the programmer to call functions to manage the BPF program lifecycle
 
 ## eBPF verifier
 

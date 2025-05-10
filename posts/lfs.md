@@ -7,7 +7,7 @@ date: "2025-03-29"
 
 I heard about LFS by stumbling across a [podcast](https://www.youtube.com/watch?v=TkkKNfYKJJg) by Brodie Robertson. I've been curious and made me want to build my own Linux system.
 
-## What is LSF?
+## What is LFS?
 
 It's a book that explains how to build your own Linux system from scratch using a host system. An interesting feature is that everything is built from source code.
 

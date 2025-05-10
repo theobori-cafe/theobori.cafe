@@ -5,7 +5,7 @@ Last edit: 2023-10-21
 
 There are quite a few known methods for securing an **OpenSSH** server that you should already be familiar with, such as disabling remote root access, disabling password login or changing the port (22 by default).
 
-Another highly effective method applicable to SSH ports is port knocking. 
+Another highly effective method applicable to SSH ports is port knocking.
 
 Port knocking is a method of opening ports on a machine by making a series of connections to closed ports. The firewall will then react accordingly.
 

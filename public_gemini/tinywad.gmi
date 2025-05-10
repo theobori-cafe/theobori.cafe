@@ -177,7 +177,9 @@ To take the screenshot (below) doom1_patch.wad has been injected into GZDOOM wit
 ### Files
 
 => /doom1_patch.wad doom1_patch.wad
+
 => /doom1_patch.asc doom1_patch.asc
+
 => /checksum.txt checksum
 
 ### Extracting MIDI lumps

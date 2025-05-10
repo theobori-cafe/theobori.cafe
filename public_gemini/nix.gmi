@@ -7,9 +7,7 @@ Also, it's important to note that I use Nix as a non-NixOS user.
 
 ## What is Nix?
 
-Nix is actually several things!
-
-It's a cross platform package manager. It would be a little more accurate to say that it's a deployment tool used as a package manager.
+Nix is actually several things! It's a cross platform package manager. It would be a little more accurate to say that it's a deployment tool used as a package manager.
 
 And it's also a purely functional programming language, dynamically typed and lazily evaluated.
 
