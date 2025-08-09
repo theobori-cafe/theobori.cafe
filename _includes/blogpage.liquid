@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="Description" content="Arpit Batra" />
+    <meta name="Blog" content="Blog posts index" />
     <title>{{ title }}</title>
     <link rel="stylesheet" href="../styles/homepage.css" />
   </head>
@@ -15,7 +15,8 @@
     </div>
 
     <div class="container">
-      <h2 class="category">Blog posts</h2>
+      <h2 class="category">My blog posts</h2>
+      Below you will find all my blog posts, most of which focus on IT.
       <ul class="posts">
         {% for post in collections.posts reversed %}
         <li class="post">

@@ -1,5 +1,5 @@
 ---
-title: Terraform NeuVector provider
+title: My Terraform NeuVector provider
 date: "2023-06-04"
 ---
 
@@ -92,5 +92,3 @@ resource "neuvector_service_config" "service_config_test" {
 
 [https://github.com/theobori/terraform-provider-neuvector](https://github.com/theobori/terraform-provider-neuvector)
 [https://registry.terraform.io/providers/theobori/neuvector](https://registry.terraform.io/providers/theobori/neuvector/latest)
-
-

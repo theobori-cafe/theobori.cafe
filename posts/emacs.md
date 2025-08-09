@@ -15,7 +15,7 @@ Why did I leave [VSCode](https://code.visualstudio.com/) and decide to switch to
 
 ### Leaving VSCode
 
-Because it's a RAM-hungry graphics application. You shouldn't need that much memory to edit text and connect to an LSP server. We're talking about 1.2 GB compared with around 200 GB for the same project.
+Because it's a RAM-hungry graphics application. You shouldn't need that much memory to edit text and connect to an LSP server. We're talking about 1.2 GB compared with around 200 MB for the same project.
 
 Also, I don't want all the additional features offered, such as file name and text parsing, to suggest that I download extensions. I simply need a simple, functional text-editing application. I don't enjoy using [VSCode](https://code.visualstudio.com/) anymore, so it's time to say goodbye.
 
