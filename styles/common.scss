@@ -15,6 +15,12 @@
     /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/fonts/ibm-plex-sans-v8-latin-700.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
+@font-face {
+  font-family: "BabelStone Goblin";
+  font-style: normal;
+  src: local(""), url("/fonts/BabelStoneGoblin.ttf") format("truetype"),
+}
+
 ::selection {
   color: white;
   background-color: brown;
