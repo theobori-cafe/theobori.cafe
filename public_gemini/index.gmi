@@ -28,6 +28,9 @@ My links and contact details are available here.
 => gopher://tilde.pink:70/1/~nagi Gopher
 
 ## Posts
+=> /~nagi/nix-converter.gmi My Nix converter too - dec 2025
+=> /~nagi/dsa_journey.gmi My algorithms and data structures journey - nov 2025
+=> /~nagi/poison.gmi Poisoning LLM web scrapers - nov 2025
 => /~nagi/lfs.gmi My Linux From Scratch system - mar 2025
 => /~nagi/emacs.gmi A GNU Emacs experience throught NixOS - feb 2025
 => /~nagi/nix-teeworlds.gmi My NixOS Teeworlds servers management module - nov 2024

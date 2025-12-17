@@ -1,0 +1,51 @@
+My algorithms and data structures journey
+2025-11-03
+Last edit: 2025-11-03
+---------------------
+
+At the end of 2023, during the month of December, I decided to do the 
+[h|Advent of Code](https://adventofcode.com/2023) puzzles. As I thought about these algorithmic puzzles, I realized that I lacked knowledge. I could solve the problems, but mostly intuitively. I went [until day 19|URL:https://github.com/theobori/aoc/tree/main/2023|tilde.pink|70]
+ and then stopped for lack of motivation, but I wanted a slightly more rigorous approach with a more solid theoretical basis.
+
+My goal is not to become an expert in algorithms and data structure. Rather, I want to be more relevant in their implementation in real needs and have a better algorithmic reading on IT projects.
+
+## Searching for learning resources
+
+I've been looking for resources on the Internet that could give me a solid grounding in the basics of algortihmics and data structure, but also in algorithmic problem solving. I want to be more efficient on certain projects like the 
+[h|Advent of Code|URL:https://adventofcode.com|tilde.pink|70]
+.
+
+### First iteration
+
+The first training course I found was from 
+[h|neetcode.io](https://neetcode.io), which unfortunately didn't suit my way of learning. It was mainly videos with someone explaining technical concepts on a digital whiteboard. It was roughly composed as follows: first there was the theory, then examples with use cases, and [LeetCode|URL:https://leetcode.com|tilde.pink|70]
+ links to problems to put the theory into practice.
+
+I progressed by about 75% on the beginners' course and quickly left the advanced algorithms course, which didn't meet my needs. I went on to pursue my other projects and put algorithms and data structures on the back burner.
+
+It wasn't until the end of 2024 that I got back into it with the 
+[h|Advent of Code 2024](https://adventofcode.com/2024) which I [fully completed|URL:https://github.com/theobori/aoc/tree/main/2024|tilde.pink|70]
+.
+
+### Final iteration
+
+Shortly afterwards, I decided to look for a new course. In my search I came across 
+[h|LeetCode's|URL:https://leetcode.com|tilde.pink|70]
+. In my opinion, it's the perfect resource! All the essential terms and fundamentals are clearly defined, there are partial exercises and quizzes to check your understanding of the course. I'd recommend it to anyone who wants to improve or practice their algorithmic skills.
+
+This resource has given me a solid grounding in algortihm theory, data structures and their uses. I took 
+[h|notes based on it|URL:https://zettel.theobori.cafe/Structure%20de%20donn%C3%A9es%20et%20algorithme|tilde.pink|70]
+ in French.
+
+## The results
+
+I've become better at this discipline than I was before, and it's very useful.
+
+It allows me to be more relevant in writing and reading professional and personal computer code. My brain will naturally think of mechanisms and concepts that it knows and has memorized. For example, many times I've seen AI-generated code that wasn't optimized, even on small blocks of code. I've also had the opportunity to optimize execution times on professional projects.
+
+## Conclusion
+
+I think anyone working in tech should have a good grounding in algorithms, especially computer developers. It's essential for understanding how the machine works and being technically relevant. It helps avoid obvious problems in production, such as over-consumption of CPU or memory.
+
+Learning algorithms and data structures is time well spent, and will always be useful.
+

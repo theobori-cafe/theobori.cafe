@@ -1,4 +1,4 @@
-# Terraform NeuVector provider
+# My Terraform NeuVector provider
 ## 2023-06-04
 This project is used to manage NeuVector's configuration and its most revelant resources. I was asked to automate the configuration of the solution in a fairly specific context. Initially, I had made a rather well-organized bash script that could apply these resources, but not destroy them.
 
