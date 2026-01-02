@@ -1,196 +1,195 @@
-Terraform OVH external DNS records
-2023-10-22
-Last edit: 2023-10-22
----------------------
-
-Environment replication is always very useful, and I've always made sure that all my operations and work can be automated and replicated. For example, I've written Terraform configuration files for OVH DNS entries.
-
-This turned out to be more useful than expected, given that I had to change server, I had to move everything and the automations saved me a lot of time, especially those linked to the machine's IP address.
-
-## Requirements
-
-The Terraform OVH provider requires certain environment variables:
-- `OVH_ENDPOINT`
-- `OVH_APPLICATION_KEY`
-- `OVH_APPLICATION_SECRET`
-- `OVH_CONSUMER_KEY`
-
-To access them, simply go to 
-[h|OVH's API token creation page|URL:https://www.ovh.com/auth/api/createToken|tilde.pink|70]
-.
-
-## Use cases
-
-For 
-[h|theobori.cafe|URL:https://theobori.cafe|tilde.pink|70]
-, I used the following configurations.
-
-**`providers.tf`**
-```hcl
-terraform {
-  required_providers {
-    ovh = {
-      source  = "ovh/ovh"
-      version = "0.34.0"
-    }
-  }
-}
-
-provider "ovh" {
-  endpoint = "ovh-eu"
-}
-```
-
-**`variables.tf`**
-```hcl
-variable "domain" {
-  type        = string
-  description = "The managed domain name"
-}
-
-variable "subdomains" {
-  type        = set(string)
-  description = "The subdomains directly link to `var.domain_name`"
-  default = [
-    "www",
-    "status",
-    "cringe",
-    "etherpad",
-    "search",
-    "mail",
-    "cloud"
-  ]
-}
-
-variable "host" {
-  type        = string
-  description = "The target host IPv4 address"
-  sensitive   = true
-}
-
-variable "host_ipv6" {
-  type        = string
-  description = "The target host IPv6 address"
-  default     = null
-  sensitive   = true
-}
-
-variable "dkim_key" {
-  type        = string
-  description = "The TXT DNS entry containing the DKIM key"
-  default     = null
-  sensitive   = true
-}
-
-variable "smtp_tlsa" {
-  type        = string
-  description = "The SMTP TLS fingerprint"
-  default     = null
-  sensitive   = true
-}
-```
-
-**`main.tf`**
-```hcl
-resource "ovh_domain_zone_record" "domain" {
-  zone      = var.domain
-  fieldtype = "A"
-  target    = var.host
-}
-
-resource "ovh_domain_zone_record" "www_domain" {
-  zone      = var.domain
-  subdomain = "www"
-  fieldtype = "A"
-  target    = var.host
-}
-
-resource "ovh_domain_zone_record" "mail" {
-  zone      = var.domain
-  fieldtype = "MX"
-  ttl       = 300
-  target    = "10 mail"
-}
-
-resource "ovh_domain_zone_record" "dmarc" {
-  zone      = var.domain
-  subdomain = "_dmarc"
-  fieldtype = "TXT"
-  target    = "v=DMARC1; p=none; rua=mailto:dmarc@${var.domain}"
-}
-
-resource "ovh_domain_zone_record" "spf" {
-  for_each = toset(
-    [
-      "",
-      "www"
-    ]
-  )
-
-  zone      = var.domain
-  subdomain = each.key
-  fieldtype = "TXT"
-  target    = "v=spf1 a mx -all"
-}
-
-resource "ovh_domain_zone_record" "www_txt" {
-  zone      = var.domain
-  fieldtype = "TXT"
-  target    = "1|www.${var.domain}"
-}
-
-resource "ovh_domain_zone_record" "dkim_key" {
-  count = var.dkim_key == null ? 0 : 1
-
-  zone      = var.domain
-  subdomain = "dkim._domainkey"
-  fieldtype = "TXT"
-  target    = var.dkim_key
-}
-
-resource "ovh_domain_zone_record" "subdomain_entries" {
-  for_each = var.subdomains
-
-  zone      = var.domain
-  subdomain = each.key
-  fieldtype = "A"
-  target    = var.host
-}
-
-resource "ovh_domain_zone_record" "mail_ipv6" {
-  count = var.host_ipv6 == null ? 0 : 1
-
-  zone      = var.domain
-  subdomain = "mail"
-  fieldtype = "AAAA"
-  target    = var.host_ipv6
-}
-
-resource "ovh_domain_zone_record" "smtp_fingerprint_tlsa" {
-  count = var.smtp_tlsa == null ? 0 : 1
-
-  zone      = var.domain
-  subdomain = "_25._tcp.mail"
-  fieldtype = "TLSA"
-  target    = var.smtp_tlsa
-}
-
-resource "ovh_domain_zone_record" "autodiscover" {
-  zone      = var.domain
-  subdomain = "autodiscover"
-  fieldtype = "CNAME"
-  target    = "mail"
-}
-
-resource "ovh_domain_zone_record" "autoconfig" {
-  zone      = var.domain
-  subdomain = "autoconfig"
-  fieldtype = "CNAME"
-  target    = "mail"
-}
-```
-
-## Links
-
-[h|https://github.com/theobori-cafe/dns|URL:https://github.com/theobori-cafe/dns|tilde.pink|70]
-
+[i|## title: Terraform OVH external DNS records|/|tilde.pink|70]
+[i|## date: "2023-10-22"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Environment replication is always very useful, and I've|/|tilde.pink|70]
+[i|always made sure that all my operations and work can be|/|tilde.pink|70]
+[i|automated and replicated. For example, I've written|/|tilde.pink|70]
+[i|Terraform configuration files for OVH DNS entries.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|This turned out to be more useful than expected, given that|/|tilde.pink|70]
+[i|I had to change server, I had to move everything and the|/|tilde.pink|70]
+[i|automations saved me a lot of time, especially those linked|/|tilde.pink|70]
+[i|to the machine's IP address.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Requirements|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The Terraform OVH provider requires certain environment|/|tilde.pink|70]
+[i|variables:|/|tilde.pink|70]
+[i|- OVH_ENDPOINT|/|tilde.pink|70]
+[i|- OVH_APPLICATION_KEY|/|tilde.pink|70]
+[i|- OVH_APPLICATION_SECRET|/|tilde.pink|70]
+[i|- OVH_CONSUMER_KEY|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To access them, simply go to OVH's API token creation page.|/|tilde.pink|70]
+[h|OVH's API token creation page|URL:https://www.ovh.com/auth/api/createToken|www.ovh.com|443]
+[i||/|tilde.pink|70]
+[i|## Use cases|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|For theobori.cafe, I used the following configurations.|/|tilde.pink|70]
+[h|theobori.cafe|URL:https://theobori.cafe|theobori.cafe|443]
+[i||/|tilde.pink|70]
+[i|providers.tf|/|tilde.pink|70]
+[i|terraform {|/|tilde.pink|70]
+[i|  required_providers {|/|tilde.pink|70]
+[i|    ovh = {|/|tilde.pink|70]
+[i|      source  = "ovh/ovh"|/|tilde.pink|70]
+[i|      version = "0.34.0"|/|tilde.pink|70]
+[i|    }|/|tilde.pink|70]
+[i|  }|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|provider "ovh" {|/|tilde.pink|70]
+[i|  endpoint = "ovh-eu"|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|variables.tf|/|tilde.pink|70]
+[i|variable "domain" {|/|tilde.pink|70]
+[i|  type        = string|/|tilde.pink|70]
+[i|  description = "The managed domain name"|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|variable "subdomains" {|/|tilde.pink|70]
+[i|  type        = set(string)|/|tilde.pink|70]
+[i|  description = "The subdomains directly link to|/|tilde.pink|70]
+[i|`var.domain_name`"|/|tilde.pink|70]
+[i|  default = [|/|tilde.pink|70]
+[i|    "www",|/|tilde.pink|70]
+[i|    "status",|/|tilde.pink|70]
+[i|    "cringe",|/|tilde.pink|70]
+[i|    "etherpad",|/|tilde.pink|70]
+[i|    "search",|/|tilde.pink|70]
+[i|    "mail",|/|tilde.pink|70]
+[i|    "cloud"|/|tilde.pink|70]
+[i|  ]|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|variable "host" {|/|tilde.pink|70]
+[i|  type        = string|/|tilde.pink|70]
+[i|  description = "The target host IPv4 address"|/|tilde.pink|70]
+[i|  sensitive   = true|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|variable "host_ipv6" {|/|tilde.pink|70]
+[i|  type        = string|/|tilde.pink|70]
+[i|  description = "The target host IPv6 address"|/|tilde.pink|70]
+[i|  default     = null|/|tilde.pink|70]
+[i|  sensitive   = true|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|variable "dkim_key" {|/|tilde.pink|70]
+[i|  type        = string|/|tilde.pink|70]
+[i|  description = "The TXT DNS entry containing the DKIM key"|/|tilde.pink|70]
+[i|  default     = null|/|tilde.pink|70]
+[i|  sensitive   = true|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|variable "smtp_tlsa" {|/|tilde.pink|70]
+[i|  type        = string|/|tilde.pink|70]
+[i|  description = "The SMTP TLS fingerprint"|/|tilde.pink|70]
+[i|  default     = null|/|tilde.pink|70]
+[i|  sensitive   = true|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|main.tf|/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "domain" {|/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  fieldtype = "A"|/|tilde.pink|70]
+[i|  target    = var.host|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "www_domain" {|/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  subdomain = "www"|/|tilde.pink|70]
+[i|  fieldtype = "A"|/|tilde.pink|70]
+[i|  target    = var.host|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "mail" {|/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  fieldtype = "MX"|/|tilde.pink|70]
+[i|  ttl       = 300|/|tilde.pink|70]
+[i|  target    = "10 mail"|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "dmarc" {|/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  subdomain = "_dmarc"|/|tilde.pink|70]
+[i|  fieldtype = "TXT"|/|tilde.pink|70]
+[i|  target    = "v=DMARC1; p=none;|/|tilde.pink|70]
+[i|rua=mailto:dmarc@${var.domain}"|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "spf" {|/|tilde.pink|70]
+[i|  for_each = toset(|/|tilde.pink|70]
+[i|    [|/|tilde.pink|70]
+[i|      "",|/|tilde.pink|70]
+[i|      "www"|/|tilde.pink|70]
+[i|    ]|/|tilde.pink|70]
+[i|  )|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  subdomain = each.key|/|tilde.pink|70]
+[i|  fieldtype = "TXT"|/|tilde.pink|70]
+[i|  target    = "v=spf1 a mx -all"|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "www_txt" {|/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  fieldtype = "TXT"|/|tilde.pink|70]
+[i|  target    = "1|www.${var.domain}"|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "dkim_key" {|/|tilde.pink|70]
+[i|  count = var.dkim_key == null ? 0 : 1|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  subdomain = "dkim._domainkey"|/|tilde.pink|70]
+[i|  fieldtype = "TXT"|/|tilde.pink|70]
+[i|  target    = var.dkim_key|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "subdomain_entries" {|/|tilde.pink|70]
+[i|  for_each = var.subdomains|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  subdomain = each.key|/|tilde.pink|70]
+[i|  fieldtype = "A"|/|tilde.pink|70]
+[i|  target    = var.host|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "mail_ipv6" {|/|tilde.pink|70]
+[i|  count = var.host_ipv6 == null ? 0 : 1|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  subdomain = "mail"|/|tilde.pink|70]
+[i|  fieldtype = "AAAA"|/|tilde.pink|70]
+[i|  target    = var.host_ipv6|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "smtp_fingerprint_tlsa" {|/|tilde.pink|70]
+[i|  count = var.smtp_tlsa == null ? 0 : 1|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  subdomain = "_25._tcp.mail"|/|tilde.pink|70]
+[i|  fieldtype = "TLSA"|/|tilde.pink|70]
+[i|  target    = var.smtp_tlsa|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "autodiscover" {|/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  subdomain = "autodiscover"|/|tilde.pink|70]
+[i|  fieldtype = "CNAME"|/|tilde.pink|70]
+[i|  target    = "mail"|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "ovh_domain_zone_record" "autoconfig" {|/|tilde.pink|70]
+[i|  zone      = var.domain|/|tilde.pink|70]
+[i|  subdomain = "autoconfig"|/|tilde.pink|70]
+[i|  fieldtype = "CNAME"|/|tilde.pink|70]
+[i|  target    = "mail"|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Links|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|https://github.com/theobori-cafe/dns|/|tilde.pink|70]
+[h|https://github.com/theobori-cafe/dns|URL:https://github.com/theobori-cafe/dns|github.com|443]

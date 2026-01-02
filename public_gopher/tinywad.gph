@@ -1,210 +1,235 @@
-DOOM modding library
-2023-05-03
-Last edit: 2023-05-03
----------------------
-
-This project is a WAD library/manager, it can be used as a base for other WAD projects like a GUI, a CLI, etc..
-
-I have played around with some well known IWAD like `doom.wad` and `doom2.wad` (registered).
-
-To test the IWAD/PWAD generated, I have used two engines:
-- 
-[h|GZDoom|URL:https://zdoom.org/index|tilde.pink|70]
- (tests + screenshots)
-- 
-[h|WAD Commander|URL:https://wadcmd.com/|tilde.pink|70]
- (tests + preview in multiple contexts)
-
-## Use cases
-
-Some use cases you could use in a DOOM modding context.
-
-### IWAD patching
-
-```rust
-use tinywad::error::WadError;
-use tinywad::models::operation::WadOp;
-use tinywad::wad::Wad;
-
-fn main() -> Result<(), WadError> {
-    let mut doom_2 = Wad::new();
-    doom_2.load_from_file("wads/doom2.wad")?;
-
-    let gate = doom_2.lump("GATE3").unwrap();
-
-    let mut doom_1 = Wad::new();
-    doom_1.load_from_file("doom1.wad")?;
-
-    doom_1.select("^FLAT|FLOOR");
-    doom_1.update_lumps_raw(&gate.data().buffer);
-    doom_1.save("doom1.wad");
-
-    Ok(())
-}
-```
-
-So basically (above) it loads a first IWAD file, in our case it is `doom2.wad`. It borrows a lump (`GATE3`) into the variable `gate`, then we load a second IWAD which is `doom1.wad`, it selects desired lumps, then it update the selected lumps in `DOOM1` and finally overwrite the file.
-
-### Screenhot(s)
-
-### Lumps extracting
-
-```rust
-use std::fs;
-
-use tinywad::dir::MAX_PAL;
-use tinywad::error::WadError;
-use tinywad::models::operation::WadOp;
-use tinywad::wad::Wad;
-
-fn main() -> Result<(), WadError> {
-    let mut doom_2 = Wad::new();
-    doom_2.load_from_file("wads/doom2.wad")?;
-
-    for pal in 0..MAX_PAL {
-        doom_2.set_palette(pal);
-        doom_2.reload()?;
-        doom_2.select("^BOSF");
-
-        let dirpath = format!("doom2/pal_{}", pal);
-
-        fs::create_dir_all(dirpath.clone()).unwrap();
-
-        doom_2.save_lumps(dirpath);
-    }
-
-    Ok(())
-}
-```
-
-In this part of code, it extracts as PNG the selected lumps with different palettes (13).
-
-### Extracted lumps (as PNGs)
-
-### Dumping metadata
-
-```rust
-use tinywad::error::WadError;
-use tinywad::models::operation::WadOp;
-use tinywad::wad::Wad;
-
-fn main() -> Result<(), WadError> {
-    let mut src = Wad::new();
-
-    src.load_from_file("wads/hexen.wad")?;
-    src.dump();
-
-    Ok(())
-}
-```
-
-### Output
-
-```text
-Name: XXTIC, Size: 8, Offset: 12
-Name: STARTUP, Size: 153648, Offset: 20
-Name: PLAYPAL, Size: 21504, Offset: 153668, Palettes amount: 28
-Name: COLORMAP, Size: 8704, Offset: 175172
-Name: FOGMAP, Size: 8704, Offset: 183876
-Name: TINTTAB, Size: 65536, Offset: 192580
-Name: TRANTBL0, Size: 256, Offset: 258116
-Name: TRANTBL1, Size: 256, Offset: 258372
-Name: TRANTBL2, Size: 256, Offset: 258628
-...
-```
-
-### Building a PWAD from scratch
-
-```rust
-use tinywad::error::WadError;
-use tinywad::lump::{LumpAdd, LumpAddKind};
-use tinywad::models::operation::WadOp;
-use tinywad::wad::{Wad, WadKind,};
-
-fn main() -> Result<(), WadError> {
-    let mut src = Wad::new();
-
-    let lump_names = [
-        "FLOOR0_1", "FLOOR0_3", "FLOOR0_6",
-        "FLOOR1_1", "FLOOR1_7", "FLOOR3_3",
-        "FLOOR4_1", "FLOOR4_5", "FLOOR4_6",
-        "FLOOR4_8", "FLOOR5_1", "FLOOR5_2",
-        "FLOOR5_3", "FLOOR5_4", "FLOOR6_1",
-        "FLOOR6_2", "FLOOR7_1", "FLOOR7_2",
-    ];
-
-    src.load_from_file("doom.wad")?;
-
-    let gate = src.lump("FLOOR6_1").unwrap();
-
-    let mut dest = Wad::new();
-
-    dest.set_kind(WadKind::Pwad);
-    dest.add_lump_raw(
-        LumpAdd::new(
-            LumpAddKind::Back,
-            &vec![],
-            "FF_START",
-        )
-    )?;
-
-    for lump_name in lump_names {
-        dest.add_lump_raw(
-            LumpAdd::new(
-                LumpAddKind::Back,
-                &gate.data().buffer,
-                lump_name,
-            )
-        )?;
-    }
-
-    dest.add_lump_raw(
-        LumpAdd::new(
-            LumpAddKind::Back,
-            &vec![],
-            "F_END",
-        )
-    )?;
-
-    dest.save("doom1_patch.wad");
-
-    Ok(())
-}
-```
-
-To take the screenshot (below) `doom1_patch.wad` has been injected into GZDOOM with the IWAD `doom.wad` (registered).
-
-### Result
-
-### Files
-
-[doom1_patch.wad](/doom1_patch.wad)
-[doom1_patch.asc](/doom1_patch.asc)
-[checksum](/checksum.txt)
-
-### Extracting MIDI lumps
-
-Extracting every musics from the IWAD `doom.wad`.
-
-```rust
-use tinywad::error::WadError;
-use tinywad::models::operation::WadOp;
-use tinywad::wad::{Wad};
-
-fn main() -> Result<(), WadError> {
-    let mut src = Wad::new();
-
-    src.load_from_file("doom.wad")?;
-    src.select("D_");
-    src.save_lumps(".");
-
-    Ok(())
-}
-```
-
-### `D_E1M1` converted from MIDI to MP3
-
-## Links
-
-[h|https://github.com/theobori/tinywad|URL:https://github.com/theobori/tinywad|tilde.pink|70]
-
+[i|## title: DOOM modding library|/|tilde.pink|70]
+[i|## date: "2023-05-03"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|This project is a WAD library/manager, it can be used as a|/|tilde.pink|70]
+[i|base for other WAD projects like a GUI, a CLI, etc..|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I have played around with some well known IWAD like doom.wad|/|tilde.pink|70]
+[i|and doom2.wad (registered).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To test the IWAD/PWAD generated, I have used two engines:|/|tilde.pink|70]
+[i|- GZDoom (tests + screenshots)|/|tilde.pink|70]
+[i|- WAD Commander (tests + preview in multiple contexts)|/|tilde.pink|70]
+[h|GZDoom|URL:https://zdoom.org/index|zdoom.org|443]
+[h|WAD Commander|URL:https://wadcmd.com/|wadcmd.com|443]
+[i||/|tilde.pink|70]
+[i|## Use cases|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Some use cases you could use in a DOOM modding context.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### IWAD patching|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|use tinywad::error::WadError;|/|tilde.pink|70]
+[i|use tinywad::models::operation::WadOp;|/|tilde.pink|70]
+[i|use tinywad::wad::Wad;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|fn main() -> Result<(), WadError> {|/|tilde.pink|70]
+[i|    let mut doom_2 = Wad::new();|/|tilde.pink|70]
+[i|    doom_2.load_from_file("wads/doom2.wad")?;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    let gate = doom_2.lump("GATE3").unwrap();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    let mut doom_1 = Wad::new();|/|tilde.pink|70]
+[i|    doom_1.load_from_file("doom1.wad")?;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    doom_1.select("^FLAT|FLOOR");|/|tilde.pink|70]
+[i|    doom_1.update_lumps_raw(&gate.data().buffer);|/|tilde.pink|70]
+[i|    doom_1.save("doom1.wad");|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    Ok(())|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So basically (above) it loads a first IWAD file, in our case|/|tilde.pink|70]
+[i|it is doom2.wad. It borrows a lump (GATE3) into the variable|/|tilde.pink|70]
+[i|gate, then we load a second IWAD which is doom1.wad, it|/|tilde.pink|70]
+[i|selects desired lumps, then it update the selected lumps in|/|tilde.pink|70]
+[i|DOOM1 and finally overwrite the file.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Screenhot(s)|/|tilde.pink|70]
+[i|/doom_gate3.png|/|tilde.pink|70]
+[I|/doom_gate3.png|/~nagi/doom_gate3.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Lumps extracting|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|use std::fs;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|use tinywad::dir::MAX_PAL;|/|tilde.pink|70]
+[i|use tinywad::error::WadError;|/|tilde.pink|70]
+[i|use tinywad::models::operation::WadOp;|/|tilde.pink|70]
+[i|use tinywad::wad::Wad;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|fn main() -> Result<(), WadError> {|/|tilde.pink|70]
+[i|    let mut doom_2 = Wad::new();|/|tilde.pink|70]
+[i|    doom_2.load_from_file("wads/doom2.wad")?;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    for pal in 0..MAX_PAL {|/|tilde.pink|70]
+[i|        doom_2.set_palette(pal);|/|tilde.pink|70]
+[i|        doom_2.reload()?;|/|tilde.pink|70]
+[i|        doom_2.select("^BOSF");|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|        let dirpath = format!("doom2/pal_{}", pal);|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|        fs::create_dir_all(dirpath.clone()).unwrap();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|        doom_2.save_lumps(dirpath);|/|tilde.pink|70]
+[i|    }|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    Ok(())|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|In this part of code, it extracts as PNG the selected lumps|/|tilde.pink|70]
+[i|with different palettes (13).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Extracted lumps (as PNGs)|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /doom2/pal_0/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_1/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_2/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_3/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_4/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_5/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_6/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_7/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_8/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_9/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_10/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_11/BOSFB0.png|/|tilde.pink|70]
+[i|  /doom2/pal_12/BOSFB0.png|/|tilde.pink|70]
+[I|/doom2/pal_0/BOSFB0.png|/~nagi/doom2/pal_0/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_1/BOSFB0.png|/~nagi/doom2/pal_1/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_2/BOSFB0.png|/~nagi/doom2/pal_2/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_3/BOSFB0.png|/~nagi/doom2/pal_3/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_4/BOSFB0.png|/~nagi/doom2/pal_4/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_5/BOSFB0.png|/~nagi/doom2/pal_5/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_6/BOSFB0.png|/~nagi/doom2/pal_6/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_7/BOSFB0.png|/~nagi/doom2/pal_7/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_8/BOSFB0.png|/~nagi/doom2/pal_8/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_9/BOSFB0.png|/~nagi/doom2/pal_9/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_10/BOSFB0.png|/~nagi/doom2/pal_10/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_11/BOSFB0.png|/~nagi/doom2/pal_11/BOSFB0.png|tilde.pink|70]
+[I|/doom2/pal_12/BOSFB0.png|/~nagi/doom2/pal_12/BOSFB0.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Dumping metadata|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|use tinywad::error::WadError;|/|tilde.pink|70]
+[i|use tinywad::models::operation::WadOp;|/|tilde.pink|70]
+[i|use tinywad::wad::Wad;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|fn main() -> Result<(), WadError> {|/|tilde.pink|70]
+[i|    let mut src = Wad::new();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    src.load_from_file("wads/hexen.wad")?;|/|tilde.pink|70]
+[i|    src.dump();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    Ok(())|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Output|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Name: XXTIC, Size: 8, Offset: 12|/|tilde.pink|70]
+[i|Name: STARTUP, Size: 153648, Offset: 20|/|tilde.pink|70]
+[i|Name: PLAYPAL, Size: 21504, Offset: 153668, Palettes amount:|/|tilde.pink|70]
+[i|28|/|tilde.pink|70]
+[i|Name: COLORMAP, Size: 8704, Offset: 175172|/|tilde.pink|70]
+[i|Name: FOGMAP, Size: 8704, Offset: 183876|/|tilde.pink|70]
+[i|Name: TINTTAB, Size: 65536, Offset: 192580|/|tilde.pink|70]
+[i|Name: TRANTBL0, Size: 256, Offset: 258116|/|tilde.pink|70]
+[i|Name: TRANTBL1, Size: 256, Offset: 258372|/|tilde.pink|70]
+[i|Name: TRANTBL2, Size: 256, Offset: 258628|/|tilde.pink|70]
+[i|...|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Building a PWAD from scratch|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|use tinywad::error::WadError;|/|tilde.pink|70]
+[i|use tinywad::lump::{LumpAdd, LumpAddKind};|/|tilde.pink|70]
+[i|use tinywad::models::operation::WadOp;|/|tilde.pink|70]
+[i|use tinywad::wad::{Wad, WadKind,};|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|fn main() -> Result<(), WadError> {|/|tilde.pink|70]
+[i|    let mut src = Wad::new();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    let lump_names = [|/|tilde.pink|70]
+[i|        "FLOOR0_1", "FLOOR0_3", "FLOOR0_6",|/|tilde.pink|70]
+[i|        "FLOOR1_1", "FLOOR1_7", "FLOOR3_3",|/|tilde.pink|70]
+[i|        "FLOOR4_1", "FLOOR4_5", "FLOOR4_6",|/|tilde.pink|70]
+[i|        "FLOOR4_8", "FLOOR5_1", "FLOOR5_2",|/|tilde.pink|70]
+[i|        "FLOOR5_3", "FLOOR5_4", "FLOOR6_1",|/|tilde.pink|70]
+[i|        "FLOOR6_2", "FLOOR7_1", "FLOOR7_2",|/|tilde.pink|70]
+[i|    ];|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    src.load_from_file("doom.wad")?;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    let gate = src.lump("FLOOR6_1").unwrap();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    let mut dest = Wad::new();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    dest.set_kind(WadKind::Pwad);|/|tilde.pink|70]
+[i|    dest.add_lump_raw(|/|tilde.pink|70]
+[i|        LumpAdd::new(|/|tilde.pink|70]
+[i|            LumpAddKind::Back,|/|tilde.pink|70]
+[i|            &vec![],|/|tilde.pink|70]
+[i|            "FF_START",|/|tilde.pink|70]
+[i|        )|/|tilde.pink|70]
+[i|    )?;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    for lump_name in lump_names {|/|tilde.pink|70]
+[i|        dest.add_lump_raw(|/|tilde.pink|70]
+[i|            LumpAdd::new(|/|tilde.pink|70]
+[i|                LumpAddKind::Back,|/|tilde.pink|70]
+[i|                &gate.data().buffer,|/|tilde.pink|70]
+[i|                lump_name,|/|tilde.pink|70]
+[i|            )|/|tilde.pink|70]
+[i|        )?;|/|tilde.pink|70]
+[i|    }|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    dest.add_lump_raw(|/|tilde.pink|70]
+[i|        LumpAdd::new(|/|tilde.pink|70]
+[i|            LumpAddKind::Back,|/|tilde.pink|70]
+[i|            &vec![],|/|tilde.pink|70]
+[i|            "F_END",|/|tilde.pink|70]
+[i|        )|/|tilde.pink|70]
+[i|    )?;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    dest.save("doom1_patch.wad");|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    Ok(())|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To take the screenshot (below) doom1_patch.wad has been|/|tilde.pink|70]
+[i|injected into GZDOOM with the IWAD doom.wad (registered).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Result|/|tilde.pink|70]
+[i|/doom_floor6_1.png|/|tilde.pink|70]
+[I|/doom_floor6_1.png|/~nagi/doom_floor6_1.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Files|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|doom1_patch.wad|/|tilde.pink|70]
+[i|doom1_patch.asc|/|tilde.pink|70]
+[i|checksum|/|tilde.pink|70]
+[1|doom1_patch.wad|/~nagi/doom1_patch.wad|tilde.pink|70]
+[1|doom1_patch.asc|/~nagi/doom1_patch.asc|tilde.pink|70]
+[0|checksum|/~nagi/checksum.txt|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Extracting MIDI lumps|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Extracting every musics from the IWAD doom.wad.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|use tinywad::error::WadError;|/|tilde.pink|70]
+[i|use tinywad::models::operation::WadOp;|/|tilde.pink|70]
+[i|use tinywad::wad::{Wad};|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|fn main() -> Result<(), WadError> {|/|tilde.pink|70]
+[i|    let mut src = Wad::new();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    src.load_from_file("doom.wad")?;|/|tilde.pink|70]
+[i|    src.select("D_");|/|tilde.pink|70]
+[i|    src.save_lumps(".");|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    Ok(())|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Links|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|https://github.com/theobori/tinywad|/|tilde.pink|70]
+[h|https://github.com/theobori/tinywad|URL:https://github.com/theobori/tinywad|github.com|443]

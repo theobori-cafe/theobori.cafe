@@ -1,118 +1,122 @@
-My NixOS Teeworlds servers management module
-2024-11-10
-Last edit: 2024-11-10
----------------------
-
-So I created a NixOS module to declare Teeworlds servers with their Nix configuration.
-
-Why did I do this? Simply because I saw a 
-[h|video](https://www.youtube.com/watch?v=Fph7SMldxpI) from [Vimjoyer|URL:https://www.youtube.com/@vimjoyer|tilde.pink|70]
- that presented a NixOs module for declaring multiple Minecraft servers. I couldn't find an equivalent for Teeworlds, so I decided to write it myself.
-
-The module is open-source and available via a 
-[h|GitHub repository|URL:https://github.com/theobori/nix-teeworlds|tilde.pink|70]
-. In this repository there are also some packages providing a server with particular game modes, which are obviously usable with the module.
-
-They can also be run with the `nix run` command, for example, you could create an 
-[h|fng2|URL:https://github.com/Jupeyy/teeworlds-fng2-mod/tree/fng_06|tilde.pink|70]
- server with the following command.
-
-```bash
-nix run github:theobori/nix-teeworlds#fng2-server
-```
-
-The module is user-friendly and fairly intuitive to configure. For example, to configure a 
-[h|fng2|URL:https://github.com/Jupeyy/teeworlds-fng2-mod/tree/fng_06|tilde.pink|70]
- server, you could write a Nix expression like this.
-
-```nix
-{ pkgs, ... }:
-{
-  services.nix-teeworlds = {
-    enable = true;
-    openFirewall = true;
-
-    servers = {
-      my-fng = {
-        enable = true;
-        package = pkgs.fng2-server;
-
-        extraConfig = ''
-          password "1234"
-        '';
-
-        externalConsole = {
-          enable = true;
-          port = 1111;
-          password = "hello";
-          outputLevel = 2;
-        };
-
-        settings = {
-          name = "My FNG server from NixOS";
-          port = 8305;
-          maxClients = 16;
-        };
-
-        game = {
-          gameType = "fng2";
-          map = "AliveFNG";
-          scoreLimit = 800;
-        };
-
-        votes = {
-          "Say hello" = {
-            commands = [
-              "say hello"
-              "say world"
-              "say !!"
-            ];
-          };
-
-          "Map IIT_Edited" = {
-            commands = [ "sv_map IIT_Edited" ];
-          };
-
-          "Empty vote" = {
-            commands = [ ];
-          };
-        };
-      };
-    };
-  };
-}
-```
-
-To access `services.nix-teeworlds`, you can import the module as specified in the README file in the 
-[h|GitHub repository|URL:https://github.com/theobori/nix-teeworlds|tilde.pink|70]
-.
-
-Inside your `flake.nix`, you can start by adding the following lines.
-
-```nix
-{
-  inputs = {
-    nix-teeworlds.url = "github:theobori/nix-teeworlds";
-  };
-}
-```
-
-You can then include the module and its default overlay in the system configuration as shown below.
-
-```nix
-{ inputs, ... }: {
-  imports = with inputs; [ nix-teeworlds.nixosModules.nix-teeworlds ];
-  nixpkgs.overlays = with inputs; [ nix-teeworlds.overlays.default ];
-}
-```
-
-Under the hood, each teeworlds server is managed by a systemd service unit, which takes care of running the application with a dedicated user in the right working directory and creating the necessary resources.
-
-Evaluation of the module may return an error if the ports of the different servers (TCP and UDP) are identical, as written 
-[h|in the code|URL:https://github.com/theobori/nix-teeworlds/blob/main/modules/nixos/nix-teeworlds/default.nix#L138-L143|tilde.pink|70]
-.
-
-Anyone is free to contribute to the source code. For more details, please visit the 
-[h|GitHub repository|URL:https://github.com/theobori/nix-teeworlds|tilde.pink|70]
-.
-
+[i|## title: My NixOS Teeworlds servers management module|/|tilde.pink|70]
+[i|## date: "2024-11-10"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So I created a NixOS module to declare Teeworlds servers|/|tilde.pink|70]
+[i|with their Nix configuration.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Why did I do this? Simply because I saw a video from|/|tilde.pink|70]
+[i|Vimjoyer that presented a NixOs module for declaring|/|tilde.pink|70]
+[i|multiple Minecraft servers. I couldn't find an equivalent|/|tilde.pink|70]
+[i|for Teeworlds, so I decided to write it myself.|/|tilde.pink|70]
+[h|video|URL:https://www.youtube.com/watch?v=Fph7SMldxpI|www.youtube.com|443]
+[h|Vimjoyer|URL:https://www.youtube.com/@vimjoyer|www.youtube.com|443]
+[i||/|tilde.pink|70]
+[i|The module is open-source and available via a GitHub|/|tilde.pink|70]
+[i|repository. In this repository there are also some packages|/|tilde.pink|70]
+[i|providing a server with particular game modes, which are|/|tilde.pink|70]
+[i|obviously usable with the module.|/|tilde.pink|70]
+[h|GitHub repository|URL:https://github.com/theobori/nix-teeworlds|github.com|443]
+[i||/|tilde.pink|70]
+[i|They can also be run with the nix run command, for example,|/|tilde.pink|70]
+[i|you could create an fng2 server with the following command.|/|tilde.pink|70]
+[h|fng2|URL:https://github.com/Jupeyy/teeworlds-fng2-mod/tree/fng_06|github.com|443]
+[i||/|tilde.pink|70]
+[i|nix run github:theobori/nix-teeworlds#fng2-server|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The module is user-friendly and fairly intuitive to|/|tilde.pink|70]
+[i|configure. For example, to configure a fng2 server, you|/|tilde.pink|70]
+[i|could write a Nix expression like this.|/|tilde.pink|70]
+[h|fng2|URL:https://github.com/Jupeyy/teeworlds-fng2-mod/tree/fng_06|github.com|443]
+[i||/|tilde.pink|70]
+[i|{ pkgs, ... }:|/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  services.nix-teeworlds = {|/|tilde.pink|70]
+[i|    enable = true;|/|tilde.pink|70]
+[i|    openFirewall = true;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    servers = {|/|tilde.pink|70]
+[i|      my-fng = {|/|tilde.pink|70]
+[i|        enable = true;|/|tilde.pink|70]
+[i|        package = pkgs.fng2-server;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|        extraConfig = ''|/|tilde.pink|70]
+[i|          password "1234"|/|tilde.pink|70]
+[i|        '';|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|        externalConsole = {|/|tilde.pink|70]
+[i|          enable = true;|/|tilde.pink|70]
+[i|          port = 1111;|/|tilde.pink|70]
+[i|          password = "hello";|/|tilde.pink|70]
+[i|          outputLevel = 2;|/|tilde.pink|70]
+[i|        };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|        settings = {|/|tilde.pink|70]
+[i|          name = "My FNG server from NixOS";|/|tilde.pink|70]
+[i|          port = 8305;|/|tilde.pink|70]
+[i|          maxClients = 16;|/|tilde.pink|70]
+[i|        };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|        game = {|/|tilde.pink|70]
+[i|          gameType = "fng2";|/|tilde.pink|70]
+[i|          map = "AliveFNG";|/|tilde.pink|70]
+[i|          scoreLimit = 800;|/|tilde.pink|70]
+[i|        };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|        votes = {|/|tilde.pink|70]
+[i|          "Say hello" = {|/|tilde.pink|70]
+[i|            commands = [|/|tilde.pink|70]
+[i|              "say hello"|/|tilde.pink|70]
+[i|              "say world"|/|tilde.pink|70]
+[i|              "say !!"|/|tilde.pink|70]
+[i|            ];|/|tilde.pink|70]
+[i|          };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|          "Map IIT_Edited" = {|/|tilde.pink|70]
+[i|            commands = [ "sv_map IIT_Edited" ];|/|tilde.pink|70]
+[i|          };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|          "Empty vote" = {|/|tilde.pink|70]
+[i|            commands = [ ];|/|tilde.pink|70]
+[i|          };|/|tilde.pink|70]
+[i|        };|/|tilde.pink|70]
+[i|      };|/|tilde.pink|70]
+[i|    };|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To access services.nix-teeworlds, you can import the module|/|tilde.pink|70]
+[i|as specified in the README file in the GitHub repository.|/|tilde.pink|70]
+[h|GitHub repository|URL:https://github.com/theobori/nix-teeworlds|github.com|443]
+[i||/|tilde.pink|70]
+[i|Inside your flake.nix, you can start by adding the following|/|tilde.pink|70]
+[i|lines.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  inputs = {|/|tilde.pink|70]
+[i|    nix-teeworlds.url = "github:theobori/nix-teeworlds";|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|You can then include the module and its default overlay in|/|tilde.pink|70]
+[i|the system configuration as shown below.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{ inputs, ... }: {|/|tilde.pink|70]
+[i|  imports = with inputs; [ nix-teeworlds.nixosModules.nix-|/|tilde.pink|70]
+[i|teeworlds ];|/|tilde.pink|70]
+[i|  nixpkgs.overlays = with inputs; [ nix-|/|tilde.pink|70]
+[i|teeworlds.overlays.default ];|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Under the hood, each teeworlds server is managed by a|/|tilde.pink|70]
+[i|systemd service unit, which takes care of running the|/|tilde.pink|70]
+[i|application with a dedicated user in the right working|/|tilde.pink|70]
+[i|directory and creating the necessary resources.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Evaluation of the module may return an error if the ports of|/|tilde.pink|70]
+[i|the different servers (TCP and UDP) are identical, as|/|tilde.pink|70]
+[i|written in the code.|/|tilde.pink|70]
+[h|in the code|URL:https://github.com/theobori/nix-teeworlds/blob/main/modules/nixos/nix-teeworlds/default.nix#L138-L143|github.com|443]
+[i||/|tilde.pink|70]
+[i|Anyone is free to contribute to the source code. For more|/|tilde.pink|70]
+[i|details, please visit the GitHub repository.|/|tilde.pink|70]
+[h|GitHub repository|URL:https://github.com/theobori/nix-teeworlds|github.com|443]

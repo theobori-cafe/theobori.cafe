@@ -1,131 +1,190 @@
-My Linux From Scratch system
-2025-03-29
-Last edit: 2025-03-29
----------------------
-
-> In this blog post, I will refer to 
-[h|Linux From Scratch|URL:https://www.linuxfromscratch.org|tilde.pink|70]
- by writing "LFS".
-
-I heard about LFS by stumbling across a 
-[h|podcast|URL:https://www.youtube.com/watch?v=TkkKNfYKJJg|tilde.pink|70]
- by Brodie Robertson. I've been curious and made me want to build my own Linux system.
-
-## What is LFS?
-
-It's a book that explains how to build your own Linux system from scratch using a host system. An interesting feature is that everything is built from source code.
-
-## My objectives
-
-In reading LFS, I have some very specific goals. I'd like my system to be able to run my favorite games, i.e. 
-[h|DDNet|URL:https://ddnet.org/|tilde.pink|70]
- and Quake I. To do this, I'll need a kernel that can communicate with my hardware, at least the video, audio and network parts, so that I can access the Internet, etc.
-
-I'd also like to have a simple, lightweight desktop environment based on the graphics server 
-[h|Xorg|URL:https://www.x.org/wiki/|tilde.pink|70]
-.
-
-And most important of all, I'd like to be able to boot into my system directly on my computer.
-
-## Building LFS
-
-So I started reading the book and setting up my system. More precisely, I chose 
-[h|version 12.2 with systemd (French version)|URL:https://fr.linuxfromscratch.org/view/lfs-12.2-systemd-fr/|tilde.pink|70]
- as init daemon and with Linux version 6.10.5. In this section, I'm not going to reexplain all the steps in the book, just highlight the most important ones in my opinion.
-
-### Disk partitioning
-
-I chose to make a single 40GiB ext4 partition on my laptop's hard disk. I declared it in my 
-[h|NixOS](https://nixos.org) configuration, with partitioning handled by the [NixOS](https://nixos.org) [disko|URL:https://github.com/nix-community/disko|tilde.pink|70]
- module.
-
-```nix
-lfs = {
-  name = "LFS";
-  size = "40G";
-  content = {
-	type = "filesystem";
-	format = "ext4";
-	mountpoint = "/mnt/lfs";
-  };
-};
-```
-
-### Compiling the compiler compiling a compiler
-
-An important part of LFS is cross-compiling. The aim is to build the tools of the construction chain dedicated to my LFS system. This cross-compilation is "false", i.e. in the end, the hardware of my host system and that of my LFS system are the same. Only the target system changes.
-
-Here's a diagram representing the cross-compilation steps, where each rectangle represents a compiler containing a source platform to destination platform relationship.
-
-### Basic softwares and configuration
-
-After entering my new system (chroot), I was able to establish a base.
-
-I installed all the basic tools you'd want on a Linux system and wrote configuration files for the various applications and services (systemd, network, shells, time, language, etc.).
-
-### Linux
-
-I built Linux by passing the right values to its parameters, so as to be as compatible as possible with my hardware.
-
-I activated the right drivers to communicate with my network card and audio hardware. By default, I was missing a few firmwares that needed to be loaded, so I embedded them in the kernel.
-
-Once built and installed on my LFS system, all that's left to do is load Linux.
-
-### Boot
-
-To be able to boot on my LFS system, I added an entry for the GRUB managed by my main 
-[h|NixOS](https://nixos.org) system. To do this, I rebuilt my [NixOS|URL:https://nixos.org|tilde.pink|70]
- system using os-pober, as shown below.
-
-```nix
-loader.grub = {
-  useOSProber = true;
-};
-```
-
-## Beyond LFS
-
-Now that I have a basic system that I can boot, the goal is to have a desktop environment before I can play.
-
-I had to build the entire graphics system 
-[h|X](https://fr.wikipedia.org/wiki/X_Window_System) and its dependencies, before building the window manager [i3](https://i3wm.org/), then [KDE Plasma 6](https://kde.org/fr/announcements/plasma/6/6.2.0/) and finally [Xfce|URL:https://www.xfce.org|tilde.pink|70]
-.
-
-I'm obviously skipping all the sub-dependencies, network configuration (DHCP client, tools, etc.), security (Linux PAM), etc.
-
-Below is an overview of my main desktop envinronnement.
-
-So I end up on 
-[h|Xfce](https://www.xfce.org), download the latest version of [DDNet|URL:https://ddnet.org|tilde.pink|70]
-, patch the source code as I didn't want to use the `libnotify` library, compile and launch the game.
-
-The application is functional, I can join a game via the Internet and the game sound comes out of my laptop speakers! Below is a screenshot with the game running.
-
-The same for Quake I through 
-[h|VkQuake|URL:https://github.com/Novum/vkQuake|tilde.pink|70]
-, a preview below.
-
-## Little hack
-
-To avoid having to manage all the packages by hand, I decided to install a package manager, but not just any package manager, 
-[h|Nix|URL:https://github.com/NixOS/nix|tilde.pink|70]
-. It will allow me to have fully functional immutable packages.
-
-I installed it with the 
-[h|DeterminateSystems|URL:https://github.com/DeterminateSystems/nix-installer|tilde.pink|70]
- installer.
-
-It allowed me to build very complicated packages such as 
-[h|Firefox|URL:https://www.mozilla.org/fr/firefox|tilde.pink|70]
-, here's a preview.
-
-## Is it worth it?
-
-Reading and putting LFS into practice takes a long time, but it's definitely worth it! I was able to learn some very interesting and useful new things about the world of Linux and now I understand more precisely how Linux and UNIX systems work.
-
-I recommend the experience to all curious people who want to have their own Linux system. The result is very satisfying, and it's even possible to use an LFS system as your main system!
-
-## Conclusion
-
-I loved reading the book and setting up everything myself, and I intend to keep my LFS system and continue modifying it.
-
+[i|## title: My Linux From Scratch system|/|tilde.pink|70]
+[i|## date: "2025-03-29"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|“In this blog post, I will refer to Linux From Scratch by|/|tilde.pink|70]
+[i|writing "LFS".”|/|tilde.pink|70]
+[h|Linux From Scratch|URL:https://www.linuxfromscratch.org|www.linuxfromscratch.org|443]
+[i||/|tilde.pink|70]
+[i|I heard about LFS by stumbling across a podcast by Brodie|/|tilde.pink|70]
+[i|Robertson. I've been curious and made me want to build my|/|tilde.pink|70]
+[i|own Linux system.|/|tilde.pink|70]
+[h|podcast|URL:https://www.youtube.com/watch?v=TkkKNfYKJJg|www.youtube.com|443]
+[i||/|tilde.pink|70]
+[i|## What is LFS?|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|It's a book that explains how to build your own Linux system|/|tilde.pink|70]
+[i|from scratch using a host system. An interesting feature is|/|tilde.pink|70]
+[i|that everything is built from source code.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## My objectives|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|In reading LFS, I have some very specific goals. I'd like my|/|tilde.pink|70]
+[i|system to be able to run my favorite games, i.e. DDNet and|/|tilde.pink|70]
+[i|Quake I. To do this, I'll need a kernel that can communicate|/|tilde.pink|70]
+[i|with my hardware, at least the video, audio and network|/|tilde.pink|70]
+[i|parts, so that I can access the Internet, etc.|/|tilde.pink|70]
+[h|DDNet|URL:https://ddnet.org/|ddnet.org|443]
+[i||/|tilde.pink|70]
+[i|I'd also like to have a simple, lightweight desktop|/|tilde.pink|70]
+[i|environment based on the graphics server Xorg.|/|tilde.pink|70]
+[h|Xorg|URL:https://www.x.org/wiki/|www.x.org|443]
+[i||/|tilde.pink|70]
+[i|And most important of all, I'd like to be able to boot into|/|tilde.pink|70]
+[i|my system directly on my computer.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Building LFS|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So I started reading the book and setting up my system. More|/|tilde.pink|70]
+[i|precisely, I chose version 12.2 with systemd (French|/|tilde.pink|70]
+[i|version) as init daemon and with Linux version 6.10.5. In|/|tilde.pink|70]
+[i|this section, I'm not going to reexplain all the steps in|/|tilde.pink|70]
+[i|the book, just highlight the most important ones in my|/|tilde.pink|70]
+[i|opinion.|/|tilde.pink|70]
+[h|version 12.2 with systemd (French version)|URL:https://fr.linuxfromscratch.org/view/lfs-12.2-systemd-fr/|fr.linuxfromscratch.org|443]
+[i||/|tilde.pink|70]
+[i|### Disk partitioning|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I chose to make a single 40GiB ext4 partition on my laptop's|/|tilde.pink|70]
+[i|hard disk. I declared it in my NixOS configuration, with|/|tilde.pink|70]
+[i|partitioning handled by the NixOS disko module.|/|tilde.pink|70]
+[h|NixOS|URL:https://nixos.org|nixos.org|443]
+[h|NixOS|URL:https://nixos.org|nixos.org|443]
+[h|disko|URL:https://github.com/nix-community/disko|github.com|443]
+[i||/|tilde.pink|70]
+[i|lfs = {|/|tilde.pink|70]
+[i|  name = "LFS";|/|tilde.pink|70]
+[i|  size = "40G";|/|tilde.pink|70]
+[i|  content = {|/|tilde.pink|70]
+[i|    type = "filesystem";|/|tilde.pink|70]
+[i|    format = "ext4";|/|tilde.pink|70]
+[i|    mountpoint = "/mnt/lfs";|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i|};|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Compiling the compiler compiling a compiler|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|An important part of LFS is cross-compiling. The aim is to|/|tilde.pink|70]
+[i|build the tools of the construction chain dedicated to my|/|tilde.pink|70]
+[i|LFS system. This cross-compilation is "false", i.e. in the|/|tilde.pink|70]
+[i|end, the hardware of my host system and that of my LFS|/|tilde.pink|70]
+[i|system are the same. Only the target system changes.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Here's a diagram representing the cross-compilation steps,|/|tilde.pink|70]
+[i|where each rectangle represents a compiler containing a|/|tilde.pink|70]
+[i|source platform to destination platform relationship.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /lfs_cross-compilation.png|/|tilde.pink|70]
+[I|/lfs_cross-compilation.png|/~nagi/lfs_cross-compilation.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Basic softwares and configuration|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|After entering my new system (chroot), I was able to|/|tilde.pink|70]
+[i|establish a base.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I installed all the basic tools you'd want on a Linux system|/|tilde.pink|70]
+[i|and wrote configuration files for the various applications|/|tilde.pink|70]
+[i|and services (systemd, network, shells, time, language,|/|tilde.pink|70]
+[i|etc.).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Linux|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I built Linux by passing the right values to its parameters,|/|tilde.pink|70]
+[i|so as to be as compatible as possible with my hardware.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I activated the right drivers to communicate with my network|/|tilde.pink|70]
+[i|card and audio hardware. By default, I was missing a few|/|tilde.pink|70]
+[i|firmwares that needed to be loaded, so I embedded them in|/|tilde.pink|70]
+[i|the kernel.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Once built and installed on my LFS system, all that's left|/|tilde.pink|70]
+[i|to do is load Linux.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Boot|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To be able to boot on my LFS system, I added an entry for|/|tilde.pink|70]
+[i|the GRUB managed by my main NixOS system. To do this, I|/|tilde.pink|70]
+[i|rebuilt my NixOS system using os-pober, as shown below.|/|tilde.pink|70]
+[h|NixOS|URL:https://nixos.org|nixos.org|443]
+[h|NixOS|URL:https://nixos.org|nixos.org|443]
+[i||/|tilde.pink|70]
+[i|loader.grub = {|/|tilde.pink|70]
+[i|  useOSProber = true;|/|tilde.pink|70]
+[i|};|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Beyond LFS|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Now that I have a basic system that I can boot, the goal is|/|tilde.pink|70]
+[i|to have a desktop environment before I can play.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I had to build the entire graphics system X and its|/|tilde.pink|70]
+[i|dependencies, before building the window manager i3, then|/|tilde.pink|70]
+[i|KDE Plasma 6 and finally Xfce.|/|tilde.pink|70]
+[h|X|URL:https://fr.wikipedia.org/wiki/X_Window_System|fr.wikipedia.org|443]
+[h|i3|URL:https://i3wm.org/|i3wm.org|443]
+[h|KDE Plasma 6|URL:https://kde.org/fr/announcements/plasma/6/6.2.0/|kde.org|443]
+[h|Xfce|URL:https://www.xfce.org|www.xfce.org|443]
+[i||/|tilde.pink|70]
+[i|I'm obviously skipping all the sub-dependencies, network|/|tilde.pink|70]
+[i|configuration (DHCP client, tools, etc.), security (Linux|/|tilde.pink|70]
+[i|PAM), etc.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Below is an overview of my main desktop envinronnement.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /lfs_xfce.png|/|tilde.pink|70]
+[I|/lfs_xfce.png|/~nagi/lfs_xfce.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So I end up on Xfce, download the latest version of DDNet,|/|tilde.pink|70]
+[i|patch the source code as I didn't want to use the libnotify|/|tilde.pink|70]
+[i|library, compile and launch the game.|/|tilde.pink|70]
+[h|Xfce|URL:https://www.xfce.org|www.xfce.org|443]
+[h|DDNet|URL:https://ddnet.org|ddnet.org|443]
+[i||/|tilde.pink|70]
+[i|The application is functional, I can join a game via the|/|tilde.pink|70]
+[i|Internet and the game sound comes out of my laptop speakers!|/|tilde.pink|70]
+[i|Below is a screenshot with the game running.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /lfs_ddnet.png|/|tilde.pink|70]
+[I|/lfs_ddnet.png|/~nagi/lfs_ddnet.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The same for Quake I through VkQuake, a preview below.|/|tilde.pink|70]
+[h|VkQuake|URL:https://github.com/Novum/vkQuake|github.com|443]
+[i||/|tilde.pink|70]
+[i|    /lfs_quake.png|/|tilde.pink|70]
+[I|/lfs_quake.png|/~nagi/lfs_quake.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Little hack|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To avoid having to manage all the packages by hand, I|/|tilde.pink|70]
+[i|decided to install a package manager, but not just any|/|tilde.pink|70]
+[i|package manager, Nix. It will allow me to have fully|/|tilde.pink|70]
+[i|functional immutable packages.|/|tilde.pink|70]
+[h|Nix|URL:https://github.com/NixOS/nix|github.com|443]
+[i||/|tilde.pink|70]
+[i|I installed it with the DeterminateSystems installer.|/|tilde.pink|70]
+[h|DeterminateSystems|URL:https://github.com/DeterminateSystems/nix-installer|github.com|443]
+[i||/|tilde.pink|70]
+[i|It allowed me to build very complicated packages such as|/|tilde.pink|70]
+[i|Firefox, here's a preview.|/|tilde.pink|70]
+[h|Firefox|URL:https://www.mozilla.org/fr/firefox|www.mozilla.org|443]
+[i||/|tilde.pink|70]
+[i|    /lfs_firefox.png|/|tilde.pink|70]
+[I|/lfs_firefox.png|/~nagi/lfs_firefox.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Is it worth it?|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Reading and putting LFS into practice takes a long time, but|/|tilde.pink|70]
+[i|it's definitely worth it! I was able to learn some very|/|tilde.pink|70]
+[i|interesting and useful new things about the world of Linux|/|tilde.pink|70]
+[i|and now I understand more precisely how Linux and UNIX|/|tilde.pink|70]
+[i|systems work.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I recommend the experience to all curious people who want to|/|tilde.pink|70]
+[i|have their own Linux system. The result is very satisfying,|/|tilde.pink|70]
+[i|and it's even possible to use an LFS system as your main|/|tilde.pink|70]
+[i|system!|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Conclusion|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I loved reading the book and setting up everything myself,|/|tilde.pink|70]
+[i|and I intend to keep my LFS system and continue modifying|/|tilde.pink|70]
+[i|it.|/|tilde.pink|70]

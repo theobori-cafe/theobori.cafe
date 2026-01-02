@@ -15,7 +15,6 @@ They can also be run with the `nix run` command, for example, you could create a
 nix run github:theobori/nix-teeworlds#fng2-server
 ```
 
-
 The module is user-friendly and fairly intuitive to configure. For example, to configure a [fng2](https://github.com/Jupeyy/teeworlds-fng2-mod/tree/fng_06) server, you could write a Nix expression like this.
 
 ```nix
@@ -76,7 +75,6 @@ The module is user-friendly and fairly intuitive to configure. For example, to c
 }
 ```
 
-
 To access `services.nix-teeworlds`, you can import the module as specified in the README file in the [GitHub repository](https://github.com/theobori/nix-teeworlds).
 
 Inside your `flake.nix`, you can start by adding the following lines.
@@ -89,7 +87,6 @@ Inside your `flake.nix`, you can start by adding the following lines.
 }
 ```
 
-
 You can then include the module and its default overlay in the system configuration as shown below.
 
 ```nix
@@ -98,7 +95,6 @@ You can then include the module and its default overlay in the system configurat
   nixpkgs.overlays = with inputs; [ nix-teeworlds.overlays.default ];
 }
 ```
-
 
 Under the hood, each teeworlds server is managed by a systemd service unit, which takes care of running the application with a dedicated user in the right working directory and creating the necessary resources.
 

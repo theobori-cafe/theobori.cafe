@@ -1,144 +1,153 @@
-Play Teeworlds through Docker
-2023-10-24
-Last edit: 2023-10-24
----------------------
-
-Many Teeworlds servers currently in use are containerized. However, it is also possible to containerize the Teeworlds client using Docker.
-
-The Dockerfile is available below, it compiles and executes the ELF file in the Docker container. I've also published the image on Docker's public registry, Docker Hub.
-
-## Build the Docker image
-
-So there are two methods to get the Docker image, you can download it or building it yourself.
-
-### Pull from Docker Hub
-
-```bash
-docker pull b0thr34l/teeworlds:1.0
-```
-
-### Build from source
-
-```dockerfile
-FROM ubuntu:20.04 as build
-
-# Avoid tz stuck at installation
-ARG DEBIAN_FRONTEND=noninteractive
-ENV TZ=Europe/Moscow
-
-# Install dependencies to build binaries
-RUN apt-get update -y && \
-    apt-get -y install --no-install-recommends \
-    ca-certificates \
-    build-essential \
-    cmake \
-    git \
-    libfreetype6-dev \
-    libsdl2-dev \
-    libpnglite-dev \
-    libwavpack-dev
-
-# Clone the git repository
-RUN git clone https://github.com/teeworlds/teeworlds /client
-
-# Go into the build directory
-WORKDIR /client
-
-# Compile client only
-RUN mkdir -p build && \
-    cd build && \
-    cmake .. && \
-    make teeworlds
-
-FROM ubuntu:20.04 as run
-
-# Install the shared library
-RUN apt-get update -y && \
-    apt-get -y install --no-install-recommends \
-    libfreetype6 \
-    libsdl2-2.0-0 \
-    libpnglite0 \
-    libwavpack1 \
-    libopengl0 \
-    libgl1
-
-# Create a new user
-RUN useradd -ms /bin/bash tee
-
-USER tee
-
-WORKDIR /teeworlds
-
-# Copy the output files
-COPY --from=build /client/build/data ./data
-COPY --from=build /client/build/teeworlds .
-
-CMD [ "./teeworlds" ]
-```
-
-## Create and start the Docker container
-
-Now we can create and start a new container with the teeworlds client image we just created or downloaded.
-
-I consider that you're using X as your windowing system, rather than something like Wayland or something else.
-
-### X display server
-
-So that the game can work and we can play it. I assume you are using an X display server and that it is listening at a UNIX domain socket.
-
-That is why we are forwarding the `/tmp/.X11-unix/` directory that contains the UNIX domain socket(s) for the X server.
-
-The `DISPLAY` environment variable is going to target the UNIX socket that we are using. This means that, technically, the container will be able to write data to this UNIX socket, and thus create a new window.
-
-Make sure that your X server controll is configured correctly before running the Docker container. If you just want to try you could disable entirely the policies but it is not recommended.
-
-```bash
-xhost +
-```
-
-Instead, you should add a single local user.
-
-```bash
-xhost +si:localuser:$USER
-```
-
-### Storage configuration
-
-Teeworlds uses a specific location to store its data, it is described in a file named `storage.cfg` that we can find on the 
-[h|offical Teeworlds GitHub repository|URL:https://github.com/teeworlds/teeworlds/blob/master/storage.cfg|tilde.pink|70]
-.
-
-We are looking for `$USERDIR`, we are going to mount this directory into our Docker container.
-
-The first option is to create a new Docker volume containing the Teeworlds user data. We don't want to override the container directory, so we will create a shared Docker volume.
-
-```bash
-#!/bin/sh
-
-TW_USERDIR=$HOME/.config/teeworlds-userdir
-TW_DOCKER_VOLUME=teeworlds-userdir
-
-mkdir -p ${TW_USERDIR}
-
-docker volume create \
-    --driver local \
-    --opt type=none \
-    --opt device=${TW_USERDIR} \
-    --opt o=bind \
-    ${TW_DOCKER_VOLUME}
-
-docker run -it \
-    -e "DISPLAY=$DISPLAY" \
-    -v "/tmp/.X11-unix:/tmp/.X11-unix" \
-    -v "${TW_DOCKER_VOLUME}:/home/tee/.local/share/teeworlds" \
-    --device "/dev/snd" \
-    --device "/dev/dri" \
-    b0thr34l/teeworlds:1.0
-```
-
-If you already had Teeworlds data in an user directory on your host system. You can mount a volume directly without creating a Docker volume, as shown in the example below.
-
-```bash
--v "$HOME/.teeworlds:/home/tee/.local/share/teeworlds"
-```
-
+[i|## title: Play Teeworlds through Docker|/|tilde.pink|70]
+[i|## date: "2023-10-24"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Many Teeworlds servers currently in use are containerized.|/|tilde.pink|70]
+[i|However, it is also possible to containerize the Teeworlds|/|tilde.pink|70]
+[i|client using Docker.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The Dockerfile is available below, it compiles and executes|/|tilde.pink|70]
+[i|the ELF file in the Docker container. I've also published|/|tilde.pink|70]
+[i|the image on Docker's public registry, Docker Hub.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Build the Docker image|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So there are two methods to get the Docker image, you can|/|tilde.pink|70]
+[i|download it or building it yourself.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Pull from Docker Hub|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|docker pull b0thr34l/teeworlds:1.0|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Build from source|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|FROM ubuntu:20.04 as build|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|# Avoid tz stuck at installation|/|tilde.pink|70]
+[i|ARG DEBIAN_FRONTEND=noninteractive|/|tilde.pink|70]
+[i|ENV TZ=Europe/Moscow|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|# Install dependencies to build binaries|/|tilde.pink|70]
+[i|RUN apt-get update -y && |/|tilde.pink|70]
+[i|    apt-get -y install --no-install-recommends |/|tilde.pink|70]
+[i|    ca-certificates |/|tilde.pink|70]
+[i|    build-essential |/|tilde.pink|70]
+[i|    cmake |/|tilde.pink|70]
+[i|    git |/|tilde.pink|70]
+[i|    libfreetype6-dev |/|tilde.pink|70]
+[i|    libsdl2-dev |/|tilde.pink|70]
+[i|    libpnglite-dev |/|tilde.pink|70]
+[i|    libwavpack-dev|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|# Clone the git repository|/|tilde.pink|70]
+[i|RUN git clone https://github.com/teeworlds/teeworlds /client|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|# Go into the build directory|/|tilde.pink|70]
+[i|WORKDIR /client|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|# Compile client only|/|tilde.pink|70]
+[i|RUN mkdir -p build && |/|tilde.pink|70]
+[i|    cd build && |/|tilde.pink|70]
+[i|    cmake .. && |/|tilde.pink|70]
+[i|    make teeworlds|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|FROM ubuntu:20.04 as run|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|# Install the shared library|/|tilde.pink|70]
+[i|RUN apt-get update -y && |/|tilde.pink|70]
+[i|    apt-get -y install --no-install-recommends |/|tilde.pink|70]
+[i|    libfreetype6 |/|tilde.pink|70]
+[i|    libsdl2-2.0-0 |/|tilde.pink|70]
+[i|    libpnglite0 |/|tilde.pink|70]
+[i|    libwavpack1 |/|tilde.pink|70]
+[i|    libopengl0 |/|tilde.pink|70]
+[i|    libgl1|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|# Create a new user|/|tilde.pink|70]
+[i|RUN useradd -ms /bin/bash tee|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|USER tee|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|WORKDIR /teeworlds|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|# Copy the output files|/|tilde.pink|70]
+[i|COPY --from=build /client/build/data ./data|/|tilde.pink|70]
+[i|COPY --from=build /client/build/teeworlds .|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|CMD [ "./teeworlds" ]|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Create and start the Docker container|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Now we can create and start a new container with the|/|tilde.pink|70]
+[i|teeworlds client image we just created or downloaded.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I consider that you're using X as your windowing system,|/|tilde.pink|70]
+[i|rather than something like Wayland or something else.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### X display server|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So that the game can work and we can play it. I assume you|/|tilde.pink|70]
+[i|are using an X display server and that it is listening at a|/|tilde.pink|70]
+[i|UNIX domain socket.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|That is why we are forwarding the /tmp/.X11-unix/ directory|/|tilde.pink|70]
+[i|that contains the UNIX domain socket(s) for the X server.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The DISPLAY environment variable is going to target the UNIX|/|tilde.pink|70]
+[i|socket that we are using. This means that, technically, the|/|tilde.pink|70]
+[i|container will be able to write data to this UNIX socket,|/|tilde.pink|70]
+[i|and thus create a new window.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Make sure that your X server controll is configured|/|tilde.pink|70]
+[i|correctly before running the Docker container. If you just|/|tilde.pink|70]
+[i|want to try you could disable entirely the policies but it|/|tilde.pink|70]
+[i|is not recommended.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|xhost +|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Instead, you should add a single local user.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|xhost +si:localuser:$USER|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Storage configuration|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Teeworlds uses a specific location to store its data, it is|/|tilde.pink|70]
+[i|described in a file named storage.cfg that we can find on|/|tilde.pink|70]
+[i|the offical Teeworlds GitHub repository.|/|tilde.pink|70]
+[h|offical Teeworlds GitHub repository|URL:https://github.com/teeworlds/teeworlds/blob/master/storage.cfg|github.com|443]
+[i||/|tilde.pink|70]
+[i|We are looking for $USERDIR, we are going to mount this|/|tilde.pink|70]
+[i|directory into our Docker container.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The first option is to create a new Docker volume containing|/|tilde.pink|70]
+[i|the Teeworlds user data. We don't want to override the|/|tilde.pink|70]
+[i|container directory, so we will create a shared Docker|/|tilde.pink|70]
+[i|volume.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|#!/bin/sh|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|TW_USERDIR=$HOME/.config/teeworlds-userdir|/|tilde.pink|70]
+[i|TW_DOCKER_VOLUME=teeworlds-userdir|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|mkdir -p ${TW_USERDIR}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|docker volume create |/|tilde.pink|70]
+[i|    --driver local |/|tilde.pink|70]
+[i|    --opt type=none |/|tilde.pink|70]
+[i|    --opt device=${TW_USERDIR} |/|tilde.pink|70]
+[i|    --opt o=bind |/|tilde.pink|70]
+[i|    ${TW_DOCKER_VOLUME}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|docker run -it |/|tilde.pink|70]
+[i|    -e "DISPLAY=$DISPLAY" |/|tilde.pink|70]
+[i|    -v "/tmp/.X11-unix:/tmp/.X11-unix" |/|tilde.pink|70]
+[i|    -v "${TW_DOCKER_VOLUME}:/home/tee/.local/share/teeworlds"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    --device "/dev/snd" |/|tilde.pink|70]
+[i|    --device "/dev/dri" |/|tilde.pink|70]
+[i|    b0thr34l/teeworlds:1.0|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|If you already had Teeworlds data in an user directory on|/|tilde.pink|70]
+[i|your host system. You can mount a volume directly without|/|tilde.pink|70]
+[i|creating a Docker volume, as shown in the example below.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|-v "$HOME/.teeworlds:/home/tee/.local/share/teeworlds"|/|tilde.pink|70]

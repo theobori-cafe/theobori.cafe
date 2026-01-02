@@ -1,124 +1,138 @@
-OpenSSH port knocking with UFW
-2023-10-21
-Last edit: 2023-10-21
----------------------
-
-There are quite a few known methods for securing an **OpenSSH** server that you should already be familiar with, such as disabling remote root access, disabling password login or changing the port (22 by default).
-
-Another highly effective method applicable to SSH ports is port knocking.
-
-Port knocking is a method of opening ports on a machine by making a series of connections to closed ports. The firewall will then react accordingly.
-
-This is very useful, as it allows you to keep your SSH port closed, so it won't show up on port scans (nmap or other).
-
-This can be done directly by configuring `iptables`, but I've opted to use `ufw` coupled with `knockd`.
-
-## How does it work ?
-
-`knockd` is the port-knock server that will run on the target machine as a daemon. It is going to handle the connection on the specified ports in the configuration.
-
-`ufw`, our netfilter firewall program, will be called by `knockd` and in ou case edit `iptables` rules.
-
-## Installation
-
-The whole installation have been done on a Debian system (Debian 12).
-
-So first, install the packages for both of them
-```bash
-apt install ufw knockd
-```
-
-## Configuration
-
-Now, let's see how to configure this tools. I assume that you are using Systemd.
-
-### ufw
-
-The default `ufw` configuration is enough to perform port knocking, it should be as the following. `ufw` has to be enabled to show its default policies.
-
-```bash
-ufw enable
-ufw status verbose | grep Default
-```
-
-Output
-
-```bash
-Default: deny (incoming), allow (outgoing), deny (routed)
-```
-
-If it is not the case, you can change the default policies.
-
-```bash
-ufw default allow incoming
-ufw default deny outgoing
-```
-
-Once it is done, you can reload the `ufw` configuration to make sure the modifications take effect immediatly.
-
-```bash
-ufw reload
-```
-
-### knockd
-
-First of all, make sure that you are using the network interface you want.
-
-In `/etc/default/knockd`, you can edit the `knockd` options that will be used with the executed command by the Systemd service.
-
-```ini
-...
-# command line options
-KNOCKD_OPTS="-i eth0"
-```
-
-Now we describe how will `knockd` act by editing `/etc/knockd.conf`.
-
-Here is an example of what could be done, in this example our SSH port is `47612`.
-
-```ini
-[options]
-    UseSyslog
-
-[openSSH]
-    sequence = 7264,3981,5410
-    seq_timeout = 5
-    start_command = ufw allow from %IP% to any port 47612
-
-[tmpOpenSSH]
-    sequence = 8792,6137,2058
-    seq_timeout = 5
-    start_command = ufw allow from %IP% to any port 47612
-    tcpflags = syn
-    cmd_timeout = 10
-    stop_command = ufw delete allow from %IP% to any port 47612
-
-[closeSSH]
-    sequence = 4496,1625,7349
-    seq_timeout = 5
-    start_command = ufw delete allow from %IP% to any port 47612
-```
-
-In this configuration are described three `knockd` knocks.
-
-**`openSSH`** will add a new `ufw` rule to allow the client IP address on the port 47612 after the received TCP sequence `7264,3981,5410`.
-
-**`tmpOpenSSH`** will add a `ufw` rule that allowed the client IP address on the port 47612 after the received TCP sequence `8792,6137,2058`. This rule is going to timeout and then be removed after 10 seconds
-
-**`closeSSH`** will remove a `ufw` rule that allowed the client IP address on the port 47612 after the received TCP sequence `4496,1625,7349`.
-
-You can finally start the port-knock server.
-
-```bash
-systemctl restart knockd
-```
-
-## Usage
-
-Now everything is setup, you can use the port-knock client `knock` (from the package `knockd`) to perform TCP connections on your target machine.
-
-As example:
-```bash
-knock -v localhost 7264 3981 5410
-```
-
+[i|## title: OpenSSH port knocking with UFW|/|tilde.pink|70]
+[i|## date: "2023-10-21"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /openssh.png|/|tilde.pink|70]
+[I|/openssh.png|/~nagi/openssh.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|There are quite a few known methods for securing an OpenSSH|/|tilde.pink|70]
+[i|server that you should already be familiar with, such as|/|tilde.pink|70]
+[i|disabling remote root access, disabling password login or|/|tilde.pink|70]
+[i|changing the port (22 by default).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Another highly effective method applicable to SSH ports is|/|tilde.pink|70]
+[i|port knocking.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Port knocking is a method of opening ports on a machine by|/|tilde.pink|70]
+[i|making a series of connections to closed ports. The firewall|/|tilde.pink|70]
+[i|will then react accordingly.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|This is very useful, as it allows you to keep your SSH port|/|tilde.pink|70]
+[i|closed, so it won't show up on port scans (nmap or other).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|This can be done directly by configuring iptables, but I've|/|tilde.pink|70]
+[i|opted to use ufw coupled with knockd.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## How does it work ?|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|knockd is the port-knock server that will run on the target|/|tilde.pink|70]
+[i|machine as a daemon. It is going to handle the connection on|/|tilde.pink|70]
+[i|the specified ports in the configuration.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|ufw, our netfilter firewall program, will be called by|/|tilde.pink|70]
+[i|knockd and in ou case edit iptables rules.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Installation|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The whole installation have been done on a Debian system|/|tilde.pink|70]
+[i|(Debian 12).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So first, install the packages for both of them|/|tilde.pink|70]
+[i|apt install ufw knockd|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Configuration|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Now, let's see how to configure this tools. I assume that|/|tilde.pink|70]
+[i|you are using Systemd.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### ufw|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The default ufw configuration is enough to perform port|/|tilde.pink|70]
+[i|knocking, it should be as the following. ufw has to be|/|tilde.pink|70]
+[i|enabled to show its default policies.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|ufw enable|/|tilde.pink|70]
+[i|ufw status verbose | grep Default|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Output|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Default: deny (incoming), allow (outgoing), deny (routed)|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|If it is not the case, you can change the default policies.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|ufw default allow incoming|/|tilde.pink|70]
+[i|ufw default deny outgoing|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Once it is done, you can reload the ufw configuration to|/|tilde.pink|70]
+[i|make sure the modifications take effect immediatly.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|ufw reload|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### knockd|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|First of all, make sure that you are using the network|/|tilde.pink|70]
+[i|interface you want.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|In /etc/default/knockd, you can edit the knockd options that|/|tilde.pink|70]
+[i|will be used with the executed command by the Systemd|/|tilde.pink|70]
+[i|service.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|...|/|tilde.pink|70]
+[i|# command line options|/|tilde.pink|70]
+[i|KNOCKD_OPTS="-i eth0"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Now we describe how will knockd act by editing|/|tilde.pink|70]
+[i|/etc/knockd.conf.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Here is an example of what could be done, in this example|/|tilde.pink|70]
+[i|our SSH port is 47612.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|[options]|/|tilde.pink|70]
+[i|    UseSyslog|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|[openSSH]|/|tilde.pink|70]
+[i|    sequence = 7264,3981,5410|/|tilde.pink|70]
+[i|    seq_timeout = 5|/|tilde.pink|70]
+[i|    start_command = ufw allow from %IP% to any port 47612|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|[tmpOpenSSH]|/|tilde.pink|70]
+[i|    sequence = 8792,6137,2058|/|tilde.pink|70]
+[i|    seq_timeout = 5|/|tilde.pink|70]
+[i|    start_command = ufw allow from %IP% to any port 47612|/|tilde.pink|70]
+[i|    tcpflags = syn|/|tilde.pink|70]
+[i|    cmd_timeout = 10|/|tilde.pink|70]
+[i|    stop_command = ufw delete allow from %IP% to any port|/|tilde.pink|70]
+[i|47612|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|[closeSSH]|/|tilde.pink|70]
+[i|    sequence = 4496,1625,7349|/|tilde.pink|70]
+[i|    seq_timeout = 5|/|tilde.pink|70]
+[i|    start_command = ufw delete allow from %IP% to any port|/|tilde.pink|70]
+[i|47612|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|In this configuration are described three knockd knocks.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|openSSH will add a new ufw rule to allow the client IP|/|tilde.pink|70]
+[i|address on the port 47612 after the received TCP sequence|/|tilde.pink|70]
+[i|7264,3981,5410.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|tmpOpenSSH will add a ufw rule that allowed the client IP|/|tilde.pink|70]
+[i|address on the port 47612 after the received TCP sequence|/|tilde.pink|70]
+[i|8792,6137,2058. This rule is going to timeout and then be|/|tilde.pink|70]
+[i|removed after 10 seconds|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|closeSSH will remove a ufw rule that allowed the client IP|/|tilde.pink|70]
+[i|address on the port 47612 after the received TCP sequence|/|tilde.pink|70]
+[i|4496,1625,7349.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|You can finally start the port-knock server.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|systemctl restart knockd|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Usage|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Now everything is setup, you can use the port-knock client|/|tilde.pink|70]
+[i|knock (from the package knockd) to perform TCP connections|/|tilde.pink|70]
+[i|on your target machine.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|As example:|/|tilde.pink|70]
+[i|knock -v localhost 7264 3981 5410|/|tilde.pink|70]

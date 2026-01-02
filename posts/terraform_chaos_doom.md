@@ -7,7 +7,6 @@ I first saw [kubedoom](https://github.com/storax/kubedoom) and thought it was pr
 
 The principle is very simple, each enemy represents a Terraform resource, if an enemy dies, the associated resource is destroyed.
 
-
 ## How does it work?
 
 The main program is `terraform-doom`, which creates a UNIX socket, listens to it and simultaneously launches an X11 virtual server (Xvfb), a VNC server (x11vnc) attached to this X session and `psdoom` (DOOM writing to the UNIX socket).
@@ -20,10 +19,8 @@ Everything we've just described will be encapsulated in a Docker container.
 
 
 <p align="center">
-    <img src="/terraform_doom_graph.png" class="img-center">
+<img src="/terraform_doom_graph.png" class="img-center">
 </p>
-
-
 
 ## Demonstration
 
@@ -36,10 +33,6 @@ This demonstration has been realized with the example Terraform project, every s
     </video>
 </p>
 
-
-
 ## Links
 
 [https://github.com/theobori/terraform-doom](https://github.com/theobori/terraform-doom)
-
-

@@ -1,88 +1,102 @@
-My Terraform NeuVector provider
-2023-06-04
-Last edit: 2023-06-04
----------------------
-
-This project is used to manage NeuVector's configuration and its most revelant resources. I was asked to automate the configuration of the solution in a fairly specific context. Initially, I had made a rather well-organized bash script that could apply these resources, but not destroy them.
-
-I then asked around and very quickly found Terraform. So I learned how to use it and made a module that could manage any NeuVector resource, including creation and destruction only.
-
-A huge problem was the token that NeuVector provides tends to timeout quite quickly (300 seconds by default).
-
-So I decided to create a Terraform provider to handle all this cleanly. The language best suited for this is Go, so I learned it. Hashicorp explains that it's best to separate the client library from the provider.
-
-So I created a Go SDK for NeuVector before using it in the provider.
-
-Now the provider is able to fully manage the implemented resources (create, delete, update and import).
-
-## Use cases
-
-The provider Terraform block looks like below.
-
-```hcl
-terraform {
-  required_providers {
-    neuvector = {
-      source = "theobori/neuvector"
-      version = "0.4.1"
-    }
-  }
-}
-
-provider "neuvector" {
-  base_url = "https://127.0.0.1:10443/v1/"
-  username = "admin"
-  password = "admin"
-}
-```
-
-Once it is declared in the configuration, you can start using it as you want. Here's a Terraform example that could be applied after installing NeuVector.
-
-```hcl
-resource "neuvector_eula" "eula" {
-    accepted = true
-}
-
-resource "neuvector_registry" "registry_test" {
-  name                   = "docker.io"
-  registry_type          = "Docker Registry"
-  filters                = ["*"]
-  registry               = "https://registry.hub.docker.com/"
-  rescan_after_db_update = true
-  auth_with_token        = false
-  scan_layers            = true
-}
-
-resource "neuvector_group" "group_test" {
-  name = "mytestgroup"
-
-  criteria {
-    key   = "pattern"
-    value = "[a-z]"
-    op    = "regex"
-  }
-
-  criteria {
-    key   = "namespace"
-    value = "example"
-    op    = "="
-  }
-}
-
-data "neuvector_group_metadata" "group_metadata" {
-    name = neuvector_group.group_test.id
-}
-
-resource "neuvector_service_config" "service_config_test" {
-  services = data.neuvector_group_services.group_metadata.services
-
-  not_scored = true
-}
-```
-
-## Links
-
-[h|https://github.com/theobori/terraform-provider-neuvector|URL:https://github.com/theobori/terraform-provider-neuvector|tilde.pink|70]
-
-[h|https://registry.terraform.io/providers/theobori/neuvector|URL:https://registry.terraform.io/providers/theobori/neuvector/latest|tilde.pink|70]
-
+[i|## title: My Terraform NeuVector provider|/|tilde.pink|70]
+[i|## date: "2023-06-04"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|This project is used to manage NeuVector's configuration and|/|tilde.pink|70]
+[i|its most revelant resources. I was asked to automate the|/|tilde.pink|70]
+[i|configuration of the solution in a fairly specific context.|/|tilde.pink|70]
+[i|Initially, I had made a rather well-organized bash script|/|tilde.pink|70]
+[i|that could apply these resources, but not destroy them.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I then asked around and very quickly found Terraform. So I|/|tilde.pink|70]
+[i|learned how to use it and made a module that could manage|/|tilde.pink|70]
+[i|any NeuVector resource, including creation and destruction|/|tilde.pink|70]
+[i|only.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|A huge problem was the token that NeuVector provides tends|/|tilde.pink|70]
+[i|to timeout quite quickly (300 seconds by default).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So I decided to create a Terraform provider to handle all|/|tilde.pink|70]
+[i|this cleanly. The language best suited for this is Go, so I|/|tilde.pink|70]
+[i|learned it. Hashicorp explains that it's best to separate|/|tilde.pink|70]
+[i|the client library from the provider.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /terraform_provider.png|/|tilde.pink|70]
+[I|/terraform_provider.png|/~nagi/terraform_provider.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So I created a Go SDK for NeuVector before using it in the|/|tilde.pink|70]
+[i|provider.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Now the provider is able to fully manage the implemented|/|tilde.pink|70]
+[i|resources (create, delete, update and import).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Use cases|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The provider Terraform block looks like below.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|terraform {|/|tilde.pink|70]
+[i|  required_providers {|/|tilde.pink|70]
+[i|    neuvector = {|/|tilde.pink|70]
+[i|      source = "theobori/neuvector"|/|tilde.pink|70]
+[i|      version = "0.4.1"|/|tilde.pink|70]
+[i|    }|/|tilde.pink|70]
+[i|  }|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|provider "neuvector" {|/|tilde.pink|70]
+[i|  base_url = "https://127.0.0.1:10443/v1/"|/|tilde.pink|70]
+[i|  username = "admin"|/|tilde.pink|70]
+[i|  password = "admin"|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Once it is declared in the configuration, you can start|/|tilde.pink|70]
+[i|using it as you want. Here's a Terraform example that could|/|tilde.pink|70]
+[i|be applied after installing NeuVector.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "neuvector_eula" "eula" {|/|tilde.pink|70]
+[i|    accepted = true|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "neuvector_registry" "registry_test" {|/|tilde.pink|70]
+[i|  name                   = "docker.io"|/|tilde.pink|70]
+[i|  registry_type          = "Docker Registry"|/|tilde.pink|70]
+[i|  filters                = ["*"]|/|tilde.pink|70]
+[i|  registry               =|/|tilde.pink|70]
+[i|"https://registry.hub.docker.com/"|/|tilde.pink|70]
+[i|  rescan_after_db_update = true|/|tilde.pink|70]
+[i|  auth_with_token        = false|/|tilde.pink|70]
+[i|  scan_layers            = true|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "neuvector_group" "group_test" {|/|tilde.pink|70]
+[i|  name = "mytestgroup"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  criteria {|/|tilde.pink|70]
+[i|    key   = "pattern"|/|tilde.pink|70]
+[i|    value = "[a-z]"|/|tilde.pink|70]
+[i|    op    = "regex"|/|tilde.pink|70]
+[i|  }|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  criteria {|/|tilde.pink|70]
+[i|    key   = "namespace"|/|tilde.pink|70]
+[i|    value = "example"|/|tilde.pink|70]
+[i|    op    = "="|/|tilde.pink|70]
+[i|  }|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|data "neuvector_group_metadata" "group_metadata" {|/|tilde.pink|70]
+[i|    name = neuvector_group.group_test.id|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|resource "neuvector_service_config" "service_config_test" {|/|tilde.pink|70]
+[i|  services =|/|tilde.pink|70]
+[i|data.neuvector_group_services.group_metadata.services|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  not_scored = true|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Links|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|https://github.com/theobori/terraform-provider-neuvector|/|tilde.pink|70]
+[i|https://registry.terraform.io/providers/theobori/neuvector|/|tilde.pink|70]
+[h|https://github.com/theobori/terraform-provider-neuvector|URL:https://github.com/theobori/terraform-provider-neuvector|github.com|443]
+[h|https://registry.terraform.io/providers/theobori/neuvector|URL:https://registry.terraform.io/providers/theobori/neuvector/latest|registry.terraform.io|443]

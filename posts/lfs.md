@@ -46,7 +46,7 @@ An important part of LFS is cross-compiling. The aim is to build the tools of th
 Here's a diagram representing the cross-compilation steps, where each rectangle represents a compiler containing a source platform to destination platform relationship.
 
 <center>
-    <img src="/lfs_cross-compilation.png" class="img-center">
+<img src="/lfs_cross-compilation.png" class="img-center">
 </center>
 
 ### Basic softwares and configuration
@@ -84,7 +84,7 @@ I'm obviously skipping all the sub-dependencies, network configuration (DHCP cli
 Below is an overview of my main desktop envinronnement.
 
 <center>
-    <img src="/lfs_xfce.png" class="img-center">
+<img src="/lfs_xfce.png" class="img-center">
 </center>
 
 
@@ -93,13 +93,13 @@ So I end up on [Xfce](https://www.xfce.org), download the latest version of [DDN
 The application is functional, I can join a game via the Internet and the game sound comes out of my laptop speakers! Below is a screenshot with the game running.
 
 <center>
-    <img src="/lfs_ddnet.png" class="img-center">
+<img src="/lfs_ddnet.png" class="img-center">
 </center>
 
 The same for Quake I through [VkQuake](https://github.com/Novum/vkQuake), a preview below.
 
 <center>
-    <img src="/lfs_quake.png" class="img-center">
+<img src="/lfs_quake.png" class="img-center">
 </center>
 
 ## Little hack
@@ -111,7 +111,7 @@ I installed it with the [DeterminateSystems](https://github.com/DeterminateSyste
 It allowed me to build very complicated packages such as [Firefox](https://www.mozilla.org/fr/firefox), here's a preview.
 
 <center>
-    <img src="/lfs_firefox.png" class="img-center">
+<img src="/lfs_firefox.png" class="img-center">
 </center>
 
 ## Is it worth it?

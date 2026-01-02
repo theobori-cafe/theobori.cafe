@@ -11,3 +11,4 @@ scripts/deploy.sh
 graphs/
 .direnv
 result
+assets_pink

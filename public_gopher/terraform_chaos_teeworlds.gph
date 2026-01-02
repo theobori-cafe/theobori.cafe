@@ -1,34 +1,39 @@
-Teeworlds Terraform chaos engineering
-2024-06-05
-Last edit: 2024-06-05
----------------------
-
-After doing some [chaos engineering for Terraform with the DOOM game](/posts/terraform_chaos_doom/), I wanted to make a version for Teeworlds, specifically for its version 0.7 (its latest version).
-
-The difference with the DOOM version is that in this project, a player must capture the flag for a Terraform resource to be randomly destroyed.
-
-## How does it work?
-
-When configuring a Teeworlds server, the values below can be entered.
-
-```bash
-# Econ configuration
-ec_port 7000
-ec_password "hello_world"
-ec_output_level 2
-```
-
-These are prefixed with `ec_` because they are associated with the `econ` server. This configuration binds a TCP port which will expose the Telnet protocol-based econ server.
-
-Through the latter, we'll be able to retrieve events from the Teeworlds server, such as a message sent, a player killed or a flag captured !
-
-## Demonstration
-
-This demonstration has been realized with the example Terraform project, every steps to reproduce it are detailed in the README file on the repository.
-
-## Links
-
-[h|https://github.com/theobori/terraform-teeworlds|URL:https://github.com/theobori/terraform-teeworlds|tilde.pink|70]
-
-[h|https://github.com/theobori/teeworlds-econ|URL:https://github.com/theobori/teeworlds-econ|tilde.pink|70]
-
+[i|## title: Teeworlds Terraform chaos engineering|/|tilde.pink|70]
+[i|## date: "2024-06-05"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|After doing some chaos engineering for Terraform with the|/|tilde.pink|70]
+[i|DOOM game, I wanted to make a version for Teeworlds,|/|tilde.pink|70]
+[i|specifically for its version 0.7 (its latest version).|/|tilde.pink|70]
+[1|chaos engineering for Terraform with the DOOM game|/~nagi/posts/terraform_chaos_doom|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The difference with the DOOM version is that in this|/|tilde.pink|70]
+[i|project, a player must capture the flag for a Terraform|/|tilde.pink|70]
+[i|resource to be randomly destroyed.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## How does it work?|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|When configuring a Teeworlds server, the values below can be|/|tilde.pink|70]
+[i|entered.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|# Econ configuration|/|tilde.pink|70]
+[i|ec_port 7000|/|tilde.pink|70]
+[i|ec_password "hello_world"|/|tilde.pink|70]
+[i|ec_output_level 2|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|These are prefixed with ec_ because they are associated with|/|tilde.pink|70]
+[i|the econ server. This configuration binds a TCP port which|/|tilde.pink|70]
+[i|will expose the Telnet protocol-based econ server.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Through the latter, we'll be able to retrieve events from|/|tilde.pink|70]
+[i|the Teeworlds server, such as a message sent, a player|/|tilde.pink|70]
+[i|killed or a flag captured !|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /terraform_teeworlds_graph.png|/|tilde.pink|70]
+[I|/terraform_teeworlds_graph.png|/~nagi/terraform_teeworlds_graph.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Links|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|https://github.com/theobori/terraform-teeworlds|/|tilde.pink|70]
+[i|https://github.com/theobori/teeworlds-econ|/|tilde.pink|70]
+[h|https://github.com/theobori/terraform-teeworlds|URL:https://github.com/theobori/terraform-teeworlds|github.com|443]
+[h|https://github.com/theobori/teeworlds-econ|URL:https://github.com/theobori/teeworlds-econ|github.com|443]

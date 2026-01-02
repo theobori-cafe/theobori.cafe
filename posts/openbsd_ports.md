@@ -22,16 +22,13 @@ To manage X displays, I used `xenodm` which is installed by default on OpenBSD. 
 rcctl enable xenodm
 ```
 
-
 And for the windows manager, there's a basic one (cwm) but I opted for i3wm anyway.
-
 
 ## Porting VVVVVV
 
 Few years ago, VVVVVV has released an open source version (engine + levels). The game binary requires a **`data.zip`** file which must be in the same folder, luckily there are options to specify in which folders to look for the fonts and languages.
 
 So that the user doesn't have to fill in all this information himself, I've created a shell script with the appropriate values.
-
 
 ```bash
 #!/bin/sh
@@ -48,11 +45,7 @@ exec ./${NAME} \
      ${@}
 ```
 
-
-
 Note that `${TRUEPREFIX}` is not defined in the script, this is normal, it will be replaced by `${SUBST_CMD}` defined in **`/usr/ports/infrastructure/mk/bsd.port.mk`**.
-
-
 
 This is what the game's makefile looks like.
 
@@ -117,8 +110,6 @@ post-install:
 .include <bsd.port.mk>
 ```
 
-
-
 As you can see, I had to override some of the BSD port makefile targets, because, actually this ports is a little bit special. It must download multiple distfiles from different sites (see below).
 
 ```makefile
@@ -129,8 +120,6 @@ DISTFILES=	${PKGNAME}${EXTRACT_SUFX}
 DISTFILES.a=	vvvvvv-mp-linux-02132024${EXTRACT_SUFX}
 ```
 
-
-
 Moreover, there were conflicts with the extracted files names, so I had to rename the directory containing **`data.zip`**.
 
 ```makefile
@@ -139,18 +128,10 @@ do-extract:
 	unzip ${FULLDISTDIR}/vvvvvv-mp-linux-02132024${EXTRACT_SUFX} -d ${WRKDIR}/${PKGNAME}-data
 ```
 
-
-
 Also, we didn't want to build the dependencies using the github modules, because obviously, the released zip file doesn't have a **`.git`** folder inside.
 
-
-
 I've also patched a few source files, the full port is available  [here](https://github.com/theobori/openbsd-ports/tree/main/games/VVVVVV).
-
-
 
 ## Links
 
 [My OpenBSD ports](https://github.com/theobori/openbsd-ports)
-
-

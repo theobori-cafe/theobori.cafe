@@ -1,194 +1,224 @@
-A GNU Emacs experience throught NixOS
-2025-02-26
-Last edit: 2025-02-26
----------------------
-
-I have always used 
-[h|VSCode](https://code.visualstudio.com/) as a code editor. I've already tried using [Vim|URL:https://www.vim.org/|tilde.pink|70]
-, but only for testing purposes and not with the aim of changing text editors.
-
-This time, I decided to use a 
-[h|FLOSS](https://www.gnu.org/philosophy/floss-and-foss.html) code editor in the terminal, the aim being to replace [VSCode|URL:https://code.visualstudio.com/|tilde.pink|70]
- indefinitely. This blog post is actually written with it.
-
-It is none other than 
-[h|Emacs](https://www.gnu.org/s/emacs/). For the convenience of writing and reading this post, I'll simply write “Emacs” to designate the [implementation of the GNU|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- project.
-
-## Why
-
-Why did I leave 
-[h|VSCode](https://code.visualstudio.com/) and decide to switch to [Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
-?
-
-### Leaving VSCode
-
-Because it's a RAM-hungry graphics application. You shouldn't need that much memory to edit text and connect to an LSP server. We're talking about 1.2 GB compared with around 200 MB for the same project.
-
-Also, I don't want all the additional features offered, such as file name and text parsing, to suggest that I download extensions. I simply need a simple, functional text-editing application. I don't enjoy using 
-[h|VSCode|URL:https://code.visualstudio.com/|tilde.pink|70]
- anymore, so it's time to say goodbye.
-
-### Choosing Emacs
-
-Of all the text editors out there, I chose 
-[h|Emacs](https://www.gnu.org/s/emacs/). It's actually much more than that. In the words of [Protesilaos Stavrou|URL:https://protesilaos.com/codelog/2022-03-22-libreplanet-emacs-living-freedom/|tilde.pink|70]
-.
-> It is a programmable platform where text editing is one of the main points of interaction.
-
-Indeed, I see 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- more as an operating system than as a text editor. The possibilities for configuring and extending it are virtually infinite.
-
-Also, I find it an excellent UNIX citizen. The default keystroke sequences correspond to those used in other applications in the terminal. ar example, the moves in a Linux manual read with the `man` command or those in the results of `fzf`.
-
-Another reason was to be able to modify any behavior, to be able to have an application that corresponds precisely to what you want to have.
-
-## Learning
-
-So I installed 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- version 29.4 and started learning how to use it properly.
-
-### Mastering Emacs, Mickey Pertersen
-
-This book explained the important concepts of the application and gave me a solid foundation for getting started with 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
-. Certain chapters, such as “The Theory of Movement” and “The Theory of Editing”, explained to me the best practices for efficient and rapid buffering.
-
-I highly recommend this book for anyone wishing to start learning 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
-.
-
-### Emacs Lisp Intro
-
-I've also read the “Emacs Lisp Intro” written in 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- as a manual. Since most of the code is written in 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- Lisp, it's essential to understand the language, or at least know how to read it, in order to configure the editor.
-
-For example, I needed to write some to display line numbers at the start of 
-[h|org-present|URL:https://github.com/rlister/org-present|tilde.pink|70]
- mode, and to hide them at the end of minor mode execution.
-
-### Environment
-
-As I said earlier, 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- is a platform with a whole host of features. This makes it all the more tempting to leave this environment, which offers numerous possibilities, such as organizing a diary, compiling a project, accessing a shell or terminal emulator, making a presentation, taking notes, managing 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- modes and packages, etc.
-
-Staying in the same environment made me more productive and faster. For computer development, 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- can be configured like an IDE, precisely and fully controlled.
-
-One last very important thing to know is that any piece of 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- is documented, meaning that whatever I do or try to do, I can find documentation. 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- is its own documentation.
-
-## Configuration
-
-### Via NixOS
-
-Concerning the tool configuration, being on [NixOS](https://nixos.org/), I decided to use the 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- module provided by the home-manager. To remain consistent with my current configuration, which is highly modularized, each 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- package has its own Nix module.
-
-Here's what the file structure looks like.
-```text
-modules/home/editors/emacs
-├── default.nix
-└── packages
-    ├── auto-save
-    │   └── default.nix
-    ├── dashboard
-    │   └── default.nix
-    ├── dired
-    │   └── default.nix
-    ├── doom-modeline
-    │   └── default.nix
-    ├── ivy
-    │   └── default.nix
-    ├── lsp-mode
-    │   ├── bash-language-server
-    │   │   └── default.nix
-    │   ├── default.nix
-    │   ├── dockerfile
-    │   │   └── default.nix
-    │   ├── gopls
-    │   │   └── default.nix
-...
-```
-
-These modules contain the dependencies, i.e. the 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- packages and the 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- Lisp configuration.
-
-Here's an example with the 
-[h|org-superstar|URL:https://github.com/integral-dw/org-superstar-mode|tilde.pink|70]
- package.
-
-```nix
-{
-  config,
-  lib,
-  namespace,
-  ...
-}:
-let
-  inherit (lib) mkIf;
-  inherit (lib.${namespace}) mkBoolOpt;
-
-  cfg = config.${namespace}.editors.emacs.packages.org-superstar;
-in
-{
-  options.${namespace}.editors.emacs.packages.org-superstar = {
-    enable = mkBoolOpt false "Whether or not to enable the emacs org-superstar package.";
-  };
-
-  config = mkIf cfg.enable {
-    programs.emacs = {
-      extraPackages = (epkgs: [ epkgs.org-superstar ]);
-      extraConfig = ''
-        (use-package org-superstar
-          :ensure t
-          :after org
-          :hook (org-mode . org-superstar-mode)
-          :custom
-            (org-superstar-remove-leading-stars t)
-            (org-superstar-headline-bullets-list '("⁖" "✿" "▷" "✸")))
-      '';
-    };
-  };
-}
-```
-
-## Notes taking on Emacs
-
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- has a major mode called 
-[h|Org|URL:https://orgmode.org/|tilde.pink|70]
-, which modifies 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- behavior to create an environment suited to writing data in org format. It integrates perfectly with 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- other features and keeps me in the application.
-
-I used to take my notes with Obsidian. I refactored all my notes and converted them to 
-[h|Org|URL:https://orgmode.org/|tilde.pink|70]
- format.
-
-## Conclusion
-
-From now on, I intend to use 
-[h|Emacs|URL:https://www.gnu.org/s/emacs/|tilde.pink|70]
- as my main text editor, as well as for note-taking.
-
+[i|## title: A GNU Emacs experience throught NixOS|/|tilde.pink|70]
+[i|## date: "2025-02-26"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I have always used VSCode as a code editor. I've already|/|tilde.pink|70]
+[i|tried using Vim, but only for testing purposes and not with|/|tilde.pink|70]
+[i|the aim of changing text editors.|/|tilde.pink|70]
+[h|VSCode|URL:https://code.visualstudio.com/|code.visualstudio.com|443]
+[h|Vim|URL:https://www.vim.org/|www.vim.org|443]
+[i||/|tilde.pink|70]
+[i|This time, I decided to use a FLOSS code editor in the|/|tilde.pink|70]
+[i|terminal, the aim being to replace VSCode indefinitely. This|/|tilde.pink|70]
+[i|blog post is actually written with it.|/|tilde.pink|70]
+[h|FLOSS|URL:https://www.gnu.org/philosophy/floss-and-foss.html|www.gnu.org|443]
+[h|VSCode|URL:https://code.visualstudio.com/|code.visualstudio.com|443]
+[i||/|tilde.pink|70]
+[i|It is none other than Emacs. For the convenience of writing|/|tilde.pink|70]
+[i|and reading this post, I'll simply write “Emacs” to|/|tilde.pink|70]
+[i|designate the implementation of the GNU project.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[h|implementation of the GNU|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|## Why|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Why did I leave VSCode and decide to switch to Emacs?|/|tilde.pink|70]
+[h|VSCode|URL:https://code.visualstudio.com/|code.visualstudio.com|443]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|### Leaving VSCode|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Because it's a RAM-hungry graphics application. You shouldn't|/|tilde.pink|70]
+[i|need that much memory to edit text and connect to an LSP|/|tilde.pink|70]
+[i|server. We're talking about 1.2 GB compared with around 200|/|tilde.pink|70]
+[i|MB for the same project.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Also, I don't want all the additional features offered, such|/|tilde.pink|70]
+[i|as file name and text parsing, to suggest that I download|/|tilde.pink|70]
+[i|extensions. I simply need a simple, functional text-editing|/|tilde.pink|70]
+[i|application. I don't enjoy using VSCode anymore, so it's|/|tilde.pink|70]
+[i|time to say goodbye.|/|tilde.pink|70]
+[h|VSCode|URL:https://code.visualstudio.com/|code.visualstudio.com|443]
+[i||/|tilde.pink|70]
+[i|### Choosing Emacs|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Of all the text editors out there, I chose Emacs. It's|/|tilde.pink|70]
+[i|actually much more than that. In the words of Protesilaos|/|tilde.pink|70]
+[i|Stavrou.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[h|Protesilaos Stavrou|URL:https://protesilaos.com/codelog/2022-03-22-libreplanet-emacs-living-freedom/|protesilaos.com|443]
+[i|“It is a programmable platform where text editing is one of|/|tilde.pink|70]
+[i|the main points of interaction.”|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Indeed, I see Emacs more as an operating system than as a|/|tilde.pink|70]
+[i|text editor. The possibilities for configuring and extending|/|tilde.pink|70]
+[i|it are virtually infinite.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|Also, I find it an excellent UNIX citizen. The default|/|tilde.pink|70]
+[i|keystroke sequences correspond to those used in other|/|tilde.pink|70]
+[i|applications in the terminal. ar example, the moves in a|/|tilde.pink|70]
+[i|Linux manual read with the man command or those in the|/|tilde.pink|70]
+[i|results of fzf.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Another reason was to be able to modify any behavior, to be|/|tilde.pink|70]
+[i|able to have an application that corresponds precisely to|/|tilde.pink|70]
+[i|what you want to have.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Learning|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So I installed Emacs version 29.4 and started learning how|/|tilde.pink|70]
+[i|to use it properly.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|### Mastering Emacs, Mickey Pertersen|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|This book explained the important concepts of the|/|tilde.pink|70]
+[i|application and gave me a solid foundation for getting|/|tilde.pink|70]
+[i|started with Emacs. Certain chapters, such as “The Theory of|/|tilde.pink|70]
+[i|Movement” and “The Theory of Editing”, explained to me the|/|tilde.pink|70]
+[i|best practices for efficient and rapid buffering.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|I highly recommend this book for anyone wishing to start|/|tilde.pink|70]
+[i|learning Emacs.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|### Emacs Lisp Intro|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I've also read the “Emacs Lisp Intro” written in Emacs as a|/|tilde.pink|70]
+[i|manual. Since most of the code is written in Emacs Lisp,|/|tilde.pink|70]
+[i|it's essential to understand the language, or at least know|/|tilde.pink|70]
+[i|how to read it, in order to configure the editor.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|For example, I needed to write some to display line numbers|/|tilde.pink|70]
+[i|at the start of org-present mode, and to hide them at the end|/|tilde.pink|70]
+[i|of minor mode execution.|/|tilde.pink|70]
+[h|org-present|URL:https://github.com/rlister/org-present|github.com|443]
+[i||/|tilde.pink|70]
+[i|### Environment|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|As I said earlier, Emacs is a platform with a whole host of|/|tilde.pink|70]
+[i|features. This makes it all the more tempting to leave this|/|tilde.pink|70]
+[i|environment, which offers numerous possibilities, such as|/|tilde.pink|70]
+[i|organizing a diary, compiling a project, accessing a shell|/|tilde.pink|70]
+[i|or terminal emulator, making a presentation, taking notes,|/|tilde.pink|70]
+[i|managing Emacs modes and packages, etc.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|Staying in the same environment made me more productive and|/|tilde.pink|70]
+[i|faster. For computer development, Emacs can be configured|/|tilde.pink|70]
+[i|like an IDE, precisely and fully controlled.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|One last very important thing to know is that any piece of|/|tilde.pink|70]
+[i|Emacs is documented, meaning that whatever I do or try to|/|tilde.pink|70]
+[i|do, I can find documentation. Emacs is its own|/|tilde.pink|70]
+[i|documentation.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|## Configuration|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Via NixOS|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Concerning the tool configuration, being on NixOS, I decided|/|tilde.pink|70]
+[i|to use the Emacs module provided by the home-manager. To|/|tilde.pink|70]
+[i|remain consistent with my current configuration, which is|/|tilde.pink|70]
+[i|highly modularized, each Emacs package has its own Nix|/|tilde.pink|70]
+[i|module.|/|tilde.pink|70]
+[h|NixOS|URL:https://nixos.org/|nixos.org|443]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|Here's what the file structure looks like.|/|tilde.pink|70]
+[i|modules/home/editors/emacs|/|tilde.pink|70]
+[i|├── default.nix|/|tilde.pink|70]
+[i|└── packages|/|tilde.pink|70]
+[i|    ├── auto-save|/|tilde.pink|70]
+[i|    │   └── default.nix|/|tilde.pink|70]
+[i|    ├── dashboard|/|tilde.pink|70]
+[i|    │   └── default.nix|/|tilde.pink|70]
+[i|    ├── dired|/|tilde.pink|70]
+[i|    │   └── default.nix|/|tilde.pink|70]
+[i|    ├── doom-modeline|/|tilde.pink|70]
+[i|    │   └── default.nix|/|tilde.pink|70]
+[i|    ├── ivy|/|tilde.pink|70]
+[i|    │   └── default.nix|/|tilde.pink|70]
+[i|    ├── lsp-mode|/|tilde.pink|70]
+[i|    │   ├── bash-language-server|/|tilde.pink|70]
+[i|    │   │   └── default.nix|/|tilde.pink|70]
+[i|    │   ├── default.nix|/|tilde.pink|70]
+[i|    │   ├── dockerfile|/|tilde.pink|70]
+[i|    │   │   └── default.nix|/|tilde.pink|70]
+[i|    │   ├── gopls|/|tilde.pink|70]
+[i|    │   │   └── default.nix|/|tilde.pink|70]
+[i|...|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|These modules contain the dependencies, i.e. the Emacs|/|tilde.pink|70]
+[i|packages and the Emacs Lisp configuration.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|Here's an example with the org-superstar package.|/|tilde.pink|70]
+[h|org-superstar|URL:https://github.com/integral-dw/org-superstar-mode|github.com|443]
+[i||/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  config,|/|tilde.pink|70]
+[i|  lib,|/|tilde.pink|70]
+[i|  namespace,|/|tilde.pink|70]
+[i|  ...|/|tilde.pink|70]
+[i|}:|/|tilde.pink|70]
+[i|let|/|tilde.pink|70]
+[i|  inherit (lib) mkIf;|/|tilde.pink|70]
+[i|  inherit (lib.${namespace}) mkBoolOpt;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  cfg = config.${namespace}.editors.emacs.packages.org-|/|tilde.pink|70]
+[i|superstar;|/|tilde.pink|70]
+[i|in|/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  options.${namespace}.editors.emacs.packages.org-superstar =|/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|    enable = mkBoolOpt false "Whether or not to enable the|/|tilde.pink|70]
+[i|emacs org-superstar package.";|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  config = mkIf cfg.enable {|/|tilde.pink|70]
+[i|    programs.emacs = {|/|tilde.pink|70]
+[i|      extraPackages = (epkgs: [ epkgs.org-superstar ]);|/|tilde.pink|70]
+[i|      extraConfig = ''|/|tilde.pink|70]
+[i|        (use-package org-superstar|/|tilde.pink|70]
+[i|          :ensure t|/|tilde.pink|70]
+[i|          :after org|/|tilde.pink|70]
+[i|          :hook (org-mode . org-superstar-mode)|/|tilde.pink|70]
+[i|          :custom|/|tilde.pink|70]
+[i|            (org-superstar-remove-leading-stars t)|/|tilde.pink|70]
+[i|            (org-superstar-headline-bullets-list '("⁖" "✿" "▷"|/|tilde.pink|70]
+[i|"✸")))|/|tilde.pink|70]
+[i|      '';|/|tilde.pink|70]
+[i|    };|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Notes taking on Emacs|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Emacs has a major mode called Org, which modifies Emacs|/|tilde.pink|70]
+[i|behavior to create an environment suited to writing data in|/|tilde.pink|70]
+[i|org format. It integrates perfectly with Emacs other|/|tilde.pink|70]
+[i|features and keeps me in the application.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[h|Org|URL:https://orgmode.org/|orgmode.org|443]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|I used to take my notes with Obsidian. I refactored all my|/|tilde.pink|70]
+[i|notes and converted them to Org format.|/|tilde.pink|70]
+[h|Org|URL:https://orgmode.org/|orgmode.org|443]
+[i||/|tilde.pink|70]
+[i|## Conclusion|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|From now on, I intend to use Emacs as my main text editor,|/|tilde.pink|70]
+[i|as well as for note-taking.|/|tilde.pink|70]
+[h|Emacs|URL:https://www.gnu.org/s/emacs/|www.gnu.org|443]

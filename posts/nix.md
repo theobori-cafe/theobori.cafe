@@ -4,7 +4,7 @@ date: "2024-06-24"
 ---
 
 <center>
-    <img src="/nix_logo.svg" width="40%">
+<img src="/nix_logo.svg" width="40%">
 </center>
 
 Here I share some notes and other things I've learned about Nix that I find interesting. The content of this post is mainly about me learning Nix, it's not about understanding the whole tool and language.
@@ -103,7 +103,6 @@ nix-repl> fix (self: { a = 3; b = 4; c = self.a + self.b; })
 }
 ```
 
-
 To better understand how it works, I've written the result of the `fix` function differently with the argument used previously.
 
 ```nix
@@ -117,7 +116,6 @@ in
   c = 7;
 }
 ```
-
 
 Finally, I've written the following function, which will allow the attributes to be overridden dynamically as initially intended.
 
@@ -151,11 +149,9 @@ nix-repl> attrFunctionFixedPoint.override { b = 1; }
 }
 ```
 
-
 ## The essential Nix tool
 
 As already mentioned, the main use of Nix is cross platform package management. In this section I'm just trying to share and summarise some of the essential parts of my notes. If you want more details, I recommend you read the excellent [Nix Pills](https://nixos.org/guides/nix-pills/). It's rather long but well worth the read!
-
 
 ### How does it work ?
 
@@ -164,9 +160,8 @@ To sum up, I'd say that the Nix language has a very interesting native function 
 Nix technology will enable us to build these derivations, in the following stages.
 
 <center>
-    <img src="/nix_graph.png" width="100%">
+<img src="/nix_graph.png" width="100%">
 </center>
-
 
 The `.drv` files contain specifications on how to build the derivation, they are intermediate files comparable to `.o` files, and the `.nix` files are comparable to `.c` files.
 
@@ -193,7 +188,6 @@ in
   }
 ```
 
-
 > The `mkDerivation` function is based on the `derivation` builtin function.
 
 It can be built with the following command.
@@ -202,14 +196,12 @@ It can be built with the following command.
 nix-build
 ```
 
-
 The build result has been created in `/nix/store/x9cc4jsylk5q01iaxmxf941b59chws5h-hello-2.12.1` and a symbolic link named `result` pointing to this folder has been created in the current folder. We can then find the binary in `./result/bin/hello`.
 
 Before the build, a `.drv` file was created, which can be found by running the following command.
 ```bash
 nix derivation show ./result | jq "keys[0]"
 ```
-
 
 The full path to the `.drv` file is found in the first key of the JSON object, so the path to the `.drv` file is `/nix/store/dp5z62k3chf019biikg77p2acmz17phx-hello-2.12.1.drv`.
 
@@ -224,7 +216,6 @@ nix derivation show /nix/store/dp5z62k3chf019biikg77p2acmz17phx-hello-2.12.1.drv
 # v
 nix derivation show ./result
 ```
-
 
 ### Nixpkgs
 
@@ -254,7 +245,6 @@ nix-repl> :p builtins.nixPath
 ]
 ```
 
-
 ### Managing multiple Python versions
 
 One of the advantages of Nix is that it naturally offers the possibility of managing several versions of the same application. Taking [Python](https://www.python.org/) as an example, let's say I want a Nix shell with version 3.7 and version 3.13.
@@ -280,13 +270,11 @@ in
   }
 ```
 
-
 You can build Python derivations and enter a Nix shell with the following command.
 
 ```bash
 nix-shell
 ```
-
 
 And we see that we have access to the two versions requested with the commands `python3.7` and `python3.13` !
 
@@ -343,14 +331,12 @@ Below is a Nix expression I wrote for the Python module [callviz](https://pypi.o
 }
 ```
 
-
 Note that the default package and the default development shell are compatible with all systems (`supportedSystems`)!
 
 To realise the derivations and enter the Nix shell, I can run the following command.
 ```bash
 nix develop
 ```
-
 
 ## Nixpkgs contribution
 
@@ -374,15 +360,16 @@ Here's what the package looks like.
   unstableGitUpdater,
   makeWrapper,
 }:
+
 stdenv.mkDerivation (finalAttrs: {
   pname = "supermariowar";
-  version = "2023-unstable-2024-09-17";
+  version = "2024-unstable-2025-06-18";
 
   src = fetchFromGitHub {
     owner = "mmatyas";
     repo = "supermariowar";
-    rev = "6b8ff8c669ca31a116754d23b6ff65e42ac50733";
-    hash = "sha256-P0jV7G81thj0UJoYLd5+H5SjjaVu4goJxc9IkbzxJgs=";
+    rev = "71383b07b99a52b57be79cf371ab718337365019";
+    hash = "sha256-PjweE8cGAp8V4LY0/6QzLekQ80Q1qbwDiiSzDirA29s=";
     fetchSubmodules = true;
   };
 
@@ -417,7 +404,7 @@ stdenv.mkDerivation (finalAttrs: {
   passthru.updateScript = unstableGitUpdater { };
 
   meta = {
-    description = "A fan-made multiplayer Super Mario Bros. style deathmatch game";
+    description = "Fan-made multiplayer Super Mario Bros. style deathmatch game";
     homepage = "https://github.com/mmatyas/supermariowar";
     changelog = "https://github.com/mmatyas/supermariowar/blob/${finalAttrs.src.rev}/CHANGELOG";
     license = lib.licenses.gpl2Plus;

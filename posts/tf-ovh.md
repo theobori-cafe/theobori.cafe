@@ -7,7 +7,6 @@ Environment replication is always very useful, and I've always made sure that al
 
 This turned out to be more useful than expected, given that I had to change server, I had to move everything and the automations saved me a lot of time, especially those linked to the machine's IP address.
 
-
 ## Requirements
 
 The Terraform OVH provider requires certain environment variables:
@@ -15,7 +14,6 @@ The Terraform OVH provider requires certain environment variables:
 - `OVH_APPLICATION_KEY`
 - `OVH_APPLICATION_SECRET`
 - `OVH_CONSUMER_KEY`
-
 
 To access them, simply go to [OVH's API token creation page](https://www.ovh.com/auth/api/createToken).
 
@@ -38,8 +36,6 @@ provider "ovh" {
   endpoint = "ovh-eu"
 }
 ```
-
-
 
 **`variables.tf`**
 ```hcl
@@ -89,8 +85,6 @@ variable "smtp_tlsa" {
   sensitive   = true
 }
 ```
-
-
 
 **`main.tf`**
 ```hcl
@@ -192,10 +186,6 @@ resource "ovh_domain_zone_record" "autoconfig" {
 }
 ```
 
-
-
 ## Links
 
 [https://github.com/theobori-cafe/dns](https://github.com/theobori-cafe/dns)
-
-

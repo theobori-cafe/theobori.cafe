@@ -18,20 +18,14 @@ Depending of the CPU state, the window draw the VRAM throught the API.
 
 There are approximately n instructions executed per second for a frequency of n hz (n is 500 by default). The sound and delay timers are managed with 60hz.
 
-
-
 <p align="center" width="100%">
-  <img src="/breakout_320_160.png" class="img-center">
-  <img src="/space_invaders_320_160.png" class="img-center">
+<img src="/breakout_320_160.png" class="img-center">
+<img src="/space_invaders_320_160.png" class="img-center">
 </p>
 
-
-
 <p align="center" width="100%">
-  <img src="/ibm_logo_640_320.png" class="img-center">
+<img src="/ibm_logo_640_320.png" class="img-center">
 </p>
-
-
 
 ## Some extra informations
 
@@ -39,10 +33,6 @@ As I said, it supports some quirks for specific instructions, because according 
 
 I implemented the 36 instructions + the 4 I was taking before to be compatible with more ROM.
 
-
-
 ## Links
 
 [https://github.com/theobori/tinychip](https://github.com/theobori/tinychip)
-
-

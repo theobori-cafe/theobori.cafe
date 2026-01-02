@@ -1,55 +1,62 @@
-A toy to visualize recursive function calls
-2024-06-29
-Last edit: 2024-06-29
----------------------
-
-Recently, I did a little project in 
-[h|Python|URL:https://python.org|tilde.pink|70]
- to visualise function calls, especially recursive functions.
-
-It takes the form of a 
-[h|Python|URL:https://python.org|tilde.pink|70]
- decorator applied to the desired functions. The data structure used is fairly basic, a tree with nodes that have a parent and an indefinite number of children. Each node represents a function call, and the nodes also include the arguments passed to the function when it is called and, optionally, a return value.
-
-To generate a visual and have an overview of all the function calls, I used 
-[h|Graphviz|URL:https://graphviz.org/|tilde.pink|70]
- to manage a graph and save it as a file (DOT, SVG, PNG, etc.).
-
-The decorator also supports memoization, which can also be represented on the final visual.
-
-## How is it used?
-
-These are two clear examples of how the decorator is used.
-
-```python
-from callviz.core import callviz, set_output_dir
-
-set_output_dir("out")
-
-@callviz(
-  _format="png",
-  memoization=True,
-  open_file=True,
-  show_node_result=True,
-)
-def fib(n: int):
-    if n < 2:
-        return n
-
-    return fib(n - 2) + fib(n - 1)
-
-@callviz(_format="png", show_link_value=False)
-def rev(arr, new):
-    if arr == []:
-        return new
-
-    return rev(arr[1:], [arr[0]] + new)
-
-fib(5)
-rev(list(range(6, 0, -1)), [])
-```
-
-## Links
-
-[h|https://github.com/theobori/callviz|URL:https://github.com/theobori/callviz|tilde.pink|70]
-
+[i|## title: A toy to visualize recursive function calls|/|tilde.pink|70]
+[i|## date: "2024-06-29"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Recently, I did a little project in Python to visualise|/|tilde.pink|70]
+[i|function calls, especially recursive functions.|/|tilde.pink|70]
+[h|Python|URL:https://python.org|python.org|443]
+[i||/|tilde.pink|70]
+[i|It takes the form of a Python decorator applied to the|/|tilde.pink|70]
+[i|desired functions. The data structure used is fairly basic,|/|tilde.pink|70]
+[i|a tree with nodes that have a parent and an indefinite|/|tilde.pink|70]
+[i|number of children. Each node represents a function call,|/|tilde.pink|70]
+[i|and the nodes also include the arguments passed to the|/|tilde.pink|70]
+[i|function when it is called and, optionally, a return value.|/|tilde.pink|70]
+[h|Python|URL:https://python.org|python.org|443]
+[i||/|tilde.pink|70]
+[i|To generate a visual and have an overview of all the|/|tilde.pink|70]
+[i|function calls, I used Graphviz to manage a graph and save|/|tilde.pink|70]
+[i|it as a file (DOT, SVG, PNG, etc.).|/|tilde.pink|70]
+[h|Graphviz|URL:https://graphviz.org/|graphviz.org|443]
+[i||/|tilde.pink|70]
+[i|The decorator also supports memoization, which can also be|/|tilde.pink|70]
+[i|represented on the final visual.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## How is it used?|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|These are two clear examples of how the decorator is used.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|from callviz.core import callviz, set_output_dir|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|set_output_dir("out")|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|@callviz(|/|tilde.pink|70]
+[i|  _format="png",|/|tilde.pink|70]
+[i|  memoization=True,|/|tilde.pink|70]
+[i|  open_file=True,|/|tilde.pink|70]
+[i|  show_node_result=True,|/|tilde.pink|70]
+[i|)|/|tilde.pink|70]
+[i|def fib(n: int):|/|tilde.pink|70]
+[i|    if n < 2:|/|tilde.pink|70]
+[i|        return n|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    return fib(n - 2) + fib(n - 1)|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|@callviz(_format="png", show_link_value=False)|/|tilde.pink|70]
+[i|def rev(arr, new):|/|tilde.pink|70]
+[i|    if arr == []:|/|tilde.pink|70]
+[i|        return new|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    return rev(arr[1:], [arr[0]] + new)|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|fib(5)|/|tilde.pink|70]
+[i|rev(list(range(6, 0, -1)), [])|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /callviz_fib.png|/|tilde.pink|70]
+[i|    /callviz_rev.png|/|tilde.pink|70]
+[I|/callviz_fib.png|/~nagi/callviz_fib.png|tilde.pink|70]
+[I|/callviz_rev.png|/~nagi/callviz_rev.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Links|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|https://github.com/theobori/callviz|/|tilde.pink|70]
+[h|https://github.com/theobori/callviz|URL:https://github.com/theobori/callviz|github.com|443]

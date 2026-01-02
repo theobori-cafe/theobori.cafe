@@ -1,99 +1,105 @@
-Declarative Vencord configuration on NixOS
-2024-11-01
-Last edit: 2024-11-01
----------------------
-
-After installing 
-[h|Vesktop|URL:https://github.com/Vencord/Vesktop|tilde.pink|70]
- in the classic way on NixOS, i.e. by installing the `vesktop` package in the official Nix expressions collection. I wondered if there wasn't a cleaner way of configuring the application. Because configuring an application on every new system is a pain.
-
-So I found 
-[h|Nixcord](https://github.com/KaylorBen/nixcord). It is a [home-manager](https://nix-community.github.io/home-manager) module that allows you to declare [Vencord|URL:https://vencord.dev|tilde.pink|70]
- parameters and plugins in Nix.
-
-It's pretty simple to use and works perfectly. Just add it to the home-manager's imported modules and activate it.
-
-I've written my own Nix module that wraps nixcord, so here's what it looks like.
-
-```nix
-{
-  config,
-  lib,
-  namespace,
-  ...
-}:
-let
-  inherit (lib) mkIf types strings;
-  inherit (lib.${namespace})
-    mkBoolOpt
-    mkOpt
-    enabled
-    disabled
-    ;
-
-  cfg = config.${namespace}.messages.discord;
-
-  trimWith' =
-    s:
-    strings.trimWith {
-      start = true;
-      end = true;
-    } s;
-in
-{
-  options.${namespace}.messages.discord = with types; {
-    enable = mkBoolOpt false "Whether or not to manage discord.";
-    quickCss = mkOpt str (builtins.readFile ./custom.css) "Vencord quick CSS.";
-    config = mkOpt attrs {
-      useQuickCss = ((trimWith' cfg.quickCss) != "");
-      plugins = {
-        betterFolders = enabled;
-        betterRoleContext = enabled;
-        crashHandler = enabled;
-        memberCount = enabled;
-        mentionAvatars = enabled;
-        messageLatency = enabled;
-        showHiddenThings = enabled;
-        showMeYourName = enabled;
-        webContextMenus = enabled;
-        webKeybinds = enabled;
-        webScreenShareFixes = enabled;
-        alwaysAnimate = enabled;
-      };
-    } "Manage the nixcord configuration.";
-  };
-
-  config = mkIf cfg.enable {
-    stylix.targets.vesktop.enable = false;
-
-    programs.nixcord = {
-      enable = true;
-      discord = disabled;
-      vesktop.enable = true;
-
-      inherit (cfg) config quickCss;
-    };
-  };
-}
-```
-
-With regard to the above code snippet, please note that in my case, the home-manager modules are managed by the 
-[h|Snowfall lib|URL:https://snowfall.org/guides/lib/quickstart|tilde.pink|70]
- .
-
-```nix
-enabled = { enable = true; };
-disabled = { enable = false; };
-```
-
-I've explicitly deactivated de Discord which is enabled by default, as well as the Vesktop theming by 
-[h|Stylix](https://stylix.danth.me) because the [Dracula|URL:https://draculatheme.com|tilde.pink|70]
- theme (far too cyan-based).
-
-Instead I downloaded 
-[h|draculatheme.com/betterdiscord|URL:https://draculatheme.com/betterdiscord|tilde.pink|70]
- so as not to depend on the Internet and activated it with the `quickCss` option.
-
-[h|Nixcord|URL:https://github.com/KaylorBen/nixcord|tilde.pink|70]
- is really great, you really should use it !
-
+[i|## title: Declarative Vencord configuration on NixOS|/|tilde.pink|70]
+[i|## date: "2024-11-01"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|After installing Vesktop in the classic way on NixOS, i.e.|/|tilde.pink|70]
+[i|by installing the vesktop package in the official Nix|/|tilde.pink|70]
+[i|expressions collection. I wondered if there wasn't a cleaner|/|tilde.pink|70]
+[i|way of configuring the application. Because configuring an|/|tilde.pink|70]
+[i|application on every new system is a pain.|/|tilde.pink|70]
+[h|Vesktop|URL:https://github.com/Vencord/Vesktop|github.com|443]
+[i||/|tilde.pink|70]
+[i|So I found Nixcord. It is a home-manager module that allows|/|tilde.pink|70]
+[i|you to declare Vencord parameters and plugins in Nix.|/|tilde.pink|70]
+[h|Nixcord|URL:https://github.com/KaylorBen/nixcord|github.com|443]
+[h|home-manager|URL:https://nix-community.github.io/home-manager|nix-community.github.io|443]
+[h|Vencord|URL:https://vencord.dev|vencord.dev|443]
+[i||/|tilde.pink|70]
+[i|It's pretty simple to use and works perfectly. Just add it|/|tilde.pink|70]
+[i|to the home-manager's imported modules and activate it.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I've written my own Nix module that wraps nixcord, so here's|/|tilde.pink|70]
+[i|what it looks like.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  config,|/|tilde.pink|70]
+[i|  lib,|/|tilde.pink|70]
+[i|  namespace,|/|tilde.pink|70]
+[i|  ...|/|tilde.pink|70]
+[i|}:|/|tilde.pink|70]
+[i|let|/|tilde.pink|70]
+[i|  inherit (lib) mkIf types strings;|/|tilde.pink|70]
+[i|  inherit (lib.${namespace})|/|tilde.pink|70]
+[i|    mkBoolOpt|/|tilde.pink|70]
+[i|    mkOpt|/|tilde.pink|70]
+[i|    enabled|/|tilde.pink|70]
+[i|    disabled|/|tilde.pink|70]
+[i|    ;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  cfg = config.${namespace}.messages.discord;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  trimWith' =|/|tilde.pink|70]
+[i|    s:|/|tilde.pink|70]
+[i|    strings.trimWith {|/|tilde.pink|70]
+[i|      start = true;|/|tilde.pink|70]
+[i|      end = true;|/|tilde.pink|70]
+[i|    } s;|/|tilde.pink|70]
+[i|in|/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  options.${namespace}.messages.discord = with types; {|/|tilde.pink|70]
+[i|    enable = mkBoolOpt false "Whether or not to manage|/|tilde.pink|70]
+[i|discord.";|/|tilde.pink|70]
+[i|    quickCss = mkOpt str (builtins.readFile ./custom.css)|/|tilde.pink|70]
+[i|"Vencord quick CSS.";|/|tilde.pink|70]
+[i|    config = mkOpt attrs {|/|tilde.pink|70]
+[i|      useQuickCss = ((trimWith' cfg.quickCss) != "");|/|tilde.pink|70]
+[i|      plugins = {|/|tilde.pink|70]
+[i|        betterFolders = enabled;|/|tilde.pink|70]
+[i|        betterRoleContext = enabled;|/|tilde.pink|70]
+[i|        crashHandler = enabled;|/|tilde.pink|70]
+[i|        memberCount = enabled;|/|tilde.pink|70]
+[i|        mentionAvatars = enabled;|/|tilde.pink|70]
+[i|        messageLatency = enabled;|/|tilde.pink|70]
+[i|        showHiddenThings = enabled;|/|tilde.pink|70]
+[i|        showMeYourName = enabled;|/|tilde.pink|70]
+[i|        webContextMenus = enabled;|/|tilde.pink|70]
+[i|        webKeybinds = enabled;|/|tilde.pink|70]
+[i|        webScreenShareFixes = enabled;|/|tilde.pink|70]
+[i|        alwaysAnimate = enabled;|/|tilde.pink|70]
+[i|      };|/|tilde.pink|70]
+[i|    } "Manage the nixcord configuration.";|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  config = mkIf cfg.enable {|/|tilde.pink|70]
+[i|    stylix.targets.vesktop.enable = false;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    programs.nixcord = {|/|tilde.pink|70]
+[i|      enable = true;|/|tilde.pink|70]
+[i|      discord = disabled;|/|tilde.pink|70]
+[i|      vesktop.enable = true;|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|      inherit (cfg) config quickCss;|/|tilde.pink|70]
+[i|    };|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|With regard to the above code snippet, please note that in|/|tilde.pink|70]
+[i|my case, the home-manager modules are managed by the Snowfall|/|tilde.pink|70]
+[i|lib .|/|tilde.pink|70]
+[h|Snowfall lib|URL:https://snowfall.org/guides/lib/quickstart|snowfall.org|443]
+[i||/|tilde.pink|70]
+[i|enabled = { enable = true; };|/|tilde.pink|70]
+[i|disabled = { enable = false; };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I've explicitly deactivated de Discord which is enabled by|/|tilde.pink|70]
+[i|default, as well as the Vesktop theming by Stylix because|/|tilde.pink|70]
+[i|the Dracula theme (far too cyan-based).|/|tilde.pink|70]
+[h|Stylix|URL:https://stylix.danth.me|stylix.danth.me|443]
+[h|Dracula|URL:https://draculatheme.com|draculatheme.com|443]
+[i||/|tilde.pink|70]
+[i|Instead I downloaded draculatheme.com/betterdiscord so as|/|tilde.pink|70]
+[i|not to depend on the Internet and activated it with the|/|tilde.pink|70]
+[i|quickCss option.|/|tilde.pink|70]
+[h|draculatheme.com/betterdiscord|URL:https://draculatheme.com/betterdiscord|draculatheme.com|443]
+[i||/|tilde.pink|70]
+[i|Nixcord is really great, you really should use it !|/|tilde.pink|70]
+[h|Nixcord|URL:https://github.com/KaylorBen/nixcord|github.com|443]

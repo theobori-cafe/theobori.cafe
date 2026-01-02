@@ -1,35 +1,66 @@
-Public access UNIX systems
-2023-10-25
-Last edit: 2023-10-25
----------------------
-
-As I explored the more "hidden" corners of the Internet, I began to find some interesting things. Networks of hand-crafted sites, neocities, webrings or even websites indexed on anonymous networks like i2p (The Invisible Internet Project), and so on.
-
-The sources that have taught me the most and that I find most interesting are the public access UNIX systems, also known as pubnixes.
-
-## Pubnix
-
-A pubnix is, as the name suggests, a system with a UNIX-based distribution open to the public. The administrator usually manages SSH access, which can be obtained on request.
-
-A common practice is to provide free, open-source services to users/members, and sometimes even to the general public. Server members may therefore be granted an e-mail service, web page hosting (HTTP, Gemini, Gopher, etc.), pre-configured access to a server or an IRC channel.
-
-These servers promote important values such as open source, knowledge sharing, program creation/development, community project promotion, help, free access, privacy and more. Important values that are unfortunately tending to get lost.
-
-## Tildeverse
-
-[h|Tildeverse](https://tildeverse.org) is a loose association of like-minded tilde communities and a tilde is a pubnix in the spirit of [tilde.club|URL:https://tilde.club|tilde.pink|70]
-.
-
-If we take the example of 
-[h|tilde.team|URL:https://tilde.team|tilde.pink|70]
-, which is part of the Tildeverse, this tilde offers a whole host of free services, some of them are for the general public. Services requiring authentication have been configured to support SSO built around system accounts.
-
-These include an email server, a private cloud with Nextcloud, a software host with Git repositories called Gitea and a Mastodon instance.
-
-Documentation (technical and other) can be consulted on the 
-[h|wiki](https://tilde.team/wiki) and other knowledge can be shared on the [forum|URL:https://bbj.tildeverse.org/|tilde.pink|70]
- or by chatting with other people via the IRC channels.
-
-[h|tilde.team|URL:https://tilde.team|tilde.pink|70]
- is a pubnix among others, it makes people aware of the use of their data, the software they use and it proposes alternative solutions to other bigger solutions in general ethically not very correct.
-
+[i|## title: Public access UNIX systems|/|tilde.pink|70]
+[i|## date: "2023-10-25"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /openbsd.png|/|tilde.pink|70]
+[I|/openbsd.png|/~nagi/openbsd.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|As I explored the more "hidden" corners of the Internet, I|/|tilde.pink|70]
+[i|began to find some interesting things. Networks of hand-|/|tilde.pink|70]
+[i|crafted sites, neocities, webrings or even websites indexed|/|tilde.pink|70]
+[i|on anonymous networks like i2p (The Invisible Internet|/|tilde.pink|70]
+[i|Project), and so on.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The sources that have taught me the most and that I find|/|tilde.pink|70]
+[i|most interesting are the public access UNIX systems, also|/|tilde.pink|70]
+[i|known as pubnixes.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Pubnix|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|A pubnix is, as the name suggests, a system with a UNIX-based|/|tilde.pink|70]
+[i|distribution open to the public. The administrator usually|/|tilde.pink|70]
+[i|manages SSH access, which can be obtained on request.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|A common practice is to provide free, open-source services to|/|tilde.pink|70]
+[i|users/members, and sometimes even to the general public.|/|tilde.pink|70]
+[i|Server members may therefore be granted an e-mail service,|/|tilde.pink|70]
+[i|web page hosting (HTTP, Gemini, Gopher, etc.), pre-configured|/|tilde.pink|70]
+[i|access to a server or an IRC channel.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|These servers promote important values such as open source,|/|tilde.pink|70]
+[i|knowledge sharing, program creation/development, community|/|tilde.pink|70]
+[i|project promotion, help, free access, privacy and more.|/|tilde.pink|70]
+[i|Important values that are unfortunately tending to get lost.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Tildeverse|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /tildeverse.png|/|tilde.pink|70]
+[I|/tildeverse.png|/~nagi/tildeverse.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Tildeverse is a loose association of like-minded tilde|/|tilde.pink|70]
+[i|communities and a tilde is a pubnix in the spirit of|/|tilde.pink|70]
+[i|tilde.club.|/|tilde.pink|70]
+[h|Tildeverse|URL:https://tildeverse.org|tildeverse.org|443]
+[h|tilde.club|URL:https://tilde.club|tilde.club|443]
+[i||/|tilde.pink|70]
+[i|If we take the example of tilde.team, which is part of the|/|tilde.pink|70]
+[i|Tildeverse, this tilde offers a whole host of free services,|/|tilde.pink|70]
+[i|some of them are for the general public. Services requiring|/|tilde.pink|70]
+[i|authentication have been configured to support SSO built|/|tilde.pink|70]
+[i|around system accounts.|/|tilde.pink|70]
+[h|tilde.team|URL:https://tilde.team|tilde.team|443]
+[i||/|tilde.pink|70]
+[i|These include an email server, a private cloud with|/|tilde.pink|70]
+[i|Nextcloud, a software host with Git repositories called|/|tilde.pink|70]
+[i|Gitea and a Mastodon instance.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Documentation (technical and other) can be consulted on the|/|tilde.pink|70]
+[i|wiki and other knowledge can be shared on the forum or by|/|tilde.pink|70]
+[i|chatting with other people via the IRC channels.|/|tilde.pink|70]
+[h|wiki|URL:https://tilde.team/wiki|tilde.team|443]
+[h|forum|URL:https://bbj.tildeverse.org/|bbj.tildeverse.org|443]
+[i||/|tilde.pink|70]
+[i|tilde.team is a pubnix among others, it makes people aware|/|tilde.pink|70]
+[i|of the use of their data, the software they use and it|/|tilde.pink|70]
+[i|proposes alternative solutions to other bigger solutions in|/|tilde.pink|70]
+[i|general ethically not very correct.|/|tilde.pink|70]
+[h|tilde.team|URL:https://tilde.team|tilde.team|443]

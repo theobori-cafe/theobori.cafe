@@ -1,177 +1,208 @@
-Teeworlds utilities
-2023-07-26
-Last edit: 2023-07-26
----------------------
-
-This idea came to me when I was looking for a Teeworlds skin renderer.
-
-The ones that existed didn't suit me, as they didn't really respect the in-game rendering. Either the feet were too far out or the colors were wrong.
-
-So I decided to make my own toolbox to manipulate Teeworlds assets, which we use on 
-[h|teedata.net|URL:https://teedata.net|tilde.pink|70]
- and for the Teedata Discord bot.
-
-Indirectly, other people use it, for example, to render skins in a Discord channel that displays messages in real time (fokkonaut's Discord server) or in other projects like 
-[h|TeeAssembler 2.0|URL:https://teeassembler.developer.li/|tilde.pink|70]
- that used some part of the Teeworlds utilities code.
-
-## Use case examples
-### Teeworlds skin rendering
-
-Render a Teeworlds 4K skin with default and custom colors.
-
-```typescript
-import {
-  Skin,
-  ColorCode,
-  ColorRGB
-} from 'teeworlds-utilities';
-
-const renderTest = async () => {
-  const skin = new Skin();
-
-  await skin.load('https://api.skins.tw/database/skins/96AATxN3DEzcGww4QhmduFCsPzaxhZO7Tq6Lh9OI.png');
-
-  skin
-    .render()
-    .saveRenderAs('default.png', true)
-    .colorTee(
-      new ColorCode(6619008),
-      new ColorRGB(136, 113, 255),
-    )
-    .render()
-    .saveRenderAs('color.png', true);
-}
-
-try {
-  renderTest();
-} catch (err) {
-  console.error(err);
-}
-```
-
-### Result (4K)
-
-### Scene
-
-A custom scene including a rendered skin.
-
-```typescript
-import { Scene } from 'teeworlds-utilities';
-
-const sceneTest = async () => {
-  const scene = new Scene(
-    'data/scenes/schemes/example.json'
-  ).preprocess();
-
-  await scene.renderScene();
-  scene.saveScene('scene.png')
-}
-
-sceneTest();
-```
-
-### Result
-
-### Merge asset parts
-
-Here we are going to merge specific parts from a skin (right) to another (left).
-Any Teeworlds asset should works.
-
-```typescript
-import {
-  Skin,
-  SkinPart
-} from 'teeworlds-utilities';
-
-const mergeTest = async () => {
-  const teedata = new Skin();
-  await teedata.load('https://teedata.net/databasev2/skins/teedata/teedata.png');
-
-  const sunny = new Skin();
-  await sunny.load('https://teedata.net/databasev2/skins/irradiated%20sunny/irradiated%20sunny.png');
-
-  teedata
-    .copyParts(
-      sunny,
-      SkinPart.FOOT,
-      SkinPart.FOOT_SHADOW,
-      SkinPart.DEFAULT_EYE,
-      SkinPart.ANGRY_EYE,
-      SkinPart.BLINK_EYE,
-      SkinPart.CROSS_EYE,
-      SkinPart.HAPPY_EYE,
-      SkinPart.SCARY_EYE,
-      SkinPart.HAND_SHADOW,
-      SkinPart.HAND,
-    )
-    .setEyeAssetPart(SkinPart.ANGRY_EYE)
-    .render()
-    .saveAs('skin.png')
-    .saveRenderAs('rendered_skin.png', true)
-}
-
-try {
-  mergeTest();
-} catch (err) {
-  console.error(err);
-}
-```
-
-### Result
-
-### More skin configuration
-
-Here we are using the `SkinFull` object to render some in-game feature like the weapon, hands and emote.
-
-```typescript
-import {
-  Skin,
-  Gameskin,
-  ColorRGB,
-  Emoticon,
-  SkinFull,
-  GameskinPart,
-  EmoticonPart
-} from 'teeworlds-utilities';
-
-const fullSkinRenderConfiguration = async () => {
-  const teedataSunny = new Skin();
-  await teedataSunny.load('skin.png');
-
-  const napolitano = new Gameskin();
-  await napolitano.load('https://teedata.net/databasev2/gameskins/napolitano/napolitano.png');
-
-  const emoticon = new Emoticon();
-  await emoticon.load('https://teedata.net/databasev2/emoticons/default/default.png');
-
-  teedataSunny
-    .colorTee(
-      new ColorRGB(255, 255, 255),
-      new ColorRGB(255, 255, 255),
-    )
-    .setOrientation(345);
-
-  new SkinFull()
-    .setSkin(teedataSunny)
-    .setGameskin(napolitano, GameskinPart.HAMMER)
-    .setEmoticon(emoticon, EmoticonPart.PART_1_2)
-    .process()
-    .saveAs('skin_with_weapon_and_emote.png', true);
-}
-
-try {
-  fullSkinRenderConfiguration();
-} catch (err) {
-  console.error(err);
-}
-```
-
-### Result
-
-### Other possible result
-
-## Links
-
-[h|https://github.com/teeworlds-utilities/teeworlds-utilities|URL:https://github.com/teeworlds-utilities/teeworlds-utilities|tilde.pink|70]
-
+[i|## title: Teeworlds utilities|/|tilde.pink|70]
+[i|## date: "2023-07-26"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|This idea came to me when I was looking for a Teeworlds skin|/|tilde.pink|70]
+[i|renderer.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The ones that existed didn't suit me, as they didn't really|/|tilde.pink|70]
+[i|respect the in-game rendering. Either the feet were too far|/|tilde.pink|70]
+[i|out or the colors were wrong.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So I decided to make my own toolbox to manipulate Teeworlds|/|tilde.pink|70]
+[i|assets, which we use on teedata.net and for the Teedata|/|tilde.pink|70]
+[i|Discord bot.|/|tilde.pink|70]
+[h|teedata.net|URL:https://teedata.net|teedata.net|443]
+[i||/|tilde.pink|70]
+[i|Indirectly, other people use it, for example, to render|/|tilde.pink|70]
+[i|skins in a Discord channel that displays messages in real|/|tilde.pink|70]
+[i|time (fokkonaut's Discord server) or in other projects like|/|tilde.pink|70]
+[i|TeeAssembler 2.0 that used some part of the Teeworlds|/|tilde.pink|70]
+[i|utilities code.|/|tilde.pink|70]
+[h|TeeAssembler 2.0|URL:https://teeassembler.developer.li/|teeassembler.developer.li|443]
+[i||/|tilde.pink|70]
+[i|  /fokkonaut_bridge.png|/|tilde.pink|70]
+[I|/fokkonaut_bridge.png|/~nagi/fokkonaut_bridge.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Use case examples|/|tilde.pink|70]
+[i|### Teeworlds skin rendering|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Render a Teeworlds 4K skin with default and custom colors.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|import {|/|tilde.pink|70]
+[i|  Skin,|/|tilde.pink|70]
+[i|  ColorCode,|/|tilde.pink|70]
+[i|  ColorRGB|/|tilde.pink|70]
+[i|} from 'teeworlds-utilities';|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|const renderTest = async () => {|/|tilde.pink|70]
+[i|  const skin = new Skin();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  await|/|tilde.pink|70]
+[i|skin.load('https://api.skins.tw/database/skins/96AATxN3DEzcGww4QhmduFCsPzaxhZO7Tq6Lh9OI.png');|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  skin|/|tilde.pink|70]
+[i|    .render()|/|tilde.pink|70]
+[i|    .saveRenderAs('default.png', true)|/|tilde.pink|70]
+[i|    .colorTee(|/|tilde.pink|70]
+[i|      new ColorCode(6619008),|/|tilde.pink|70]
+[i|      new ColorRGB(136, 113, 255),|/|tilde.pink|70]
+[i|    )|/|tilde.pink|70]
+[i|    .render()|/|tilde.pink|70]
+[i|    .saveRenderAs('color.png', true);|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|try {|/|tilde.pink|70]
+[i|  renderTest();|/|tilde.pink|70]
+[i|} catch (err) {|/|tilde.pink|70]
+[i|  console.error(err);|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Result (4K)|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /render_default.png|/|tilde.pink|70]
+[i|  /render_color.png|/|tilde.pink|70]
+[I|/render_default.png|/~nagi/render_default.png|tilde.pink|70]
+[I|/render_color.png|/~nagi/render_color.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Scene|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|A custom scene including a rendered skin.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|import { Scene } from 'teeworlds-utilities';|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|const sceneTest = async () => {|/|tilde.pink|70]
+[i|  const scene = new Scene(|/|tilde.pink|70]
+[i|    'data/scenes/schemes/example.json'|/|tilde.pink|70]
+[i|  ).preprocess();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  await scene.renderScene();|/|tilde.pink|70]
+[i|  scene.saveScene('scene.png')|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|sceneTest();|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Result|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /scene.png|/|tilde.pink|70]
+[I|/scene.png|/~nagi/scene.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Merge asset parts|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Here we are going to merge specific parts from a skin|/|tilde.pink|70]
+[i|(right) to another (left).|/|tilde.pink|70]
+[i|Any Teeworlds asset should works.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /teedata_skin.png|/|tilde.pink|70]
+[i|  /alien_skin.png|/|tilde.pink|70]
+[I|/teedata_skin.png|/~nagi/teedata_skin.png|tilde.pink|70]
+[I|/alien_skin.png|/~nagi/alien_skin.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|import {|/|tilde.pink|70]
+[i|  Skin,|/|tilde.pink|70]
+[i|  SkinPart|/|tilde.pink|70]
+[i|} from 'teeworlds-utilities';|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|const mergeTest = async () => {|/|tilde.pink|70]
+[i|  const teedata = new Skin();|/|tilde.pink|70]
+[i|  await|/|tilde.pink|70]
+[i|teedata.load('https://teedata.net/databasev2/skins/teedata/teedata.png');|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  const sunny = new Skin();|/|tilde.pink|70]
+[i|  await|/|tilde.pink|70]
+[i|sunny.load('https://teedata.net/databasev2/skins/irradiated%20sunny/irradiated%20sunny.png');|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  teedata|/|tilde.pink|70]
+[i|    .copyParts(|/|tilde.pink|70]
+[i|      sunny,|/|tilde.pink|70]
+[i|      SkinPart.FOOT,|/|tilde.pink|70]
+[i|      SkinPart.FOOT_SHADOW,|/|tilde.pink|70]
+[i|      SkinPart.DEFAULT_EYE,|/|tilde.pink|70]
+[i|      SkinPart.ANGRY_EYE,|/|tilde.pink|70]
+[i|      SkinPart.BLINK_EYE,|/|tilde.pink|70]
+[i|      SkinPart.CROSS_EYE,|/|tilde.pink|70]
+[i|      SkinPart.HAPPY_EYE,|/|tilde.pink|70]
+[i|      SkinPart.SCARY_EYE,|/|tilde.pink|70]
+[i|      SkinPart.HAND_SHADOW,|/|tilde.pink|70]
+[i|      SkinPart.HAND,|/|tilde.pink|70]
+[i|    )|/|tilde.pink|70]
+[i|    .setEyeAssetPart(SkinPart.ANGRY_EYE)|/|tilde.pink|70]
+[i|    .render()|/|tilde.pink|70]
+[i|    .saveAs('skin.png')|/|tilde.pink|70]
+[i|    .saveRenderAs('rendered_skin.png', true)|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|try {|/|tilde.pink|70]
+[i|  mergeTest();|/|tilde.pink|70]
+[i|} catch (err) {|/|tilde.pink|70]
+[i|  console.error(err);|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Result|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /render_new_skin.png|/|tilde.pink|70]
+[i|  /new_skin.png|/|tilde.pink|70]
+[I|/render_new_skin.png|/~nagi/render_new_skin.png|tilde.pink|70]
+[I|/new_skin.png|/~nagi/new_skin.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### More skin configuration|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Here we are using the SkinFull object to render some in-game|/|tilde.pink|70]
+[i|feature like the weapon, hands and emote.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|import {|/|tilde.pink|70]
+[i|  Skin,|/|tilde.pink|70]
+[i|  Gameskin,|/|tilde.pink|70]
+[i|  ColorRGB,|/|tilde.pink|70]
+[i|  Emoticon,|/|tilde.pink|70]
+[i|  SkinFull,|/|tilde.pink|70]
+[i|  GameskinPart,|/|tilde.pink|70]
+[i|  EmoticonPart|/|tilde.pink|70]
+[i|} from 'teeworlds-utilities';|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|const fullSkinRenderConfiguration = async () => {|/|tilde.pink|70]
+[i|  const teedataSunny = new Skin();|/|tilde.pink|70]
+[i|  await teedataSunny.load('skin.png');|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  const napolitano = new Gameskin();|/|tilde.pink|70]
+[i|  await|/|tilde.pink|70]
+[i|napolitano.load('https://teedata.net/databasev2/gameskins/napolitano/napolitano.png');|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  const emoticon = new Emoticon();|/|tilde.pink|70]
+[i|  await|/|tilde.pink|70]
+[i|emoticon.load('https://teedata.net/databasev2/emoticons/default/default.png');|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  teedataSunny|/|tilde.pink|70]
+[i|    .colorTee(|/|tilde.pink|70]
+[i|      new ColorRGB(255, 255, 255),|/|tilde.pink|70]
+[i|      new ColorRGB(255, 255, 255),|/|tilde.pink|70]
+[i|    )|/|tilde.pink|70]
+[i|    .setOrientation(345);|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  new SkinFull()|/|tilde.pink|70]
+[i|    .setSkin(teedataSunny)|/|tilde.pink|70]
+[i|    .setGameskin(napolitano, GameskinPart.HAMMER)|/|tilde.pink|70]
+[i|    .setEmoticon(emoticon, EmoticonPart.PART_1_2)|/|tilde.pink|70]
+[i|    .process()|/|tilde.pink|70]
+[i|    .saveAs('skin_with_weapon_and_emote.png', true);|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|try {|/|tilde.pink|70]
+[i|  fullSkinRenderConfiguration();|/|tilde.pink|70]
+[i|} catch (err) {|/|tilde.pink|70]
+[i|  console.error(err);|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Result|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /skin_with_weapon_and_emote.png|/|tilde.pink|70]
+[I|/skin_with_weapon_and_emote.png|/~nagi/skin_with_weapon_and_emote.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Other possible result|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /board.png|/|tilde.pink|70]
+[I|/board.png|/~nagi/board.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Links|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|https://github.com/teeworlds-utilities/teeworlds-utilities|/|tilde.pink|70]
+[h|https://github.com/teeworlds-utilities/teeworlds-utilities|URL:https://github.com/teeworlds-utilities/teeworlds-utilities|github.com|443]

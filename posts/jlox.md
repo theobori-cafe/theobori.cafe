@@ -15,18 +15,13 @@ To sum up [this page](https://craftinginterpreters.com/the-lox-language.html), L
 
 A cool fact is that Lox is Turing complete, it means it is able to run a Turing machine.
 
-
 ## Essentials basics
 
 I've learned some important key concepts, and here are a few of the most important.
 
-
-
 <center>
-    <img src="/mountain_lang.png" class="img-center">
+<img src="/mountain_lang.png" class="img-center">
 </center>
-
-
 
 ### Scanning
 
@@ -34,21 +29,15 @@ Scanning is also known as lexing or lexical analysis. It takes a linear stream o
 
 The scanner must group characters into the smalles possible sequence that represents something. This blobs of characters are called lexemes.
 
-
-
 ### Parsing
 
 It takes the flat sequence of tokens and builds a tree structure that represent the nested nature of the grammar. This three is called an Abstract Syntax Tree (AST)
 
 The Lox interpreter I made is a Tree-Walk Interpreter, it means it traverses the AST one branch and leaf at a time and it evaluates.
 
-
-
 ### Context-Free Grammars
 
 It is a formal grammar, it allows us to define an infinite set of rules that are in the grammar, it specicies which strings are valid and which are not.
-
-
 
 ### Rules for grammars
 
@@ -61,8 +50,6 @@ Each production has a head (its name) and a body (a list of symbols).
 A symbol can be:
 - A terminal, it is like an endpoint, it simply produces it.
 - A non-terminal, it refers to other rule in the grammar.
-
-
 
 A grammar example from the book, see below.
 
@@ -79,21 +66,17 @@ bread → "toast" | "biscuits" | "English muffin" ;
 
 The ponctuations is based on the regex behaviors, as example, the `?` means it is optional.
 
-
 So here, a valid strings could be the one below.
 
 ```python
 "poached" "eggs" "with" "toast" "on the side"
 ```
 
-
-
 ### Recursive Descent Parsing
 
 The best explanation here is probably the one in the book.
 
 > *Recursive descent is considered a top-down parser because it starts from the top or outermost grammar rule (here expression ) and works its way down into the nested subexpressions before finally reaching the leaves of the syntax tree.*
-
 
 ## Examples
 
@@ -127,8 +110,6 @@ fun echo(n) {
 
 print echo(echo(1) + echo(2)) + echo(echo(4) + echo(5));
 ```
-
-
 
 ## Links
 

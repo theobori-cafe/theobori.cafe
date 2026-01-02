@@ -1,168 +1,226 @@
-My homelab
-2024-06-06
-Last edit: 2024-06-06
----------------------
-
-I've got an old laptop that I don't use anymore, so I thought I'd turn it into a server and deploy some free, open-source web services on it.
-
-The aim is to create a private homelab, i.e. the machine should only be accessible via the local network. None of the services are exposed to the Internet, with the exception of Wireguard, which lets me access the services from the outside.
-
-The aim of this post is to present the main steps I've taken and explain how the homelab works.
-
-My laptop is an 
-[h|ASUS ROG G750|URL:https://laptopmedia.com/series/asus-rog-g750/|tilde.pink|70]
- with 8GB of memory and 2 HDDs of around 600GB each. It hasn't been used for about five or six years and the battery is dead.
-
-## First steps
-
-First, I decided to make an old USB key bootable. I install 
-[h|Ventoy|URL:https://www.ventoy.net/|tilde.pink|70]
- on it to be able to load different image disks (ISO) without having to rewrite each time directly on the USB key.
-
-I put 
-[h|Memtest86+](https://www.memtest.org/) to test the memory, [shredos.x86_64](https://github.com/PartialVolume/shredos.x86_64) to wipe the HDDs and finally [Debian 12|URL:https://cdimage.debian.org/debian-cd/12.5.0/amd64/iso-cd/|tilde.pink|70]
- which will be the main OS.
-
-So when I boot on the USB key, it loads the "multiboot" boot-loader (Ventoy) and I can then load one of the three programs.
-
-## Pre configuration
-
-To be able to deploy the system configuration and reproduce it later, I'm writing an Ansible playbook and testing it on a local VM (`virt-manager` + KVM).
-
-The entire configuration is available at the bottom of the page.
-
-## TLS certificates
-
-I want communication with web applications to be encrypted and secure, so I need an HTTPS server, so I need TLS certificates and, to make things easier, a domain name.
-
-For the domain name I used 
-[h|Duck DNS](https://www.duckdns.org/) and reserved the sub-domain [theobori.duckdns.org|URL:https://theobori.duckdns.org|tilde.pink|70]
- which for the moment corresponds to the IPv4 of my virtual machine accessible only from the host system.
-
-In fact, I only need to manage one certificate with two SANs:
-- `theobori.duckdns.org`
-- `*.theobori.duckdns.org`
-
-## Services
-
-Every application is deployed with the Ansible playbook are conteuneurized and managed with Docker.
-
-They are accessible only through port 443 managed by 
-[h|Traefik](https://traefik.io/). Each sub-domain of [theobori.duckdns.org|URL:https://theobori.duckdns.org|tilde.pink|70]
- corresponds to a service, with the exception of the homepage, which is associated with the domain itself.
-
-## Firewall
-
-To filter incoming network traffic, I manipulate iptables with the ufw tool. There are only four ports open as declared below in the Ansible playbook configuration.
-
-```yaml
-- role: weareinteractive.ufw
-  tags: ufw
-  ufw_enabled: true
-  ufw_packages: ["ufw"]
-  ufw_rules:
-  - logging: "full"
-  - rule: allow
-      to_port: "443"
-  - rule: allow
-      to_port: "80"
-  - rule: allow
-    {% raw %} to_port: "{{ ssh_port }}" {% endraw %}
-  # Wireguard
-  - rule: allow
-      to_port: "51820"
-      proto: udp
-  # Delete default rule
-  - rule: allow
-      name: Anywhere
-      delete: true
-  ufw_manage_config: true
-  ufw_config:
-  IPV6: "yes"
-  DEFAULT_INPUT_POLICY: DROP
-  DEFAULT_OUTPUT_POLICY: ACCEPT
-  DEFAULT_FORWARD_POLICY: DROP
-  DEFAULT_APPLICATION_POLICY: SKIP
-  MANAGE_BUILTINS: "no"
-  IPT_SYSCTL: /etc/ufw/sysctl.conf
-  IPT_MODULES: ""
-```
-
-## Identity provider
-
-Services with integration for protocols to verify user identity or determine permissions are all linked to the 
-[h|Authentik|URL:https://goauthentik.io/|tilde.pink|70]
- user directory.
-
-I needed OAuth2 for 
-[h|Portainer](https://www.portainer.io/) and LDAP for several other services such as [Owncloud|URL:https://owncloud.com/|tilde.pink|70]
-.
-
-If I remember correctly, the OAuth2 Outpost is embedded in the application by default, whereas the LDAP Outpost had to be configured with specific parameters for Docker.
-
-Here's a diagram of several services trying to retrieve the identity of an 
-[h|Authentik|URL:https://goauthentik.io/|tilde.pink|70]
- user.
-
-## Access management
-
-With 
-[h|Authentik|URL:https://goauthentik.io/|tilde.pink|70]
-, group policies have been created to authorize only certain groups of users to access certain services.
-
-For example, for 
-[h|Jellyfin|URL:https://jellyfin.org/|tilde.pink|70]
-, only users in the `Jellyfin` group are authorized to connect.
-
-In this way, I was able to secure all administration services by authorizing only users in groups reserved for administration.
-
-I also used [Traefik](https://traefik.io/) and 
-[h|Authentik|URL:https://goauthentik.io/|tilde.pink|70]
- to secure access to services not protected by authentication.
-
-I added middleware to the reverse proxy to enable HTTP ForwardAuth with 
-[h|Authentik|URL:https://goauthentik.io/|tilde.pink|70]
-. In practical terms, this places a connection portal in front of the targeted web services.
-
-Let's say I want to access 
-[h|duplicati.theobori.duckdns.org|URL:https://duplicati.theobori.duckdns.org|tilde.pink|70]
-, it could be schematized as follows.
-
-## Media stack
-
-One of the main objectives was to be able to manage movies and series and watch them from any device on the local network.
-
-So I set up a stack for managing and downloading media, which would then be streamed to devices by 
-[h|Jellyfin|URL:https://jellyfin.org/|tilde.pink|70]
-.
-
-Here's what the media stack looks like.
-
-## Backup and restore
-
-To back up container data, I use 
-[h|Duplicati|URL:https://duplicati.com/|tilde.pink|70]
-. It lets you encrypt data and manage retention very easily via a web interface.
-
-These backups can then be restored on my old computer.
-
-## Monitoring
-
-To keep abreast of service status, I've opted for 
-[h|Uptime Kuma|URL:https://uptime.kuma.pet/|tilde.pink|70]
-, which will alert me via Discord when a service is down for n seconds.
-
-I also have a [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/) stack that lets me collect metrics on the system and on Docker containers. As for 
-[h|Uptime Kuma|URL:https://uptime.kuma.pet/|tilde.pink|70]
-, I'm alerted by Discord according to limits defined for RAM and available storage space, for example.
-
-This is how the monitoring stack looks.
-
-## Final home page
-
-Here's an overview of the dashboard, featuring all the services exposed to the local network. In a way it's the end result of service implementation.
-
-## Links
-
-[h|https://github.com/theobori/homelab|URL:https://github.com/theobori/homelab|tilde.pink|70]
-
+[i|## title: My homelab|/|tilde.pink|70]
+[i|## date: "2024-06-06"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I've got an old laptop that I don't use anymore, so I|/|tilde.pink|70]
+[i|thought I'd turn it into a server and deploy some free, open-|/|tilde.pink|70]
+[i|source web services on it.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The aim is to create a private homelab, i.e. the machine|/|tilde.pink|70]
+[i|should only be accessible via the local network. None of the|/|tilde.pink|70]
+[i|services are exposed to the Internet, with the exception of|/|tilde.pink|70]
+[i|Wireguard, which lets me access the services from the|/|tilde.pink|70]
+[i|outside.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The aim of this post is to present the main steps I've taken|/|tilde.pink|70]
+[i|and explain how the homelab works.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|My laptop is an ASUS ROG G750 with 8GB of memory and 2 HDDs|/|tilde.pink|70]
+[i|of around 600GB each. It hasn't been used for about five or|/|tilde.pink|70]
+[i|six years and the battery is dead.|/|tilde.pink|70]
+[h|ASUS ROG G750|URL:https://laptopmedia.com/series/asus-rog-g750/|laptopmedia.com|443]
+[i||/|tilde.pink|70]
+[i|## First steps|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|First, I decided to make an old USB key bootable. I install|/|tilde.pink|70]
+[i|Ventoy on it to be able to load different image disks (ISO)|/|tilde.pink|70]
+[i|without having to rewrite each time directly on the USB key.|/|tilde.pink|70]
+[h|Ventoy|URL:https://www.ventoy.net/|www.ventoy.net|443]
+[i||/|tilde.pink|70]
+[i|I put Memtest86+ to test the memory, shredos.x86_64 to wipe|/|tilde.pink|70]
+[i|the HDDs and finally Debian 12 which will be the main OS.|/|tilde.pink|70]
+[h|Memtest86+|URL:https://www.memtest.org/|www.memtest.org|443]
+[h|shredos.x86_64|URL:https://github.com/PartialVolume/shredos.x86_64|github.com|443]
+[h|Debian 12|URL:https://cdimage.debian.org/debian-cd/12.5.0/amd64/iso-cd/|cdimage.debian.org|443]
+[i||/|tilde.pink|70]
+[i|So when I boot on the USB key, it loads the "multiboot" boot-|/|tilde.pink|70]
+[i|loader (Ventoy) and I can then load one of the three|/|tilde.pink|70]
+[i|programs.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Pre configuration|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To be able to deploy the system configuration and reproduce|/|tilde.pink|70]
+[i|it later, I'm writing an Ansible playbook and testing it on|/|tilde.pink|70]
+[i|a local VM (virt-manager + KVM).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The entire configuration is available at the bottom of the|/|tilde.pink|70]
+[i|page.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## TLS certificates|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I want communication with web applications to be encrypted|/|tilde.pink|70]
+[i|and secure, so I need an HTTPS server, so I need TLS|/|tilde.pink|70]
+[i|certificates and, to make things easier, a domain name.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|For the domain name I used Duck DNS and reserved the sub-|/|tilde.pink|70]
+[i|domain theobori.duckdns.org which for the moment corresponds|/|tilde.pink|70]
+[i|to the IPv4 of my virtual machine accessible only from the|/|tilde.pink|70]
+[i|host system.|/|tilde.pink|70]
+[h|Duck DNS|URL:https://www.duckdns.org/|www.duckdns.org|443]
+[h|theobori.duckdns.org|URL:https://theobori.duckdns.org|theobori.duckdns.org|443]
+[i||/|tilde.pink|70]
+[i|In fact, I only need to manage one certificate with two|/|tilde.pink|70]
+[i|SANs:|/|tilde.pink|70]
+[i|- theobori.duckdns.org|/|tilde.pink|70]
+[i|- *.theobori.duckdns.org|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Services|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Every application is deployed with the Ansible playbook are|/|tilde.pink|70]
+[i|conteuneurized and managed with Docker.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|They are accessible only through port 443 managed by|/|tilde.pink|70]
+[i|Traefik. Each sub-domain of theobori.duckdns.org corresponds|/|tilde.pink|70]
+[i|to a service, with the exception of the homepage, which is|/|tilde.pink|70]
+[i|associated with the domain itself.|/|tilde.pink|70]
+[h|Traefik|URL:https://traefik.io/|traefik.io|443]
+[h|theobori.duckdns.org|URL:https://theobori.duckdns.org|theobori.duckdns.org|443]
+[i||/|tilde.pink|70]
+[i|## Firewall|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To filter incoming network traffic, I manipulate iptables|/|tilde.pink|70]
+[i|with the ufw tool. There are only four ports open as|/|tilde.pink|70]
+[i|declared below in the Ansible playbook configuration.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|- role: weareinteractive.ufw|/|tilde.pink|70]
+[i|  tags: ufw|/|tilde.pink|70]
+[i|  ufw_enabled: true|/|tilde.pink|70]
+[i|  ufw_packages: ["ufw"]|/|tilde.pink|70]
+[i|  ufw_rules:|/|tilde.pink|70]
+[i|  - logging: "full"|/|tilde.pink|70]
+[i|  - rule: allow|/|tilde.pink|70]
+[i|      to_port: "443"|/|tilde.pink|70]
+[i|  - rule: allow|/|tilde.pink|70]
+[i|      to_port: "80"|/|tilde.pink|70]
+[i|  - rule: allow|/|tilde.pink|70]
+[i|    {% raw %} to_port: "{{ ssh_port }}" {% endraw %}|/|tilde.pink|70]
+[i|  # Wireguard|/|tilde.pink|70]
+[i|  - rule: allow|/|tilde.pink|70]
+[i|      to_port: "51820"|/|tilde.pink|70]
+[i|      proto: udp|/|tilde.pink|70]
+[i|  # Delete default rule|/|tilde.pink|70]
+[i|  - rule: allow|/|tilde.pink|70]
+[i|      name: Anywhere|/|tilde.pink|70]
+[i|      delete: true|/|tilde.pink|70]
+[i|  ufw_manage_config: true|/|tilde.pink|70]
+[i|  ufw_config:|/|tilde.pink|70]
+[i|  IPV6: "yes"|/|tilde.pink|70]
+[i|  DEFAULT_INPUT_POLICY: DROP|/|tilde.pink|70]
+[i|  DEFAULT_OUTPUT_POLICY: ACCEPT|/|tilde.pink|70]
+[i|  DEFAULT_FORWARD_POLICY: DROP|/|tilde.pink|70]
+[i|  DEFAULT_APPLICATION_POLICY: SKIP|/|tilde.pink|70]
+[i|  MANAGE_BUILTINS: "no"|/|tilde.pink|70]
+[i|  IPT_SYSCTL: /etc/ufw/sysctl.conf|/|tilde.pink|70]
+[i|  IPT_MODULES: ""|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Identity provider|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Services with integration for protocols to verify user|/|tilde.pink|70]
+[i|identity or determine permissions are all linked to the|/|tilde.pink|70]
+[i|Authentik user directory.|/|tilde.pink|70]
+[h|Authentik|URL:https://goauthentik.io/|goauthentik.io|443]
+[i||/|tilde.pink|70]
+[i|I needed OAuth2 for Portainer and LDAP for several other|/|tilde.pink|70]
+[i|services such as Owncloud.|/|tilde.pink|70]
+[h|Portainer|URL:https://www.portainer.io/|www.portainer.io|443]
+[h|Owncloud|URL:https://owncloud.com/|owncloud.com|443]
+[i||/|tilde.pink|70]
+[i|If I remember correctly, the OAuth2 Outpost is embedded in|/|tilde.pink|70]
+[i|the application by default, whereas the LDAP Outpost had to|/|tilde.pink|70]
+[i|be configured with specific parameters for Docker.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Here's a diagram of several services trying to retrieve the|/|tilde.pink|70]
+[i|identity of an Authentik user.|/|tilde.pink|70]
+[h|Authentik|URL:https://goauthentik.io/|goauthentik.io|443]
+[i||/|tilde.pink|70]
+[i|  /authentik_users.png|/|tilde.pink|70]
+[I|/authentik_users.png|/~nagi/authentik_users.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Access management|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|With Authentik, group policies have been created to|/|tilde.pink|70]
+[i|authorize only certain groups of users to access certain|/|tilde.pink|70]
+[i|services.|/|tilde.pink|70]
+[h|Authentik|URL:https://goauthentik.io/|goauthentik.io|443]
+[i||/|tilde.pink|70]
+[i|For example, for Jellyfin, only users in the Jellyfin group|/|tilde.pink|70]
+[i|are authorized to connect.|/|tilde.pink|70]
+[h|Jellyfin|URL:https://jellyfin.org/|jellyfin.org|443]
+[i||/|tilde.pink|70]
+[i|In this way, I was able to secure all administration|/|tilde.pink|70]
+[i|services by authorizing only users in groups reserved for|/|tilde.pink|70]
+[i|administration.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I also used Traefik and Authentik to secure access to|/|tilde.pink|70]
+[i|services not protected by authentication.|/|tilde.pink|70]
+[h|Traefik|URL:https://traefik.io/|traefik.io|443]
+[h|Authentik|URL:https://goauthentik.io/|goauthentik.io|443]
+[i||/|tilde.pink|70]
+[i|I added middleware to the reverse proxy to enable HTTP|/|tilde.pink|70]
+[i|ForwardAuth with Authentik. In practical terms, this places|/|tilde.pink|70]
+[i|a connection portal in front of the targeted web services.|/|tilde.pink|70]
+[h|Authentik|URL:https://goauthentik.io/|goauthentik.io|443]
+[i||/|tilde.pink|70]
+[i|Let's say I want to access duplicati.theobori.duckdns.org,|/|tilde.pink|70]
+[i|it could be schematized as follows.|/|tilde.pink|70]
+[h|duplicati.theobori.duckdns.org|URL:https://duplicati.theobori.duckdns.org|duplicati.theobori.duckdns.org|443]
+[i||/|tilde.pink|70]
+[i|  /authentik_proxy.png|/|tilde.pink|70]
+[I|/authentik_proxy.png|/~nagi/authentik_proxy.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Media stack|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|One of the main objectives was to be able to manage movies|/|tilde.pink|70]
+[i|and series and watch them from any device on the local|/|tilde.pink|70]
+[i|network.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So I set up a stack for managing and downloading media,|/|tilde.pink|70]
+[i|which would then be streamed to devices by Jellyfin.|/|tilde.pink|70]
+[h|Jellyfin|URL:https://jellyfin.org/|jellyfin.org|443]
+[i||/|tilde.pink|70]
+[i|Here's what the media stack looks like.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /media_stack.png|/|tilde.pink|70]
+[I|/media_stack.png|/~nagi/media_stack.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Backup and restore|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To back up container data, I use Duplicati. It lets you|/|tilde.pink|70]
+[i|encrypt data and manage retention very easily via a web|/|tilde.pink|70]
+[i|interface.|/|tilde.pink|70]
+[h|Duplicati|URL:https://duplicati.com/|duplicati.com|443]
+[i||/|tilde.pink|70]
+[i|These backups can then be restored on my old computer.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Monitoring|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To keep abreast of service status, I've opted for Uptime|/|tilde.pink|70]
+[i|Kuma, which will alert me via Discord when a service is down|/|tilde.pink|70]
+[i|for n seconds.|/|tilde.pink|70]
+[h|Uptime Kuma|URL:https://uptime.kuma.pet/|uptime.kuma.pet|443]
+[i||/|tilde.pink|70]
+[i|I also have a Prometheus and Grafana stack that lets me|/|tilde.pink|70]
+[i|collect metrics on the system and on Docker containers. As|/|tilde.pink|70]
+[i|for Uptime Kuma, I'm alerted by Discord according to limits|/|tilde.pink|70]
+[i|defined for RAM and available storage space, for example.|/|tilde.pink|70]
+[h|Prometheus|URL:https://prometheus.io/|prometheus.io|443]
+[h|Grafana|URL:https://grafana.com/|grafana.com|443]
+[h|Uptime Kuma|URL:https://uptime.kuma.pet/|uptime.kuma.pet|443]
+[i||/|tilde.pink|70]
+[i|This is how the monitoring stack looks.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /monitoring_stack.png|/|tilde.pink|70]
+[I|/monitoring_stack.png|/~nagi/monitoring_stack.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Final home page|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Here's an overview of the dashboard, featuring all the|/|tilde.pink|70]
+[i|services exposed to the local network. In a way it's the end|/|tilde.pink|70]
+[i|result of service implementation.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  /dashy.png|/|tilde.pink|70]
+[I|/dashy.png|/~nagi/dashy.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Links|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|https://github.com/theobori/homelab|/|tilde.pink|70]
+[h|https://github.com/theobori/homelab|URL:https://github.com/theobori/homelab|github.com|443]

@@ -11,7 +11,6 @@ The aim of this post is to present the main steps I've taken and explain how the
 
 My laptop is an [ASUS ROG G750](https://laptopmedia.com/series/asus-rog-g750/) with 8GB of memory and 2 HDDs of around 600GB each. It hasn't been used for about five or six years and the battery is dead.
 
-
 ## First steps
 
 First, I decided to make an old USB key bootable. I install [Ventoy](https://www.ventoy.net/) on it to be able to load different image disks (ISO) without having to rewrite each time directly on the USB key.
@@ -20,13 +19,11 @@ I put [Memtest86+](https://www.memtest.org/) to test the memory, [shredos.x86_64
 
 So when I boot on the USB key, it loads the "multiboot" boot-loader (Ventoy) and I can then load one of the three programs.
 
-
 ## Pre configuration
 
 To be able to deploy the system configuration and reproduce it later, I'm writing an Ansible playbook and testing it on a local VM (`virt-manager` + KVM).
 
 The entire configuration is available at the bottom of the page.
-
 
 ## TLS certificates
 
@@ -38,13 +35,11 @@ In fact, I only need to manage one certificate with two SANs:
 - `theobori.duckdns.org`
 - `*.theobori.duckdns.org`
 
-
 ## Services
 
 Every application is deployed with the Ansible playbook are conteuneurized and managed with Docker.
 
 They are accessible only through port 443 managed by [Traefik](https://traefik.io/). Each sub-domain of [theobori.duckdns.org](https://theobori.duckdns.org) corresponds to a service, with the exception of the homepage, which is associated with the domain itself.
-
 
 ## Firewall
 
@@ -83,7 +78,6 @@ To filter incoming network traffic, I manipulate iptables with the ufw tool. The
   IPT_MODULES: ""
 ```
 
-
 ## Identity provider
 
 Services with integration for protocols to verify user identity or determine permissions are all linked to the [Authentik](https://goauthentik.io/) user directory.
@@ -94,13 +88,9 @@ If I remember correctly, the OAuth2 Outpost is embedded in the application by de
 
 Here's a diagram of several services trying to retrieve the identity of an [Authentik](https://goauthentik.io/) user.
 
-
-
 <p align="center">
-  <img src="/authentik_users.png" class="img-center">
+<img src="/authentik_users.png" class="img-center">
 </p>
-
-
 
 ## Access management
 
@@ -116,11 +106,9 @@ I added middleware to the reverse proxy to enable HTTP ForwardAuth with [Authent
 
 Let's say I want to access [duplicati.theobori.duckdns.org](https://duplicati.theobori.duckdns.org), it could be schematized as follows.
 
-
 <p align="center">
-  <img src="/authentik_proxy.png" class="img-center">
+<img src="/authentik_proxy.png" class="img-center">
 </p>
-
 
 ## Media stack
 
@@ -130,18 +118,15 @@ So I set up a stack for managing and downloading media, which would then be stre
 
 Here's what the media stack looks like.
 
-
 <p align="center">
-  <img src="/media_stack.png" class="img-center">
+<img src="/media_stack.png" class="img-center">
 </p>
-
 
 ## Backup and restore
 
 To back up container data, I use [Duplicati](https://duplicati.com/). It lets you encrypt data and manage retention very easily via a web interface.
 
 These backups can then be restored on my old computer.
-
 
 ## Monitoring
 
@@ -160,7 +145,7 @@ This is how the monitoring stack looks.
 Here's an overview of the dashboard, featuring all the services exposed to the local network. In a way it's the end result of service implementation.
 
 <p align="center" width="100%">
-  <img src="/dashy.png" width="650px" class="img-center">
+<img src="/dashy.png" width="650px" class="img-center">
 </p>
 
 ## Links

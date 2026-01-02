@@ -1,64 +1,77 @@
-Manage dotfiles with chezmoi
-2024-03-10
-Last edit: 2024-03-10
----------------------
-
-To give a bit of context, I had automated the deployment of the configuration of my Linux environment with an Ansible playbook (
-[h|repository|URL:https://github.com/theobori/self-config|tilde.pink|70]
-). This setup is compatible with almost all Linux distributions (probably UNIX too) but I was looking for something lighter and simpler.
-
-I found by chance 
-[h|chezmoi|URL:https://chezmoi.io|tilde.pink|70]
- which is able to manage dotfiles as well as some other configurations which could be linked to these dotfiles. The tool allows you to update files on several different machines, it's very complete, simple and effective.
-
-Some people pair it with Ansible but I prefer to use the solution in a very simple way, with the tool's native features (scripting and templating).
-
-Something interesting about 
-[h|chezmoi|URL:https://chezmoi.io|tilde.pink|70]
- is that it supports file encryption with modern tools like [age](https://age-encryption.org). This is very useful for certain sensitive data such as SSH private keys. So you can add configuration so that the tool can encrypt and decrypt.
-
-My configuration template looks like this (below) in the `.chezmoi.yaml.tmpl` file.
-
-{% raw %}
-```jinja2
-{{ $has_age := false }}
-{{ $sudo := "sudo" }}
-{{ $font := "Comic Code" }}
-
-{{ if stdinIsATTY }}
-{{ $has_age = promptBool "do you have age " }}
-
-{{- $sudo_choices := list "sudo" "doas" -}}
-{{- $sudo = promptChoiceOnce . "choice" "choose" $sudo_choices -}}
-
-{{ $font = promptString "font name " }}
-{{ end }}
-
-{{ if $has_age }}
-encryption: "age"
-age:
-    identity: "/home/nagi/.config/age/key.txt"
-    recipient: "age14m06fd3svs9neg2w97ccw3c8470hckl95qxr6jw8fgm4ex65352q6tun06"
-{{ end }}
-
-data:
-    sudo: {{ $sudo }}
-    font: {{ $font }}
-```
-{% endraw %}
-
-For the moment the repository is only compatible with Fedora and Arch Linux, however it is easy to implement other distributions.
-
-## Apply from a different machine
-
-To apply my configuration from another machine, simply run the following commands.
-
-```bash
-chezmoi init https://github.com/theobori/dotfiles.git
-chezmoi apply -v
-```
-
-## Links
-
-[h|https://github.com/theobori/dotfiles|URL:https://github.com/theobori/dotfiles|tilde.pink|70]
-
+[i|## title: Manage dotfiles with chezmoi|/|tilde.pink|70]
+[i|## date: "2024-03-10"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To give a bit of context, I had automated the deployment of|/|tilde.pink|70]
+[i|the configuration of my Linux environment with an Ansible|/|tilde.pink|70]
+[i|playbook (repository). This setup is compatible with almost|/|tilde.pink|70]
+[i|all Linux distributions (probably UNIX too) but I was|/|tilde.pink|70]
+[i|looking for something lighter and simpler.|/|tilde.pink|70]
+[h|repository|URL:https://github.com/theobori/self-config|github.com|443]
+[i||/|tilde.pink|70]
+[i|I found by chance chezmoi which is able to manage dotfiles|/|tilde.pink|70]
+[i|as well as some other configurations which could be linked|/|tilde.pink|70]
+[i|to these dotfiles. The tool allows you to update files on|/|tilde.pink|70]
+[i|several different machines, it's very complete, simple and|/|tilde.pink|70]
+[i|effective.|/|tilde.pink|70]
+[h|chezmoi|URL:https://chezmoi.io|chezmoi.io|443]
+[i||/|tilde.pink|70]
+[i|Some people pair it with Ansible but I prefer to use the|/|tilde.pink|70]
+[i|solution in a very simple way, with the tool's native|/|tilde.pink|70]
+[i|features (scripting and templating).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Something interesting about chezmoi is that it supports file|/|tilde.pink|70]
+[i|encryption with modern tools like age. This is very useful|/|tilde.pink|70]
+[i|for certain sensitive data such as SSH private keys. So you|/|tilde.pink|70]
+[i|can add configuration so that the tool can encrypt and|/|tilde.pink|70]
+[i|decrypt.|/|tilde.pink|70]
+[h|chezmoi|URL:https://chezmoi.io|chezmoi.io|443]
+[h|age|URL:https://age-encryption.org|age-encryption.org|443]
+[i||/|tilde.pink|70]
+[i|My configuration template looks like this (below) in the|/|tilde.pink|70]
+[i|.chezmoi.yaml.tmpl file.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{% raw %}|/|tilde.pink|70]
+[i|{{ $has_age := false }}|/|tilde.pink|70]
+[i|{{ $sudo := "sudo" }}|/|tilde.pink|70]
+[i|{{ $font := "Comic Code" }}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{{ if stdinIsATTY }}|/|tilde.pink|70]
+[i|{{ $has_age = promptBool "do you have age " }}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{{- $sudo_choices := list "sudo" "doas" -}}|/|tilde.pink|70]
+[i|{{- $sudo = promptChoiceOnce . "choice" "choose"|/|tilde.pink|70]
+[i|$sudo_choices -}}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{{ $font = promptString "font name " }}|/|tilde.pink|70]
+[i|{{ end }}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{{ if $has_age }}|/|tilde.pink|70]
+[i|encryption: "age"|/|tilde.pink|70]
+[i|age:|/|tilde.pink|70]
+[i|    identity: "/home/nagi/.config/age/key.txt"|/|tilde.pink|70]
+[i|    recipient:|/|tilde.pink|70]
+[i|"age14m06fd3svs9neg2w97ccw3c8470hckl95qxr6jw8fgm4ex65352q6tun06"|/|tilde.pink|70]
+[i|{{ end }}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|data:|/|tilde.pink|70]
+[i|    sudo: {{ $sudo }}|/|tilde.pink|70]
+[i|    font: {{ $font }}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{% endraw %}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|For the moment the repository is only compatible with Fedora|/|tilde.pink|70]
+[i|and Arch Linux, however it is easy to implement other|/|tilde.pink|70]
+[i|distributions.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Apply from a different machine|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To apply my configuration from another machine, simply run|/|tilde.pink|70]
+[i|the following commands.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|chezmoi init https://github.com/theobori/dotfiles.git|/|tilde.pink|70]
+[i|chezmoi apply -v|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Links|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|https://github.com/theobori/dotfiles|/|tilde.pink|70]
+[h|https://github.com/theobori/dotfiles|URL:https://github.com/theobori/dotfiles|github.com|443]

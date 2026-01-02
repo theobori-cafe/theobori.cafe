@@ -7,18 +7,15 @@ Many Teeworlds servers currently in use are containerized. However, it is also p
 
 The Dockerfile is available below, it compiles and executes the ELF file in the Docker container. I've also published the image on Docker's public registry, Docker Hub.
 
-
 ## Build the Docker image
 
 So there are two methods to get the Docker image, you can download it or building it yourself.
-
 
 ### Pull from Docker Hub
 
 ```bash
 docker pull b0thr34l/teeworlds:1.0
 ```
-
 
 ### Build from source
 
@@ -79,14 +76,11 @@ COPY --from=build /client/build/teeworlds .
 CMD [ "./teeworlds" ]
 ```
 
-
 ## Create and start the Docker container
-
 
 Now we can create and start a new container with the teeworlds client image we just created or downloaded.
 
 I consider that you're using X as your windowing system, rather than something like Wayland or something else.
-
 
 ### X display server
 
@@ -102,20 +96,17 @@ Make sure that your X server controll is configured correctly before running the
 xhost +
 ```
 
-
 Instead, you should add a single local user.
 
 ```bash
 xhost +si:localuser:$USER
 ```
 
-
 ### Storage configuration
 
 Teeworlds uses a specific location to store its data, it is described in a file named `storage.cfg` that we can find on the [offical Teeworlds GitHub repository](https://github.com/teeworlds/teeworlds/blob/master/storage.cfg).
 
 We are looking for `$USERDIR`, we are going to mount this directory into our Docker container.
-
 
 The first option is to create a new Docker volume containing the Teeworlds user data. We don't want to override the container directory, so we will create a shared Docker volume.
 
@@ -143,11 +134,8 @@ docker run -it \
     b0thr34l/teeworlds:1.0
 ```
 
-
 If you already had Teeworlds data in an user directory on your host system. You can mount a volume directly without creating a Docker volume, as shown in the example below.
-
 
 ```bash
 -v "$HOME/.teeworlds:/home/tee/.local/share/teeworlds"
 ```
-

@@ -12,11 +12,10 @@ A huge problem was the token that NeuVector provides tends to timeout quite quic
 So I decided to create a Terraform provider to handle all this cleanly. The language best suited for this is Go, so I learned it. Hashicorp explains that it's best to separate the client library from the provider.
 
 <p align="center" width="100%">
-    <img src="/terraform_provider.png" width="90%">
+<img src="/terraform_provider.png" width="90%">
 </p>
 
 So I created a Go SDK for NeuVector before using it in the provider.
-
 
 Now the provider is able to fully manage the implemented resources (create, delete, update and import).
 
@@ -40,8 +39,6 @@ provider "neuvector" {
   password = "admin"
 }
 ```
-
-
 
 Once it is declared in the configuration, you can start using it as you want. Here's a Terraform example that could be applied after installing NeuVector.
 
@@ -86,7 +83,6 @@ resource "neuvector_service_config" "service_config_test" {
   not_scored = true
 }
 ```
-
 
 ## Links
 

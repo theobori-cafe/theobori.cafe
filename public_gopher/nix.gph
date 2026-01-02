@@ -1,442 +1,508 @@
-My Nix exploration
-2024-06-24
-Last edit: 2024-06-24
----------------------
-
-Here I share some notes and other things I've learned about Nix that I find interesting. The content of this post is mainly about me learning Nix, it's not about understanding the whole tool and language.
-
-Also, it's important to note that I use Nix as a non-NixOS user.
-
-## What is Nix?
-
-Nix is actually several things! It's a cross platform package manager. It would be a little more accurate to say that it's a deployment tool used as a package manager.
-
-And it's also a purely functional programming language, dynamically typed and lazily evaluated.
-
-## Learning the programming language
-
-I started by learning the basics of the language and then went on to explore it in a bit more depth.
-
-### The basics
-
-I read 
-[h|Nix language basics](https://nix.dev/tutorials/nix-language#reading-nix-language) and to get used to the language I practised with [A tour of Nix|URL:https://nixcloud.io/tour|tilde.pink|70]
- which has several levels of difficulty from "easy" to "hard".
-
-One interesting thing about this language is that it has only one argument per function. To simulate several arguments, you can, for example, write a function with one argument that returns a function with one argument that returns a function with one argument, and so on. The syntax of the language makes it easy to do this.
-
-I was taught that it has a name, it's called 
-[h|Currying|URL:https://en.wikipedia.org/wiki/Currying|tilde.pink|70]
-. It's the transformation of a function with several arguments into a function with one argument that returns a function on the rest of the arguments. Here's an example with arguments `3` and `4`.
-
-```nix
-nix-repl> (a: b: a + b) 3 4
-7
-```
-
-A Python equivalent might be something like the following.
-
-```python
->>> (lambda a: lambda b: a + b)(3)(4)
-7
-```
-
-Another solution that is often used, particularly in 
-[h|Nixpkgs|URL:https://github.com/NixOS/nixpkgs|tilde.pink|70]
-, is to have an attribute set as a parameter to the function, and to use the attributes as arguments. For example, this might look like the expression below.
-
-```nix
-nix-repl> ({a, b}: a + b){a = 3; b = 4;}
-7
-```
-
-### Fake dynamic binding
-
-Although the blog post 
-[h|How to Fake Dynamic Binding in Nix|URL:http://r6.ca/blog/20140422T142911Z.html|tilde.pink|70]
- talks about this very well, I find it interesting to offer my own thoughts and approach.
-
-The language is statically scoped, i.e. binding decisions are made according to the scope at declaration time.
-
-Let's look at the `rec` keyword, which allows an attribute set to access its own attributes (recursive binding). Here's an example.
-
-```nix
-nix-repl> rec { a = 1; b = a + 1;}
-{
-  a = 1;
-  b = 2;
-}
-```
-
-This is an interesting feature, but it remains static because the binding is done before the runtime. This poses problems, particularly when it comes to overriding attributes, as shown in the example below.
-
-```nix
-nix-repl> rec { a = 1; b = a + 1; } // { a = 10; }
-{
-  a = 10;
-  b = 2;
-}
-```
-
-In this example, we would like `b` to be equal to `11`, not `2`.
-
-To solve this problem, we can look at the concept of a fixed point. A fixed point is a value of `x` that validates the equation `x = f(x)`.
-
-We can therefore write the following function.
-
-```nix
-nix-repl> fix = f: let
-  result = f result;
-in
-  result
-```
-
-So here we have the function `fix` which takes a function `f` as a parameter and returns the fixed point `result` of the function `f`.
-
-You might be tempted to say that the `f` function calls itself ad infinitum (`f(f(f(f(..))))`), but Nix evaluates expressions lazily, so this isn't the case.
-
-We can literally see that the `f` function returns a fixed point (`result`), because `result = f result`, which respects the definition of a fixed point.
-
-The `fix` function will allow us to emulate the `rec` keyword, as shown in the example below.
-```nix
-nix-repl> fix (self: { a = 3; b = 4; c = self.a + self.b; })
-{
-  a = 3;
-  b = 4;
-  c = 7;
-}
-```
-
-To better understand how it works, I've written the result of the `fix` function differently with the argument used previously.
-
-```nix
-nix-repl> let
-  result = { a = 3; b = 4; c = result.a + result.b;};
-in
-  { a = 3; b = 4; c = result.a + result.b;}
-{
-  a = 3;
-  b = 4;
-  c = 7;
-}
-```
-
-Finally, I've written the following function, which will allow the attributes to be overridden dynamically as initially intended.
-
-```nix
-nix-repl> fix = let
-  fixWithOverride = f: overrides: let
-      result = (f result) // overrides;
-    in
-      result // { override = x: fixWithOverride f x; };
-in
-f: fixWithOverride f {}
-
-attrFunction = self: { a = 3; b = 4; c = self.a+self.b; }
-
-attrFunctionFixedPoint = fix attrFunction
-
-nix-repl> attrFunctionFixedPoint
-{
-  a = 3;
-  b = 4;
-  c = 7;
-  override = «lambda override @ «string»:5:30»;
-}
-
-nix-repl> attrFunctionFixedPoint.override { b = 1; }
-{
-  a = 3;
-  b = 1;
-  c = 4;
-  override = «lambda override @ «string»:5:30»;
-}
-```
-
-## The essential Nix tool
-
-As already mentioned, the main use of Nix is cross platform package management. In this section I'm just trying to share and summarise some of the essential parts of my notes. If you want more details, I recommend you read the excellent 
-[h|Nix Pills|URL:https://nixos.org/guides/nix-pills/|tilde.pink|70]
-. It's rather long but well worth the read!
-
-### How does it work ?
-
-To sum up, I'd say that the Nix language has a very interesting native function called `derivation` (
-[h|see documentation|URL:https://nix.dev/manual/nix/2.22/language/derivations|tilde.pink|70]
-) on which many Nix expressions are based. I'm not going to redefine the term because the documentation has a very comprehensible version, but the important thing to remember is that a derivation is a construction specification, it's an immutable Nix building block. With another package manager, you could see it as a literal package.
-
-Nix technology will enable us to build these derivations, in the following stages.
-
-The `.drv` files contain specifications on how to build the derivation, they are intermediate files comparable to `.o` files, and the `.nix` files are comparable to `.c` files.
-
-The construction result is immutable and will be stored in `/nix/store/`, a synchronisation with the 
-[h|SQLite|URL:https://www.sqlite.org/|tilde.pink|70]
- database. I said it was immutable, in fact it is because Nix creates a hash for the path in the `/nix/store/` from the input derivation (not from the construction result).
-
-It's pretty hard to imagine all this, so I'll give you a concrete example. Let's imagine I want to create a derivation for the famous software 
-[h|GNU Hello|URL:https://www.gnu.org/software/hello/|tilde.pink|70]
-. The Nix derivation could look something like this.
-
-```nix
-# default.nix
-
-let
-  pkgs = import  { };
-in
-  {
-    hello = pkgs.stdenv.mkDerivation {
-      pname = "hello";
-      version = "2.12.1";
-
-      src = fetchTarball {
-        url = "https://ftp.gnu.org/gnu/hello/hello-2.12.1.tar.gz";
-        sha256 = "1kJjhtlsAkpNB7f6tZEs+dbKd8z7KoNHyDHEJ0tmhnc=";
-      };
-    };
-  }
-```
-
-> The `mkDerivation` function is based on the `derivation` builtin function.
-
-It can be built with the following command.
-
-```bash
-nix-build
-```
-
-The build result has been created in `/nix/store/x9cc4jsylk5q01iaxmxf941b59chws5h-hello-2.12.1` and a symbolic link named `result` pointing to this folder has been created in the current folder. We can then find the binary in `./result/bin/hello`.
-
-Before the build, a `.drv` file was created, which can be found by running the following command.
-```bash
-nix derivation show ./result | jq "keys[0]"
-```
-
-The full path to the `.drv` file is found in the first key of the JSON object, so the path to the `.drv` file is `/nix/store/dp5z62k3chf019biikg77p2acmz17phx-hello-2.12.1.drv`.
-
-As it is in binary format we can use `nix derivation show` to display the construction information it contains with the following command.
-
-```bash
-nix derivation show (nix derivation show ./result | jq "keys[0]" | tr -d "\"")
-# Or
-nix derivation show /nix/store/dp5z62k3chf019biikg77p2acmz17phx-hello-2.12.1.drv
-# ^
-# | Same output
-# v
-nix derivation show ./result
-```
-
-### Nixpkgs
-
-In the Nix expression used previously (the 
-[h|GNU Hello|URL:https://www.gnu.org/software/hello/|tilde.pink|70]
- derivation), I used the `mkDerivation` function from `stdenv`.
-
-This function is not builtin, it comes from the `pkgs` identifier which has the value `import  { };`.
-
-Before explaining this import, I think it's very important to understand what 
-[h|Nixpkgs|URL:https://github.com/NixOS/nixpkgs|tilde.pink|70]
- is. It's a Git repository that contains all the Nix expressions and modules. When this folder is evaluated, it produces an attribute set containing `stdenv`, which is itself an attribute set containing our `mkDerivation` function.
-
-Getting back to `pkgs`, `` is just a special Nix syntax, which, when evaluated, gives a path to a folder containing a collection of Nix expressions, i.e. Nixpkgs.
-
-Incidentally `` has an equivalence in Nix as shown below.
-
-```nix
-nix-repl> 
-/home/nagi/.nix-defexpr/channels/nixpkgs
-
-nix-repl> builtins.findFile builtins.nixPath "nixpkgs"
-/home/nagi/.nix-defexpr/channels/nixpkg
-
-nix-repl> :p builtins.nixPath
-[
-  {
-    path = "/home/nagi/.nix-defexpr/channels";
-    prefix = "";
-  }
-]
-```
-
-### Managing multiple Python versions
-
-One of the advantages of Nix is that it naturally offers the possibility of managing several versions of the same application. Taking 
-[h|Python|URL:https://www.python.org/|tilde.pink|70]
- as an example, let's say I want a Nix shell with version 3.7 and version 3.13.
-
-To do this, we can check for which version of 
-[h|Nixpkgs|URL:https://github.com/NixOS/nixpkgs|tilde.pink|70]
- Python was built on version 3.7 and target a specific version of 
-[h|Nixpkgs|URL:https://github.com/NixOS/nixpkgs|tilde.pink|70]
- in our Nix expression.
-
-To do this, there's the 
-[h|flox](https://floxdev.com/) tool which works very well, but to make it easier to understand I prefer to use [nixhub.io|URL:https://www.nixhub.io|tilde.pink|70]
-.
-
-So I'm looking for a version of the Nix packages that corresponds to Python version 3.7, and I find `nixpkgs/aca0bbe791c220f8360bd0dd8e9dce161253b341#python37`.
-
-```nix
-# shell.nix
-
-let
-  pkgs = import (fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11") { };
-  nixpkgs-python = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/aca0bbe791c220f8360bd0dd8e9dce161253b341.tar.gz") { };
-in
-  pkgs.mkShell {
-    buildInputs = [
-      nixpkgs-python.python37
-      pkgs.python313
-    ];
-  }
-```
-
-You can build Python derivations and enter a Nix shell with the following command.
-
-```bash
-nix-shell
-```
-
-And we see that we have access to the two versions requested with the commands `python3.7` and `python3.13` !
-
-## A Virtual environment in Python with Nix flakes
-
-I've recently created a development environment with Nix flakes (
-[h|see documentation|URL:https://nixos.wiki/wiki/Flakes|tilde.pink|70]
-), it's very handy as it provides a ready to use environment for Python 3.11 with the desired modules.
-
-Below is a Nix expression I wrote for the Python module 
-[h|callviz|URL:https://pypi.org/project/callviz/|tilde.pink|70]
-, it has all the necessary dependencies and a virtual Python environment.
-
-```nix
-# flake.nix
-
-{
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-  };
-
-  outputs =
-    { self, nixpkgs }:
-    let
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-
-      forEachSupportedSystem =
-        f: nixpkgs.lib.genAttrs supportedSystems (system: f { pkgs = import nixpkgs { inherit system; }; });
-    in
-    {
-      # ...
-      # I usually also declare a default package, a code checker and formatter
-      devShells = forEachSupportedSystem (
-        { pkgs }:
-        {
-          default = pkgs.mkShell {
-            venvDir = ".venv";
-            packages =
-              with pkgs;
-              [
-                python3
-                graphviz
-              ]
-              ++ (with pkgs.python3Packages; [
-                pip
-                venvShellHook
-                graphviz
-              ]);
-          };
-        }
-      );
-    };
-}
-```
-
-Note that the default package and the default development shell are compatible with all systems (`supportedSystems`)!
-
-To realise the derivations and enter the Nix shell, I can run the following command.
-```bash
-nix develop
-```
-
-## Nixpkgs contribution
-
-Once I'd finished exploring and learning Nix, I wanted to make a package for [Super Mario War](http://smwstuff.net/game) and add it to 
-[h|Nixpkgs|URL:https://github.com/NixOS/nixpkgs|tilde.pink|70]
-.
-
-Here's what the package looks like.
-
-```nix
-{
-  lib,
-  stdenv,
-  fetchFromGitHub,
-  cmake,
-  pkg-config,
-  enet,
-  yaml-cpp,
-  SDL2,
-  SDL2_image,
-  SDL2_mixer,
-  zlib,
-  unstableGitUpdater,
-  makeWrapper,
-}:
-stdenv.mkDerivation (finalAttrs: {
-  pname = "supermariowar";
-  version = "2023-unstable-2024-09-17";
-
-  src = fetchFromGitHub {
-    owner = "mmatyas";
-    repo = "supermariowar";
-    rev = "6b8ff8c669ca31a116754d23b6ff65e42ac50733";
-    hash = "sha256-P0jV7G81thj0UJoYLd5+H5SjjaVu4goJxc9IkbzxJgs=";
-    fetchSubmodules = true;
-  };
-
-  nativeBuildInputs = [
-    cmake
-    pkg-config
-    makeWrapper
-  ];
-
-  buildInputs = [
-    enet
-    yaml-cpp
-    SDL2
-    SDL2_image
-    SDL2_mixer
-    zlib
-  ];
-
-  cmakeFlags = [ "-DBUILD_STATIC_LIBS=OFF" ];
-
-  postInstall = ''
-    mkdir -p $out/bin
-
-    for app in smw smw-leveledit smw-worldedit; do
-      makeWrapper $out/games/$app $out/bin/$app \
-        --add-flags "--datadir $out/share/games/smw"
-    done
-
-    ln -s $out/games/smw-server $out/bin/smw-server
-  '';
-
-  passthru.updateScript = unstableGitUpdater { };
-
-  meta = {
-    description = "A fan-made multiplayer Super Mario Bros. style deathmatch game";
-    homepage = "https://github.com/mmatyas/supermariowar";
-    changelog = "https://github.com/mmatyas/supermariowar/blob/${finalAttrs.src.rev}/CHANGELOG";
-    license = lib.licenses.gpl2Plus;
-    maintainers = with lib.maintainers; [ theobori ];
-    mainProgram = "smw";
-    platforms = lib.platforms.linux;
-  };
-})
-```
-
+[i|## title: My Nix exploration|/|tilde.pink|70]
+[i|## date: "2024-06-24"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /nix_logo.svg|/|tilde.pink|70]
+[I|/nix_logo.svg|/~nagi/nix_logo.svg|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Here I share some notes and other things I've learned about|/|tilde.pink|70]
+[i|Nix that I find interesting. The content of this post is|/|tilde.pink|70]
+[i|mainly about me learning Nix, it's not about understanding|/|tilde.pink|70]
+[i|the whole tool and language.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Also, it's important to note that I use Nix as a non-NixOS|/|tilde.pink|70]
+[i|user.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## What is Nix?|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Nix is actually several things! It's a cross platform|/|tilde.pink|70]
+[i|package manager. It would be a little more accurate to say|/|tilde.pink|70]
+[i|that it's a deployment tool used as a package manager.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|And it's also a purely functional programming language,|/|tilde.pink|70]
+[i|dynamically typed and lazily evaluated.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Learning the programming language|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I started by learning the basics of the language and then|/|tilde.pink|70]
+[i|went on to explore it in a bit more depth.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### The basics|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I read Nix language basics and to get used to the language I|/|tilde.pink|70]
+[i|practised with A tour of Nix which has several levels of|/|tilde.pink|70]
+[i|difficulty from "easy" to "hard".|/|tilde.pink|70]
+[h|Nix language basics|URL:https://nix.dev/tutorials/nix-language#reading-nix-language|nix.dev|443]
+[h|A tour of Nix|URL:https://nixcloud.io/tour|nixcloud.io|443]
+[i||/|tilde.pink|70]
+[i|One interesting thing about this language is that it has|/|tilde.pink|70]
+[i|only one argument per function. To simulate several|/|tilde.pink|70]
+[i|arguments, you can, for example, write a function with one|/|tilde.pink|70]
+[i|argument that returns a function with one argument that|/|tilde.pink|70]
+[i|returns a function with one argument, and so on. The syntax|/|tilde.pink|70]
+[i|of the language makes it easy to do this.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I was taught that it has a name, it's called Currying. It's|/|tilde.pink|70]
+[i|the transformation of a function with several arguments into|/|tilde.pink|70]
+[i|a function with one argument that returns a function on the|/|tilde.pink|70]
+[i|rest of the arguments. Here's an example with arguments 3|/|tilde.pink|70]
+[i|and 4.|/|tilde.pink|70]
+[h|Currying|URL:https://en.wikipedia.org/wiki/Currying|en.wikipedia.org|443]
+[i||/|tilde.pink|70]
+[i|nix-repl> (a: b: a + b) 3 4|/|tilde.pink|70]
+[i|7|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|A Python equivalent might be something like the following.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|>>> (lambda a: lambda b: a + b)(3)(4)|/|tilde.pink|70]
+[i|7|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Another solution that is often used, particularly in|/|tilde.pink|70]
+[i|Nixpkgs, is to have an attribute set as a parameter to the|/|tilde.pink|70]
+[i|function, and to use the attributes as arguments. For|/|tilde.pink|70]
+[i|example, this might look like the expression below.|/|tilde.pink|70]
+[h|Nixpkgs|URL:https://github.com/NixOS/nixpkgs|github.com|443]
+[i||/|tilde.pink|70]
+[i|nix-repl> ({a, b}: a + b){a = 3; b = 4;}|/|tilde.pink|70]
+[i|7|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Fake dynamic binding|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Although the blog post How to Fake Dynamic Binding in Nix|/|tilde.pink|70]
+[i|talks about this very well, I find it interesting to offer|/|tilde.pink|70]
+[i|my own thoughts and approach.|/|tilde.pink|70]
+[h|How to Fake Dynamic Binding in Nix|URL:http://r6.ca/blog/20140422T142911Z.html|r6.ca|80]
+[i||/|tilde.pink|70]
+[i|The language is statically scoped, i.e. binding decisions|/|tilde.pink|70]
+[i|are made according to the scope at declaration time.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Let's look at the rec keyword, which allows an attribute set|/|tilde.pink|70]
+[i|to access its own attributes (recursive binding). Here's an|/|tilde.pink|70]
+[i|example.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-repl> rec { a = 1; b = a + 1;}|/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  a = 1;|/|tilde.pink|70]
+[i|  b = 2;|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|This is an interesting feature, but it remains static|/|tilde.pink|70]
+[i|because the binding is done before the runtime. This poses|/|tilde.pink|70]
+[i|problems, particularly when it comes to overriding|/|tilde.pink|70]
+[i|attributes, as shown in the example below.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-repl> rec { a = 1; b = a + 1; } // { a = 10; }|/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  a = 10;|/|tilde.pink|70]
+[i|  b = 2;|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|In this example, we would like b to be equal to 11, not 2.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To solve this problem, we can look at the concept of a fixed|/|tilde.pink|70]
+[i|point. A fixed point is a value of x that validates the|/|tilde.pink|70]
+[i|equation x = f(x).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|We can therefore write the following function.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-repl> fix = f: let|/|tilde.pink|70]
+[i|  result = f result;|/|tilde.pink|70]
+[i|in|/|tilde.pink|70]
+[i|  result|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|So here we have the function fix which takes a function f as|/|tilde.pink|70]
+[i|a parameter and returns the fixed point result of the|/|tilde.pink|70]
+[i|function f.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|You might be tempted to say that the f function calls itself|/|tilde.pink|70]
+[i|ad infinitum (f(f(f(f(..))))), but Nix evaluates expressions|/|tilde.pink|70]
+[i|lazily, so this isn't the case.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|We can literally see that the f function returns a fixed|/|tilde.pink|70]
+[i|point (result), because result = f result, which respects|/|tilde.pink|70]
+[i|the definition of a fixed point.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The fix function will allow us to emulate the rec keyword,|/|tilde.pink|70]
+[i|as shown in the example below.|/|tilde.pink|70]
+[i|nix-repl> fix (self: { a = 3; b = 4; c = self.a + self.b; })|/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  a = 3;|/|tilde.pink|70]
+[i|  b = 4;|/|tilde.pink|70]
+[i|  c = 7;|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To better understand how it works, I've written the result|/|tilde.pink|70]
+[i|of the fix function differently with the argument used|/|tilde.pink|70]
+[i|previously.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-repl> let|/|tilde.pink|70]
+[i|  result = { a = 3; b = 4; c = result.a + result.b;};|/|tilde.pink|70]
+[i|in|/|tilde.pink|70]
+[i|  { a = 3; b = 4; c = result.a + result.b;}|/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  a = 3;|/|tilde.pink|70]
+[i|  b = 4;|/|tilde.pink|70]
+[i|  c = 7;|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Finally, I've written the following function, which will|/|tilde.pink|70]
+[i|allow the attributes to be overridden dynamically as|/|tilde.pink|70]
+[i|initially intended.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-repl> fix = let|/|tilde.pink|70]
+[i|  fixWithOverride = f: overrides: let|/|tilde.pink|70]
+[i|      result = (f result) // overrides;|/|tilde.pink|70]
+[i|    in|/|tilde.pink|70]
+[i|      result // { override = x: fixWithOverride f x; };|/|tilde.pink|70]
+[i|in|/|tilde.pink|70]
+[i|f: fixWithOverride f {}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|attrFunction = self: { a = 3; b = 4; c = self.a+self.b; }|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|attrFunctionFixedPoint = fix attrFunction|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-repl> attrFunctionFixedPoint|/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  a = 3;|/|tilde.pink|70]
+[i|  b = 4;|/|tilde.pink|70]
+[i|  c = 7;|/|tilde.pink|70]
+[i|  override = «lambda override @ «string»:5:30»;|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-repl> attrFunctionFixedPoint.override { b = 1; }|/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  a = 3;|/|tilde.pink|70]
+[i|  b = 1;|/|tilde.pink|70]
+[i|  c = 4;|/|tilde.pink|70]
+[i|  override = «lambda override @ «string»:5:30»;|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## The essential Nix tool|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|As already mentioned, the main use of Nix is cross platform|/|tilde.pink|70]
+[i|package management. In this section I'm just trying to share|/|tilde.pink|70]
+[i|and summarise some of the essential parts of my notes. If|/|tilde.pink|70]
+[i|you want more details, I recommend you read the excellent|/|tilde.pink|70]
+[i|Nix Pills. It's rather long but well worth the read!|/|tilde.pink|70]
+[h|Nix Pills|URL:https://nixos.org/guides/nix-pills/|nixos.org|443]
+[i||/|tilde.pink|70]
+[i|### How does it work ?|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To sum up, I'd say that the Nix language has a very|/|tilde.pink|70]
+[i|interesting native function called derivation (see|/|tilde.pink|70]
+[i|documentation) on which many Nix expressions are based. I'm|/|tilde.pink|70]
+[i|not going to redefine the term because the documentation has|/|tilde.pink|70]
+[i|a very comprehensible version, but the important thing to|/|tilde.pink|70]
+[i|remember is that a derivation is a construction|/|tilde.pink|70]
+[i|specification, it's an immutable Nix building block. With|/|tilde.pink|70]
+[i|another package manager, you could see it as a literal|/|tilde.pink|70]
+[i|package.|/|tilde.pink|70]
+[h|see documentation|URL:https://nix.dev/manual/nix/2.22/language/derivations|nix.dev|443]
+[i||/|tilde.pink|70]
+[i|Nix technology will enable us to build these derivations, in|/|tilde.pink|70]
+[i|the following stages.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /nix_graph.png|/|tilde.pink|70]
+[I|/nix_graph.png|/~nagi/nix_graph.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The .drv files contain specifications on how to build the|/|tilde.pink|70]
+[i|derivation, they are intermediate files comparable to .o|/|tilde.pink|70]
+[i|files, and the .nix files are comparable to .c files.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The construction result is immutable and will be stored in|/|tilde.pink|70]
+[i|/nix/store/, a synchronisation with the SQLite database. I|/|tilde.pink|70]
+[i|said it was immutable, in fact it is because Nix creates a|/|tilde.pink|70]
+[i|hash for the path in the /nix/store/ from the input|/|tilde.pink|70]
+[i|derivation (not from the construction result).|/|tilde.pink|70]
+[h|SQLite|URL:https://www.sqlite.org/|www.sqlite.org|443]
+[i||/|tilde.pink|70]
+[i|It's pretty hard to imagine all this, so I'll give you a|/|tilde.pink|70]
+[i|concrete example. Let's imagine I want to create a|/|tilde.pink|70]
+[i|derivation for the famous software GNU Hello. The Nix|/|tilde.pink|70]
+[i|derivation could look something like this.|/|tilde.pink|70]
+[h|GNU Hello|URL:https://www.gnu.org/software/hello/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|# default.nix|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|let|/|tilde.pink|70]
+[i|  pkgs = import <nixpkgs> { };|/|tilde.pink|70]
+[i|in|/|tilde.pink|70]
+[i|  {|/|tilde.pink|70]
+[i|    hello = pkgs.stdenv.mkDerivation {|/|tilde.pink|70]
+[i|      pname = "hello";|/|tilde.pink|70]
+[i|      version = "2.12.1";|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|      src = fetchTarball {|/|tilde.pink|70]
+[i|        url = "https://ftp.gnu.org/gnu/hello/hello-|/|tilde.pink|70]
+[i|2.12.1.tar.gz";|/|tilde.pink|70]
+[i|        sha256 =|/|tilde.pink|70]
+[i|"1kJjhtlsAkpNB7f6tZEs+dbKd8z7KoNHyDHEJ0tmhnc=";|/|tilde.pink|70]
+[i|      };|/|tilde.pink|70]
+[i|    };|/|tilde.pink|70]
+[i|  }|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|“The mkDerivation function is based on the derivation|/|tilde.pink|70]
+[i|builtin function.”|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|It can be built with the following command.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-build|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The build result has been created in|/|tilde.pink|70]
+[i|/nix/store/x9cc4jsylk5q01iaxmxf941b59chws5h-hello-2.12.1 and a|/|tilde.pink|70]
+[i|symbolic link named result pointing to this folder has been|/|tilde.pink|70]
+[i|created in the current folder. We can then find the binary|/|tilde.pink|70]
+[i|in ./result/bin/hello.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Before the build, a .drv file was created, which can be|/|tilde.pink|70]
+[i|found by running the following command.|/|tilde.pink|70]
+[i|nix derivation show ./result | jq "keys[0]"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The full path to the .drv file is found in the first key of|/|tilde.pink|70]
+[i|the JSON object, so the path to the .drv file is|/|tilde.pink|70]
+[i|/nix/store/dp5z62k3chf019biikg77p2acmz17phx-hello-2.12.1.drv.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|As it is in binary format we can use nix derivation show to|/|tilde.pink|70]
+[i|display the construction information it contains with the|/|tilde.pink|70]
+[i|following command.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix derivation show (nix derivation show ./result | jq|/|tilde.pink|70]
+[i|"keys[0]" | tr -d "\"")|/|tilde.pink|70]
+[i|# Or|/|tilde.pink|70]
+[i|nix derivation show|/|tilde.pink|70]
+[i|/nix/store/dp5z62k3chf019biikg77p2acmz17phx-hello-2.12.1.drv|/|tilde.pink|70]
+[i|# ^|/|tilde.pink|70]
+[i|# | Same output|/|tilde.pink|70]
+[i|# v|/|tilde.pink|70]
+[i|nix derivation show ./result|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Nixpkgs|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|In the Nix expression used previously (the GNU Hello|/|tilde.pink|70]
+[i|derivation), I used the mkDerivation function from stdenv.|/|tilde.pink|70]
+[h|GNU Hello|URL:https://www.gnu.org/software/hello/|www.gnu.org|443]
+[i||/|tilde.pink|70]
+[i|This function is not builtin, it comes from the pkgs|/|tilde.pink|70]
+[i|identifier which has the value import <nixpkgs> { };.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Before explaining this import, I think it's very important|/|tilde.pink|70]
+[i|to understand what Nixpkgs is. It's a Git repository that|/|tilde.pink|70]
+[i|contains all the Nix expressions and modules. When this|/|tilde.pink|70]
+[i|folder is evaluated, it produces an attribute set containing|/|tilde.pink|70]
+[i|stdenv, which is itself an attribute set containing our|/|tilde.pink|70]
+[i|mkDerivation function.|/|tilde.pink|70]
+[h|Nixpkgs|URL:https://github.com/NixOS/nixpkgs|github.com|443]
+[i||/|tilde.pink|70]
+[i|Getting back to pkgs, <nixpkgs> is just a special Nix|/|tilde.pink|70]
+[i|syntax, which, when evaluated, gives a path to a folder|/|tilde.pink|70]
+[i|containing a collection of Nix expressions, i.e. Nixpkgs.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Incidentally <nixpkgs> has an equivalence in Nix as shown|/|tilde.pink|70]
+[i|below.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-repl> <nixpkgs>|/|tilde.pink|70]
+[i|/home/nagi/.nix-defexpr/channels/nixpkgs|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-repl> builtins.findFile builtins.nixPath "nixpkgs"|/|tilde.pink|70]
+[i|/home/nagi/.nix-defexpr/channels/nixpkg|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-repl> :p builtins.nixPath|/|tilde.pink|70]
+[i|[|/|tilde.pink|70]
+[i|  {|/|tilde.pink|70]
+[i|    path = "/home/nagi/.nix-defexpr/channels";|/|tilde.pink|70]
+[i|    prefix = "";|/|tilde.pink|70]
+[i|  }|/|tilde.pink|70]
+[i|]|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|### Managing multiple Python versions|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|One of the advantages of Nix is that it naturally offers the|/|tilde.pink|70]
+[i|possibility of managing several versions of the same|/|tilde.pink|70]
+[i|application. Taking Python as an example, let's say I want a|/|tilde.pink|70]
+[i|Nix shell with version 3.7 and version 3.13.|/|tilde.pink|70]
+[h|Python|URL:https://www.python.org/|www.python.org|443]
+[i||/|tilde.pink|70]
+[i|To do this, we can check for which version of Nixpkgs Python|/|tilde.pink|70]
+[i|was built on version 3.7 and target a specific version of|/|tilde.pink|70]
+[i|Nixpkgs in our Nix expression.|/|tilde.pink|70]
+[h|Nixpkgs|URL:https://github.com/NixOS/nixpkgs|github.com|443]
+[h|Nixpkgs|URL:https://github.com/NixOS/nixpkgs|github.com|443]
+[i||/|tilde.pink|70]
+[i|To do this, there's the flox tool which works very well, but|/|tilde.pink|70]
+[i|to make it easier to understand I prefer to use nixhub.io.|/|tilde.pink|70]
+[h|flox|URL:https://floxdev.com/|floxdev.com|443]
+[h|nixhub.io|URL:https://www.nixhub.io|www.nixhub.io|443]
+[i||/|tilde.pink|70]
+[i|So I'm looking for a version of the Nix packages that|/|tilde.pink|70]
+[i|corresponds to Python version 3.7, and I find|/|tilde.pink|70]
+[i|nixpkgs/aca0bbe791c220f8360bd0dd8e9dce161253b341#python37.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|# shell.nix|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|let|/|tilde.pink|70]
+[i|  pkgs = import (fetchTarball|/|tilde.pink|70]
+[i|"https://github.com/NixOS/nixpkgs/tarball/nixos-23.11") { };|/|tilde.pink|70]
+[i|  nixpkgs-python = import (fetchTarball|/|tilde.pink|70]
+[i|"https://github.com/NixOS/nixpkgs/archive/aca0bbe791c220f8360bd0dd8e9dce161253b341.tar.gz")|/|tilde.pink|70]
+[i|{ };|/|tilde.pink|70]
+[i|in|/|tilde.pink|70]
+[i|  pkgs.mkShell {|/|tilde.pink|70]
+[i|    buildInputs = [|/|tilde.pink|70]
+[i|      nixpkgs-python.python37|/|tilde.pink|70]
+[i|      pkgs.python313|/|tilde.pink|70]
+[i|    ];|/|tilde.pink|70]
+[i|  }|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|You can build Python derivations and enter a Nix shell with|/|tilde.pink|70]
+[i|the following command.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-shell|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|And we see that we have access to the two versions requested|/|tilde.pink|70]
+[i|with the commands python3.7 and python3.13 !|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## A Virtual environment in Python with Nix flakes|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I've recently created a development environment with Nix|/|tilde.pink|70]
+[i|flakes (see documentation), it's very handy as it provides a|/|tilde.pink|70]
+[i|ready to use environment for Python 3.11 with the desired|/|tilde.pink|70]
+[i|modules.|/|tilde.pink|70]
+[h|see documentation|URL:https://nixos.wiki/wiki/Flakes|nixos.wiki|443]
+[i||/|tilde.pink|70]
+[i|Below is a Nix expression I wrote for the Python module|/|tilde.pink|70]
+[i|callviz, it has all the necessary dependencies and a virtual|/|tilde.pink|70]
+[i|Python environment.|/|tilde.pink|70]
+[h|callviz|URL:https://pypi.org/project/callviz/|pypi.org|443]
+[i||/|tilde.pink|70]
+[i|# flake.nix|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  inputs = {|/|tilde.pink|70]
+[i|    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  outputs =|/|tilde.pink|70]
+[i|    { self, nixpkgs }:|/|tilde.pink|70]
+[i|    let|/|tilde.pink|70]
+[i|      supportedSystems = [|/|tilde.pink|70]
+[i|        "x86_64-linux"|/|tilde.pink|70]
+[i|        "aarch64-linux"|/|tilde.pink|70]
+[i|        "x86_64-darwin"|/|tilde.pink|70]
+[i|        "aarch64-darwin"|/|tilde.pink|70]
+[i|      ];|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|      forEachSupportedSystem =|/|tilde.pink|70]
+[i|        f: nixpkgs.lib.genAttrs supportedSystems (system: f|/|tilde.pink|70]
+[i|{ pkgs = import nixpkgs { inherit system; }; });|/|tilde.pink|70]
+[i|    in|/|tilde.pink|70]
+[i|    {|/|tilde.pink|70]
+[i|      # ...|/|tilde.pink|70]
+[i|      # I usually also declare a default package, a code|/|tilde.pink|70]
+[i|checker and formatter|/|tilde.pink|70]
+[i|      devShells = forEachSupportedSystem (|/|tilde.pink|70]
+[i|        { pkgs }:|/|tilde.pink|70]
+[i|        {|/|tilde.pink|70]
+[i|          default = pkgs.mkShell {|/|tilde.pink|70]
+[i|            venvDir = ".venv";|/|tilde.pink|70]
+[i|            packages =|/|tilde.pink|70]
+[i|              with pkgs;|/|tilde.pink|70]
+[i|              [|/|tilde.pink|70]
+[i|                python3|/|tilde.pink|70]
+[i|                graphviz|/|tilde.pink|70]
+[i|              ]|/|tilde.pink|70]
+[i|              ++ (with pkgs.python3Packages; [|/|tilde.pink|70]
+[i|                pip|/|tilde.pink|70]
+[i|                venvShellHook|/|tilde.pink|70]
+[i|                graphviz|/|tilde.pink|70]
+[i|              ]);|/|tilde.pink|70]
+[i|          };|/|tilde.pink|70]
+[i|        }|/|tilde.pink|70]
+[i|      );|/|tilde.pink|70]
+[i|    };|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Note that the default package and the default development|/|tilde.pink|70]
+[i|shell are compatible with all systems (supportedSystems)!|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To realise the derivations and enter the Nix shell, I can|/|tilde.pink|70]
+[i|run the following command.|/|tilde.pink|70]
+[i|nix develop|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Nixpkgs contribution|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Once I'd finished exploring and learning Nix, I wanted to|/|tilde.pink|70]
+[i|make a package for Super Mario War and add it to Nixpkgs.|/|tilde.pink|70]
+[h|Super Mario War|URL:http://smwstuff.net/game|smwstuff.net|80]
+[h|Nixpkgs|URL:https://github.com/NixOS/nixpkgs|github.com|443]
+[i||/|tilde.pink|70]
+[i|Here's what the package looks like.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  lib,|/|tilde.pink|70]
+[i|  stdenv,|/|tilde.pink|70]
+[i|  fetchFromGitHub,|/|tilde.pink|70]
+[i|  cmake,|/|tilde.pink|70]
+[i|  pkg-config,|/|tilde.pink|70]
+[i|  enet,|/|tilde.pink|70]
+[i|  yaml-cpp,|/|tilde.pink|70]
+[i|  SDL2,|/|tilde.pink|70]
+[i|  SDL2_image,|/|tilde.pink|70]
+[i|  SDL2_mixer,|/|tilde.pink|70]
+[i|  zlib,|/|tilde.pink|70]
+[i|  unstableGitUpdater,|/|tilde.pink|70]
+[i|  makeWrapper,|/|tilde.pink|70]
+[i|}:|/|tilde.pink|70]
+[i|stdenv.mkDerivation (finalAttrs: {|/|tilde.pink|70]
+[i|  pname = "supermariowar";|/|tilde.pink|70]
+[i|  version = "2023-unstable-2024-09-17";|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  src = fetchFromGitHub {|/|tilde.pink|70]
+[i|    owner = "mmatyas";|/|tilde.pink|70]
+[i|    repo = "supermariowar";|/|tilde.pink|70]
+[i|    rev = "6b8ff8c669ca31a116754d23b6ff65e42ac50733";|/|tilde.pink|70]
+[i|    hash = "sha256-|/|tilde.pink|70]
+[i|P0jV7G81thj0UJoYLd5+H5SjjaVu4goJxc9IkbzxJgs=";|/|tilde.pink|70]
+[i|    fetchSubmodules = true;|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  nativeBuildInputs = [|/|tilde.pink|70]
+[i|    cmake|/|tilde.pink|70]
+[i|    pkg-config|/|tilde.pink|70]
+[i|    makeWrapper|/|tilde.pink|70]
+[i|  ];|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  buildInputs = [|/|tilde.pink|70]
+[i|    enet|/|tilde.pink|70]
+[i|    yaml-cpp|/|tilde.pink|70]
+[i|    SDL2|/|tilde.pink|70]
+[i|    SDL2_image|/|tilde.pink|70]
+[i|    SDL2_mixer|/|tilde.pink|70]
+[i|    zlib|/|tilde.pink|70]
+[i|  ];|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  cmakeFlags = [ "-DBUILD_STATIC_LIBS=OFF" ];|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  postInstall = ''|/|tilde.pink|70]
+[i|    mkdir -p $out/bin|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    for app in smw smw-leveledit smw-worldedit; do|/|tilde.pink|70]
+[i|      makeWrapper $out/games/$app $out/bin/$app |/|tilde.pink|70]
+[i|        --add-flags "--datadir $out/share/games/smw"|/|tilde.pink|70]
+[i|    done|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    ln -s $out/games/smw-server $out/bin/smw-server|/|tilde.pink|70]
+[i|  '';|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  passthru.updateScript = unstableGitUpdater { };|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|  meta = {|/|tilde.pink|70]
+[i|    description = "A fan-made multiplayer Super Mario Bros.|/|tilde.pink|70]
+[i|style deathmatch game";|/|tilde.pink|70]
+[i|    homepage = "https://github.com/mmatyas/supermariowar";|/|tilde.pink|70]
+[i|    changelog =|/|tilde.pink|70]
+[i|"https://github.com/mmatyas/supermariowar/blob/${finalAttrs.src.rev}/CHANGELOG";|/|tilde.pink|70]
+[i|    license = lib.licenses.gpl2Plus;|/|tilde.pink|70]
+[i|    maintainers = with lib.maintainers; [ theobori ];|/|tilde.pink|70]
+[i|    mainProgram = "smw";|/|tilde.pink|70]
+[i|    platforms = lib.platforms.linux;|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i|})|/|tilde.pink|70]

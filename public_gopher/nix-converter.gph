@@ -1,114 +1,124 @@
-My Nix converter tool
-2025-12-16
-Last edit: 2025-12-16
----------------------
-
-Last year I wanted to convert my Nix code into YAML and TOML. So I went looking for an all-in-one CLI tool capable of converting a configuration language into Nix and vice-versa. Unfortunately, I couldn't find what I was looking for, so I decided to create my own tool.
-
-## Presentation
-
-The tool is called 
-[h|nix-converter|URL:https://github.com/theobori/nix-converter|tilde.pink|70]
-. It's a command-line interface written in Go that converts various configuration languages (YAML, TOML, etc.) to Nix and vice versa.
-
-## How it works
-
-Let's assume we have a source language called A and a destination language called B.
-
-First, I use external Go libraries to retrieve a syntactic abstract representing the code of language A. In a second step, I traverse the retrieved tree, which allows me to produce the code for language B in string form. Finally, once the traversal is complete, the final code is written to the process's standard output. Note that conversions are static only, i.e. expressions will not be evaluated, apart from a few exceptions.
-
-The only exception to these steps is the transformation of Nix code into TOML code. Instead of retrieving a string after the tree traverse, I retrieve a Go data structure that is used by a specialized TOML marshaller.
-
-## Examples of transformations
-
-Let's take a simple example with the JSON code below.
-
-```json
-{
-  "fruits": [
-    "Apple",
-    "Banana",
-    "Orange",
-    1,
-    2,
-    -1
-  ],
-  "abc": {
-    "c": "c",
-    "b": "b",
-    "a": "a"
-  },
-  "": 1,
-  "123": "",
-  "f123": ""
-}
-```
-
-To convert it into Nix code, you can use the command line below, which also includes parameters for sorting iterators (lists and hash tables) and ignoring double-quotation marks for keys.
-
-```bash
-nix-converter -f file.json -l json -unsafe-keys -sort-iterators "all"
-```
-
-Once launched, you get the Nix code below.
-
-```nix
-{
-  "" = 1;
-  "123" = "";
-  abc = {
-    a = "a";
-    b = "b";
-    c = "c";
-  };
-  f123 = "";
-  fruits = [
-    "Apple"
-    "Banana"
-    "Orange"
-    (-1)
-    1
-    2
-  ];
-}
-```
-
-If we wish, we can convert this Nix code again, for example with the command line below.
-
-```bash
-nix-converter -f file.nix -l toml -from-nix
-```
-
-Here's how it would look below.
-
-```toml
-"" = 1
-123 = ""
-f123 = ""
-fruits = ["Apple", "Banana", "Orange", -1, 1, 2]
-
-[abc]
-  a = "a"
-  b = "b"
-  c = "c"
-```
-
-## Testing the tool
-
-If you're curious and just want to test the tool, you can for example use the Nix package with the latest version of the tool in the Nix Flake of the GitHub repository, as below.
-
-```bash
-nix run github:theobori/nix-converter -- -help
-```
-
-## Contributing
-
-Anyone is free to contribute to the source code. For more details, please visit the 
-[h|GitHub repository|URL:https://github.com/theobori/nix-converter|tilde.pink|70]
-.
-
-## Conclusion
-
-[h|nix-converter|URL:https://github.com/theobori/nix-converter|tilde.pink|70]
- is a simple and useful tool that I enjoy using when I need to convert Nix code.
-
+[i|## title: My Nix converter tool|/|tilde.pink|70]
+[i|## date: "2025-12-16"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Last year I wanted to convert my Nix code into YAML and|/|tilde.pink|70]
+[i|TOML. So I went looking for an all-in-one CLI tool capable of|/|tilde.pink|70]
+[i|converting a configuration language into Nix and vice-versa.|/|tilde.pink|70]
+[i|Unfortunately, I couldn't find what I was looking for, so I|/|tilde.pink|70]
+[i|decided to create my own tool.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Presentation|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The tool is called nix-converter. It's a command-line|/|tilde.pink|70]
+[i|interface written in Go that converts various configuration|/|tilde.pink|70]
+[i|languages (YAML, TOML, etc.) to Nix and vice versa.|/|tilde.pink|70]
+[h|nix-converter|URL:https://github.com/theobori/nix-converter|github.com|443]
+[i||/|tilde.pink|70]
+[i|## How it works|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Let's assume we have a source language called A and a|/|tilde.pink|70]
+[i|destination language called B.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|First, I use external Go libraries to retrieve a syntactic|/|tilde.pink|70]
+[i|abstract representing the code of language A. In a second|/|tilde.pink|70]
+[i|step, I traverse the retrieved tree, which allows me to|/|tilde.pink|70]
+[i|produce the code for language B in string form. Finally,|/|tilde.pink|70]
+[i|once the traversal is complete, the final code is written to|/|tilde.pink|70]
+[i|the process's standard output. Note that conversions are|/|tilde.pink|70]
+[i|static only, i.e. expressions will not be evaluated, apart|/|tilde.pink|70]
+[i|from a few exceptions.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The only exception to these steps is the transformation of|/|tilde.pink|70]
+[i|Nix code into TOML code. Instead of retrieving a string|/|tilde.pink|70]
+[i|after the tree traverse, I retrieve a Go data structure that|/|tilde.pink|70]
+[i|is used by a specialized TOML marshaller.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Examples of transformations|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Let's take a simple example with the JSON code below.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  "fruits": [|/|tilde.pink|70]
+[i|    "Apple",|/|tilde.pink|70]
+[i|    "Banana",|/|tilde.pink|70]
+[i|    "Orange",|/|tilde.pink|70]
+[i|    1,|/|tilde.pink|70]
+[i|    2,|/|tilde.pink|70]
+[i|    -1|/|tilde.pink|70]
+[i|  ],|/|tilde.pink|70]
+[i|  "abc": {|/|tilde.pink|70]
+[i|    "c": "c",|/|tilde.pink|70]
+[i|    "b": "b",|/|tilde.pink|70]
+[i|    "a": "a"|/|tilde.pink|70]
+[i|  },|/|tilde.pink|70]
+[i|  "": 1,|/|tilde.pink|70]
+[i|  "123": "",|/|tilde.pink|70]
+[i|  "f123": ""|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|To convert it into Nix code, you can use the command line|/|tilde.pink|70]
+[i|below, which also includes parameters for sorting iterators|/|tilde.pink|70]
+[i|(lists and hash tables) and ignoring double-quotation marks|/|tilde.pink|70]
+[i|for keys.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-converter -f file.json -l json -unsafe-keys -sort-iterators|/|tilde.pink|70]
+[i|"all"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Once launched, you get the Nix code below.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|{|/|tilde.pink|70]
+[i|  "" = 1;|/|tilde.pink|70]
+[i|  "123" = "";|/|tilde.pink|70]
+[i|  abc = {|/|tilde.pink|70]
+[i|    a = "a";|/|tilde.pink|70]
+[i|    b = "b";|/|tilde.pink|70]
+[i|    c = "c";|/|tilde.pink|70]
+[i|  };|/|tilde.pink|70]
+[i|  f123 = "";|/|tilde.pink|70]
+[i|  fruits = [|/|tilde.pink|70]
+[i|    "Apple"|/|tilde.pink|70]
+[i|    "Banana"|/|tilde.pink|70]
+[i|    "Orange"|/|tilde.pink|70]
+[i|    (-1)|/|tilde.pink|70]
+[i|    1|/|tilde.pink|70]
+[i|    2|/|tilde.pink|70]
+[i|  ];|/|tilde.pink|70]
+[i|}|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|If we wish, we can convert this Nix code again, for example|/|tilde.pink|70]
+[i|with the command line below.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-converter -f file.nix -l toml -from-nix|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Here's how it would look below.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|"" = 1|/|tilde.pink|70]
+[i|123 = ""|/|tilde.pink|70]
+[i|f123 = ""|/|tilde.pink|70]
+[i|fruits = ["Apple", "Banana", "Orange", -1, 1, 2]|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|[abc]|/|tilde.pink|70]
+[i|  a = "a"|/|tilde.pink|70]
+[i|  b = "b"|/|tilde.pink|70]
+[i|  c = "c"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Testing the tool|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|If you're curious and just want to test the tool, you can|/|tilde.pink|70]
+[i|for example use the Nix package with the latest version of|/|tilde.pink|70]
+[i|the tool in the Nix Flake of the GitHub repository, as|/|tilde.pink|70]
+[i|below.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix run github:theobori/nix-converter -- -help|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Contributing|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Anyone is free to contribute to the source code. For more|/|tilde.pink|70]
+[i|details, please visit the GitHub repository.|/|tilde.pink|70]
+[h|GitHub repository|URL:https://github.com/theobori/nix-converter|github.com|443]
+[i||/|tilde.pink|70]
+[i|## Conclusion|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|nix-converter is a simple and useful tool that I enjoy using|/|tilde.pink|70]
+[i|when I need to convert Nix code.|/|tilde.pink|70]
+[h|nix-converter|URL:https://github.com/theobori/nix-converter|github.com|443]

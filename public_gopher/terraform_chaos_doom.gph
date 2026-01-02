@@ -1,29 +1,37 @@
-DOOM Terraform chaos engineering
-2023-06-03
-Last edit: 2023-06-03
----------------------
-
-I first saw 
-[h|kubedoom|URL:https://github.com/storax/kubedoom|tilde.pink|70]
- and thought it was pretty cool, so I decided to do the same for Terraform, knowing that I was working with it for professional projects.
-
-The principle is very simple, each enemy represents a Terraform resource, if an enemy dies, the associated resource is destroyed.
-
-## How does it work?
-
-The main program is `terraform-doom`, which creates a UNIX socket, listens to it and simultaneously launches an X11 virtual server (Xvfb), a VNC server (x11vnc) attached to this X session and `psdoom` (DOOM writing to the UNIX socket).
-
-The binaries `Xvfb` and `x11vnc` are used to create a cross-platform graphical access to `psdoom` inside the container.
-
-At runtime `psdoom` will continuously write to the UNIX socket to signal `terraform-doom` to send Terraform resource information. When an enemy is killed, `psdoom` writes the associated resource name to the socket.
-
-Everything we've just described will be encapsulated in a Docker container.
-
-## Demonstration
-
-This demonstration has been realized with the example Terraform project, every steps to reproduce it are detailed in the README file on the repository.
-
-## Links
-
-[h|https://github.com/theobori/terraform-doom|URL:https://github.com/theobori/terraform-doom|tilde.pink|70]
-
+[i|## title: DOOM Terraform chaos engineering|/|tilde.pink|70]
+[i|## date: "2023-06-03"|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|I first saw kubedoom and thought it was pretty cool, so I|/|tilde.pink|70]
+[i|decided to do the same for Terraform, knowing that I was|/|tilde.pink|70]
+[i|working with it for professional projects.|/|tilde.pink|70]
+[h|kubedoom|URL:https://github.com/storax/kubedoom|github.com|443]
+[i||/|tilde.pink|70]
+[i|The principle is very simple, each enemy represents a|/|tilde.pink|70]
+[i|Terraform resource, if an enemy dies, the associated|/|tilde.pink|70]
+[i|resource is destroyed.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## How does it work?|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The main program is terraform-doom, which creates a UNIX|/|tilde.pink|70]
+[i|socket, listens to it and simultaneously launches an X11|/|tilde.pink|70]
+[i|virtual server (Xvfb), a VNC server (x11vnc) attached to|/|tilde.pink|70]
+[i|this X session and psdoom (DOOM writing to the UNIX socket).|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|The binaries Xvfb and x11vnc are used to create a cross-|/|tilde.pink|70]
+[i|platform graphical access to psdoom inside the container.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|At runtime psdoom will continuously write to the UNIX socket|/|tilde.pink|70]
+[i|to signal terraform-doom to send Terraform resource|/|tilde.pink|70]
+[i|information. When an enemy is killed, psdoom writes the|/|tilde.pink|70]
+[i|associated resource name to the socket.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|Everything we've just described will be encapsulated in a|/|tilde.pink|70]
+[i|Docker container.|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|    /terraform_doom_graph.png|/|tilde.pink|70]
+[I|/terraform_doom_graph.png|/~nagi/terraform_doom_graph.png|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|## Links|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|https://github.com/theobori/terraform-doom|/|tilde.pink|70]
+[h|https://github.com/theobori/terraform-doom|URL:https://github.com/theobori/terraform-doom|github.com|443]

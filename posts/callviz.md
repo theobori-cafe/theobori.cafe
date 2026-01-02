@@ -11,11 +11,9 @@ To generate a visual and have an overview of all the function calls, I used [Gra
 
 The decorator also supports memoization, which can also be represented on the final visual.
 
-
 ## How is it used?
 
 These are two clear examples of how the decorator is used.
-
 
 ```python
 from callviz.core import callviz, set_output_dir
@@ -47,8 +45,8 @@ rev(list(range(6, 0, -1)), [])
 
 
 <center>
-    <img src="/callviz_fib.png" class="img-center">
-    <img src="/callviz_rev.png" class="img-center">
+<img src="/callviz_fib.png" class="img-center">
+<img src="/callviz_rev.png" class="img-center">
 </center>
 
 

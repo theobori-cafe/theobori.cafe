@@ -30,7 +30,6 @@ Indirectly, other people use it, for example, to render skins in a Discord chann
   <img src="/fokkonaut_bridge.png" class="img-center">
 </p>
 
-
 ## Use case examples
 ### Teeworlds skin rendering
 
@@ -66,16 +65,12 @@ try {
 }
 ```
 
-
-
 ### Result (4K)
 
 <p align="center" width="100%">
-  <img src="/render_default.png" width="30%" class="mr-20" >
-  <img src="/render_color.png" width="30%" class="ml-20" >
+<img src="/render_default.png" width="30%" class="mr-20" >
+<img src="/render_color.png" width="30%" class="ml-20" >
 </p>
-
-
 
 ### Scene
 
@@ -96,15 +91,11 @@ const sceneTest = async () => {
 sceneTest();
 ```
 
-
-
 ### Result
 
 <p align="center">
-  <img src="/scene.png" width="80%">
+<img src="/scene.png" width="80%">
 </p>
-
-
 
 ### Merge asset parts
 
@@ -112,10 +103,9 @@ Here we are going to merge specific parts from a skin (right) to another (left).
 Any Teeworlds asset should works.
 
 <p align="center" width="100%">
-  <img src="/teedata_skin.png" class="mr-20" >
-  <img src="/alien_skin.png" class="ml-20" >
+<img src="/teedata_skin.png" class="mr-20" >
+<img src="/alien_skin.png" class="ml-20" >
 </p>
-
 
 ```typescript
 import {
@@ -160,11 +150,9 @@ try {
 ### Result
 
 <p align="center" width="100%">
-  <img src="/render_new_skin.png" class="mr-40" >
-  <img src="/new_skin.png" class="ml-40" >
+<img src="/render_new_skin.png" class="mr-40" >
+<img src="/new_skin.png" class="ml-40" >
 </p>
-
-
 
 ### More skin configuration
 
@@ -216,21 +204,15 @@ try {
 ### Result
 
 <p align="center">
-  <img src="/skin_with_weapon_and_emote.png" class="img-center">
+<img src="/skin_with_weapon_and_emote.png" class="img-center">
 </p>
-
-
 
 ### Other possible result
 
 <p align="center" >
-  <img src="/board.png" class="img-center">
+<img src="/board.png" class="img-center">
 </p>
-
-
 
 ## Links
 
 [https://github.com/teeworlds-utilities/teeworlds-utilities](https://github.com/teeworlds-utilities/teeworlds-utilities)
-
-
