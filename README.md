@@ -9,4 +9,4 @@ My personal website with blog.
 
 ## Other formats
 
-The `Gemtext` version for `Gemini` has been test with the [lagrange](https://github.com/skyjake/lagrange) client. For `Gopher` it works well with the [phfetch](https://github.com/xvxx/phetch) client.
+The Gopher files have been tested with the [lagrange](https://github.com/skyjake/lagrange) client and the [phfetch](https://github.com/xvxx/phetch) client.
