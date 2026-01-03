@@ -6,50 +6,26 @@
 
 Hi, I'm Théo,
 
-I support F(L)OSS and pubnixes values, I love UNIX systems and I also really like Arch Linux and Nix.
-Currently I'm maintaining teedata.net (skins.tw until 2024) and I offer free services that respect privacy.
-
-If you're interested you can have a look at my blog posts, everything I make is open source and available on GitHub and Gitea.
-
-[h|Gitea|URL:https://git.theobori.cafe/nagi|tilde.pink|70]
-[h|GitHub|URL:https://www.github.com/theobori|tilde.pink|70]
+I support F(L)OSS and pubnixes values, I love UNIX
+systems, especially NixOS. Currently I'm maintaining
+teedata.net and I offer free services that respect privacy.
+I also love contributing to nixpkgs.
+[h|NixOS|URL:https://nixos.org/|tilde.pink|70]
 [h|teedata.net|URL:https://teedata.net|tilde.pink|70]
-[h|skins.tw|URL:https://teedata.net|tilde.pink|70]
 [h|services|URL:https://services.theobori.cafe|tilde.pink|70]
+[h|contributing|URL:https://repology.org/maintainer/theobori@disroot.org|tilde.pink|70]
+[h|nixpkgs|URL:https://github.com/nixos/nixpkgs|tilde.pink|70]
 
-Contact
-My links and contact details are available here.
-[h|LinkStack|URL:https://links.theobori.cafe|tilde.pink|70]
+If you're interested you can have a look at my blog posts,
+everything I make is open source and available on GitHub
+and Gitea. You can also check my public zettelkasten.
+[1|my blog posts|/~nagi/posts.gph|tilde.pink|70]
+[h|GitHub|URL:https://www.github.com/theobori|tilde.pink|70]
+[h|Gitea|URL:https://git.theobori.cafe/nagi|tilde.pink|70]
+[h|zettelkasten|URL:https://zettel.theobori.cafe|tilde.pink|70]
 
-Other protocols
-[h|HTTPS|URL:https://theobori.cafe|tilde.pink|70]
-gemini://tilde.pink/~nagi
-
-Posts
-[1|My Nix converter tool - dec 2025|/~nagi/nix-converter.gph|tilde.pink|70]
-[1|My algorithms and data structures journey - nov 2025|/~nagi/dsa_journey.gph|tilde.pink|70]
-[1|Poisoning LLM web scrapers - nov 2025|/~nagi/poison.gph|tilde.pink|70]
-[1|My Linux From Scratch system - mar 2025|/~nagi/lfs.gph|tilde.pink|70]
-[1|A GNU Emacs experience throught NixOS - feb 2025|/~nagi/emacs.gph|tilde.pink|70]
-[1|My NixOS Teeworlds servers management module - nov 2024|/~nagi/nix-teeworlds.gph|tilde.pink|70]
-[1|Declarative Vencord configuration on NixOS - nov 2024|/~nagi/nixcord.gph|tilde.pink|70]
-[1|My bytecode VM Lox interpreter - oct 2024|/~nagi/clox.gph|tilde.pink|70]
-[1|A toy to visualize recursive function calls - jun 2024|/~nagi/callviz.gph|tilde.pink|70]
-[1|My Nix exploration - jun 2024|/~nagi/nix.gph|tilde.pink|70]
-[1|My homelab - jun 2024|/~nagi/homelab.gph|tilde.pink|70]
-[1|Teeworlds Terraform chaos engineering - mar 2024|/~nagi/terraform_chaos_teeworlds.gph|tilde.pink|70]
-[1|My Tree-Walker Lox interpreter - jun 2024|/~nagi/jlox.gph|tilde.pink|70]
-[1|Porting X11 apps to OpenBSD - mar 2024|/~nagi/openbsd_ports.gph|tilde.pink|70]
-[1|Manage dotfiles with chezmoi - mar 2024|/~nagi/chezmoi.gph|tilde.pink|70]
-[1|eBPF essentials - jan 2024|/~nagi/ebpf.gph|tilde.pink|70]
-[1|Public access UNIX systems - oct 2023|/~nagi/pubnix.gph|tilde.pink|70]
-[1|Play Teeworlds through Docker - oct 2023|/~nagi/teeworlds.gph|tilde.pink|70]
-[1|NGINX for Mozilla HTTP Observatory - oct 2023|/~nagi/mozilla.gph|tilde.pink|70]
-[1|Terraform OVH external DNS records - oct 2023|/~nagi/tf-ovh.gph|tilde.pink|70]
-[1|OpenSSH port knocking with UFW - oct 2023|/~nagi/knockd_ufw.gph|tilde.pink|70]
-[1|Teeworlds utilities - jul 2023|/~nagi/teeworlds-utilities.gph|tilde.pink|70]
-[1|My Terraform NeuVector provider - jun 2023|/~nagi/tf-neuvector.gph|tilde.pink|70]
-[1|Terraform chaos engineering - jun 2023|/~nagi/terraform_chaos_doom.gph|tilde.pink|70]
-[1|DOOM modding library - may 2023|/~nagi/tinywad.gph|tilde.pink|70]
-[1|Interesting websites - mar 2023|/~nagi/websites.gph|tilde.pink|70]
-[1|CHIP-8 emulator - mar 2023|/~nagi/tinychip.gph|tilde.pink|70]
+My links and contact details are available here. This
+website also offers a version for the Gopher minimal web
+protocol, it's also available as a Tor hidden service.
+[h|here|URL:https://links.theobori.cafe|tilde.pink|70]
+[h|Tor hidden service|URL:http://lojtlkafmrphjhmmksiqsabghyia353ueyfszo6mgqttxaczuata7aid.onion|tilde.pink|70]

@@ -1,0 +1,35 @@
+I write these blog posts to share topics and experiences
+that I find interesting. Also it allows me to be more
+specific and understand more things. No AI is involved in
+this blog.
+[h|AI|URL:https://en.wikipedia.org/wiki/Artificial_intelligence|tilde.pink|70]
+
+Below you will find all my blog posts, most of which focus on IT.
+[1|My second Linux From Scratch system - jan 2026|/~nagi/lfs-second.gph|tilde.pink|70]
+[1|My Nix converter tool - dec 2025|/~nagi/nix-converter.gph|tilde.pink|70]
+[1|My algorithms and data structures journey - nov 2025|/~nagi/dsa_journey.gph|tilde.pink|70]
+[1|Poisoning LLM web scrapers - nov 2025|/~nagi/poison.gph|tilde.pink|70]
+[1|My first Linux From Scratch system - mar 2025|/~nagi/lfs-first.gph|tilde.pink|70]
+[1|A GNU Emacs experience throught NixOS - feb 2025|/~nagi/emacs.gph|tilde.pink|70]
+[1|My NixOS Teeworlds servers management module - nov 2024|/~nagi/nix-teeworlds.gph|tilde.pink|70]
+[1|Declarative Vencord configuration on NixOS - nov 2024|/~nagi/nixcord.gph|tilde.pink|70]
+[1|My bytecode VM Lox interpreter - oct 2024|/~nagi/clox.gph|tilde.pink|70]
+[1|A toy to visualize recursive function calls - jun 2024|/~nagi/callviz.gph|tilde.pink|70]
+[1|My Nix exploration - jun 2024|/~nagi/nix.gph|tilde.pink|70]
+[1|My homelab - jun 2024|/~nagi/homelab.gph|tilde.pink|70]
+[1|Teeworlds Terraform chaos engineering - mar 2024|/~nagi/terraform_chaos_teeworlds.gph|tilde.pink|70]
+[1|My Tree-Walker Lox interpreter - jun 2024|/~nagi/jlox.gph|tilde.pink|70]
+[1|Porting X11 apps to OpenBSD - mar 2024|/~nagi/openbsd_ports.gph|tilde.pink|70]
+[1|Manage dotfiles with chezmoi - mar 2024|/~nagi/chezmoi.gph|tilde.pink|70]
+[1|eBPF essentials - jan 2024|/~nagi/ebpf.gph|tilde.pink|70]
+[1|Public access UNIX systems - oct 2023|/~nagi/pubnix.gph|tilde.pink|70]
+[1|Play Teeworlds through Docker - oct 2023|/~nagi/teeworlds.gph|tilde.pink|70]
+[1|NGINX for Mozilla HTTP Observatory - oct 2023|/~nagi/mozilla.gph|tilde.pink|70]
+[1|Terraform OVH external DNS records - oct 2023|/~nagi/tf-ovh.gph|tilde.pink|70]
+[1|OpenSSH port knocking with UFW - oct 2023|/~nagi/knockd_ufw.gph|tilde.pink|70]
+[1|Teeworlds utilities - jul 2023|/~nagi/teeworlds-utilities.gph|tilde.pink|70]
+[1|My Terraform NeuVector provider - jun 2023|/~nagi/tf-neuvector.gph|tilde.pink|70]
+[1|Terraform chaos engineering - jun 2023|/~nagi/terraform_chaos_doom.gph|tilde.pink|70]
+[1|DOOM modding library - may 2023|/~nagi/tinywad.gph|tilde.pink|70]
+[1|Interesting websites - mar 2023|/~nagi/websites.gph|tilde.pink|70]
+[1|CHIP-8 emulator - mar 2023|/~nagi/tinychip.gph|tilde.pink|70]

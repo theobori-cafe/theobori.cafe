@@ -1,5 +1,5 @@
 ---
-title: My Linux From Scratch system
+title: My first Linux From Scratch system
 date: "2025-03-29"
 ---
 
