@@ -3,6 +3,8 @@ title: My algorithms and data structures journey
 date: "2025-11-03"
 ---
 
+## Introduction
+
 At the end of 2023, during the month of December, I decided to do the [Advent of Code](https://adventofcode.com/2023) puzzles. As I thought about these algorithmic puzzles, I realized that I lacked knowledge. I could solve the problems, but mostly intuitively. I went [until day 19](https://github.com/theobori/aoc/tree/main/2023) and then stopped for lack of motivation, but I wanted a slightly more rigorous approach with a more solid theoretical basis.
 
 My goal is not to become an expert in algorithms and data structure. Rather, I want to be more relevant in their implementation in real needs and have a better algorithmic reading on IT projects.

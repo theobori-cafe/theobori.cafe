@@ -3,6 +3,8 @@ title: My Nix converter tool
 date: "2025-12-16"
 ---
 
+## Introduction
+
 Last year I wanted to convert my Nix code into YAML and TOML. So I went looking for an all-in-one CLI tool capable of converting a configuration language into Nix and vice-versa. Unfortunately, I couldn't find what I was looking for, so I decided to create my own tool.
 
 ## Presentation

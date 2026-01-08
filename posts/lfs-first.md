@@ -3,7 +3,9 @@ title: My first Linux From Scratch system
 date: "2025-03-29"
 ---
 
-> In this blog post, I will refer to [Linux From Scratch](https://www.linuxfromscratch.org) by writing "LFS".
+## Introduction
+
+In this blog post, I will refer to [Linux From Scratch](https://www.linuxfromscratch.org) by writing "LFS".
 
 I heard about LFS by stumbling across a [podcast](https://www.youtube.com/watch?v=TkkKNfYKJJg) by Brodie Robertson. I've been curious and made me want to build my own Linux system.
 

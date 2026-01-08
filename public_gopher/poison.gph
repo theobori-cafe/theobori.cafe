@@ -1,6 +1,8 @@
 [i|## title: Poisoning LLM web scrapers|/|tilde.pink|70]
 [i|## date: "2025-11-01"|/|tilde.pink|70]
 [i||/|tilde.pink|70]
+[i|## Introduction|/|tilde.pink|70]
+[i||/|tilde.pink|70]
 [i|All servers available on the Internet are exposed to|/|tilde.pink|70]
 [i|attacks, scraping, open port scanning, vulnerability|/|tilde.pink|70]
 [i|scanning by services, DDoS, etc. What interests me today are|/|tilde.pink|70]

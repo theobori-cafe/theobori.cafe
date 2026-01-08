@@ -3,6 +3,8 @@ title: A GNU Emacs experience throught NixOS
 date: "2025-02-26"
 ---
 
+## Introduction
+
 I have always used [VSCode](https://code.visualstudio.com/) as a code editor. I've already tried using [Vim](https://www.vim.org/), but only for testing purposes and not with the aim of changing text editors.
 
 This time, I decided to use a [FLOSS](https://www.gnu.org/philosophy/floss-and-foss.html) code editor in the terminal, the aim being to replace [VSCode](https://code.visualstudio.com/) indefinitely. This blog post is actually written with it.

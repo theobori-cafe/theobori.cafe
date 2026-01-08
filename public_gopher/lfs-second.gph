@@ -1,8 +1,10 @@
 [i|## title: My second Linux From Scratch system|/|tilde.pink|70]
 [i|## date: "2026-01-02"|/|tilde.pink|70]
 [i||/|tilde.pink|70]
-[i|“In this blog post, I will refer to Linux From Scratch by|/|tilde.pink|70]
-[i|writing "LFS".”|/|tilde.pink|70]
+[i|## Introduction|/|tilde.pink|70]
+[i||/|tilde.pink|70]
+[i|In this blog post, I will refer to Linux From Scratch by|/|tilde.pink|70]
+[i|writing "LFS".|/|tilde.pink|70]
 [h|Linux From Scratch|URL:https://www.linuxfromscratch.org|www.linuxfromscratch.org|443]
 [i||/|tilde.pink|70]
 [i|Since I only use my ThinkPad L390, I decided to build a new|/|tilde.pink|70]
@@ -144,4 +146,3 @@
 [i||/|tilde.pink|70]
 [i|Once again, an interesting experiment that lets me use my|/|tilde.pink|70]
 [i|forgotten hardware and build a fully customized system.|/|tilde.pink|70]
-

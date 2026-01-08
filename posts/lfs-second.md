@@ -3,7 +3,9 @@ title: My second Linux From Scratch system
 date: "2026-01-02"
 ---
 
-> In this blog post, I will refer to [Linux From Scratch](https://www.linuxfromscratch.org) by writing "LFS".
+## Introduction
+
+In this blog post, I will refer to [Linux From Scratch](https://www.linuxfromscratch.org) by writing "LFS".
 
 Since I only use my ThinkPad L390, I decided to build a new LFS system on my other laptop, an Acer Swift 5, to make it a functional, minimalist and controlled station. Indeed, I don't use this laptop anymore, I find it much less pleasant than my ThinkPad, so I might as well have some fun with it.
 
@@ -32,7 +34,7 @@ My computer uses UEFI, so I had to create a dedicated partition in which to writ
 
 ```text
 NAME        FSTYPE        SIZE MOUNTPOINTS
-nvme0n1                 476,9G 
+nvme0n1                 476,9G
 ├─nvme0n1p1 vfat          500M /boot
 ├─nvme0n1p2 vfat          200M /boot/efi
 ├─nvme0n1p3 ext4          100G /home

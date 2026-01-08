@@ -1,6 +1,8 @@
 [i|## title: A GNU Emacs experience throught NixOS|/|tilde.pink|70]
 [i|## date: "2025-02-26"|/|tilde.pink|70]
 [i||/|tilde.pink|70]
+[i|## Introduction|/|tilde.pink|70]
+[i||/|tilde.pink|70]
 [i|I have always used VSCode as a code editor. I've already|/|tilde.pink|70]
 [i|tried using Vim, but only for testing purposes and not with|/|tilde.pink|70]
 [i|the aim of changing text editors.|/|tilde.pink|70]

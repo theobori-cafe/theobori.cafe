@@ -1,6 +1,8 @@
 [i|## title: My Nix converter tool|/|tilde.pink|70]
 [i|## date: "2025-12-16"|/|tilde.pink|70]
 [i||/|tilde.pink|70]
+[i|## Introduction|/|tilde.pink|70]
+[i||/|tilde.pink|70]
 [i|Last year I wanted to convert my Nix code into YAML and|/|tilde.pink|70]
 [i|TOML. So I went looking for an all-in-one CLI tool capable of|/|tilde.pink|70]
 [i|converting a configuration language into Nix and vice-versa.|/|tilde.pink|70]
