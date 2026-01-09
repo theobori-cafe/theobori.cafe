@@ -53,5 +53,3 @@ rev(list(range(6, 0, -1)), [])
 ## Links
 
 [https://github.com/theobori/callviz](https://github.com/theobori/callviz)
-
-

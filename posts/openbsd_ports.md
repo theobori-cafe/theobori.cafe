@@ -1,5 +1,5 @@
 ---
-title: Porting X11 apps to OpenBSD
+title: Porting X11 applications to OpenBSD
 date: "2024-03-15"
 ---
 
