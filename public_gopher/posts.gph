@@ -5,6 +5,7 @@ this blog.
 [h|AI|URL:https://en.wikipedia.org/wiki/Artificial_intelligence|tilde.pink|70]
 
 Below you will find all my blog posts, most of which focus on IT.
+[1|Writing an Emacs package based on nix-converter - jan 2026|/~nagi/nix-converter-el.gph|tilde.pink|70]
 [1|Porting Plan 9 applications to UNIX - jan 2026|/~nagi/9ports.gph|tilde.pink|70]
 [1|My Gopherspace garden - jan 2026|/~nagi/gopherspace-garden.gph|tilde.pink|70]
 [1|My second Linux From Scratch system - jan 2026|/~nagi/lfs-second.gph|tilde.pink|70]
