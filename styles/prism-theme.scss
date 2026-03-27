@@ -1,160 +1,143 @@
 /**
- * a11y-dark theme for JavaScript, CSS, and HTML
- * Based on the okaidia theme: https://github.com/PrismJS/prism/blob/gh-pages/themes/prism-okaidia.css
- * @author ericwbailey
+ * Gruvbox light theme
+ *
+ * Based on Gruvbox: https://github.com/morhetz/gruvbox
+ * Adapted from PrismJS gruvbox-dark theme: https://github.com/schnerring/prism-themes/blob/master/themes/prism-gruvbox-dark.css
+ *
+ * @author Michael Schnerring (https://schnerring.net)
+ * @version 1.0
  */
 
 code[class*="language-"],
 pre[class*="language-"] {
-  color: #f8f8f2;
-  background: none;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  word-wrap: normal;
-  line-height: 1.5;
+	color: #3c3836; /* fg1 / fg */
+	font-family: Consolas, Monaco, "Andale Mono", monospace;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	line-height: 1.5;
 
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
 
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  hyphens: none;
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection,
+pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection,
+code[class*="language-"] ::-moz-selection {
+	color: #282828; /* fg0 */
+	background: #a89984; /* bg4 */
+}
+
+pre[class*="language-"]::selection,
+pre[class*="language-"] ::selection,
+code[class*="language-"]::selection,
+code[class*="language-"] ::selection {
+	color: #282828; /* fg0 */
+	background: #a89984; /* bg4 */
 }
 
 /* Code blocks */
 pre[class*="language-"] {
-  padding: 1em;
-  margin: 0.5em 0;
-  overflow: auto;
-  border-radius: 0.3em;
+	padding: 1em;
+	margin: 0.5em 0;
+	overflow: auto;
 }
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-  background: #2b2b2b;
+	background: #f9f5d7; /* bg0_h */
 }
 
 /* Inline code */
 :not(pre) > code[class*="language-"] {
-  padding: 0.1em;
-  border-radius: 0.3em;
-  white-space: normal;
+	padding: 0.1em;
+	border-radius: 0.3em;
 }
 
 .token.comment,
 .token.prolog,
-.token.doctype,
 .token.cdata {
-  color: #d4d0ab;
+	color: #7c6f64; /* fg4 / gray1 */
 }
 
-.token.punctuation {
-  color: #fefefe;
-}
-
-.token.property,
-.token.tag,
-.token.constant,
-.token.symbol,
-.token.deleted {
-  color: #ffa07a;
-}
-
+.token.delimiter,
 .token.boolean,
-.token.number {
-  color: #00e0e0;
-}
-
+.token.keyword,
 .token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-  color: #abe338;
+.token.important,
+.token.atrule {
+	color: #9d0006; /* red2 */
 }
 
 .token.operator,
+.token.punctuation,
+.token.attr-name {
+	color: #7c6f64; /* fg4 / gray1 */
+}
+
+.token.tag,
+.token.tag .punctuation,
+.token.doctype,
+.token.builtin {
+	color: #b57614; /* yellow2 */
+}
+
 .token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string,
+.token.number,
+.token.symbol {
+	color: #8f3f71; /* purple2 */
+}
+
+.token.property,
+.token.constant,
 .token.variable {
-  color: #00e0e0;
+	color: #9d0006; /* red2 */
 }
 
-.token.atrule,
+.token.string,
+.token.char {
+	color: #797403; /* green2 */
+}
+
 .token.attr-value,
+.token.attr-value .punctuation {
+	color: #7c6f64; /* fg4 / gray1 */
+}
+
+.token.url {
+	color: #797403; /* green2 */
+	text-decoration: underline;
+}
+
 .token.function {
-  color: #ffd700;
+	color: #b57614; /* yellow2 */
 }
 
-.token.keyword {
-  color: #00e0e0;
+.token.regex {
+	background: #797403; /* green2 */
 }
 
-.token.regex,
-.token.important {
-  color: #ffd700;
-}
-
-.token.important,
 .token.bold {
-  font-weight: bold;
+	font-weight: bold;
 }
+
 .token.italic {
-  font-style: italic;
+	font-style: italic;
 }
 
-.token.entity {
-  cursor: help;
+.token.inserted {
+	background: #7c6f64; /* fg4 / gray1 */
 }
 
-@media screen and (-ms-high-contrast: active) {
-  code[class*="language-"],
-  pre[class*="language-"] {
-    color: windowText;
-    background: window;
-  }
-
-  :not(pre) > code[class*="language-"],
-  pre[class*="language-"] {
-    background: window;
-  }
-
-  .token.important {
-    background: highlight;
-    color: window;
-    font-weight: normal;
-  }
-
-  .token.atrule,
-  .token.attr-value,
-  .token.function,
-  .token.keyword,
-  .token.operator,
-  .token.selector {
-    font-weight: bold;
-  }
-
-  .token.attr-value,
-  .token.comment,
-  .token.doctype,
-  .token.function,
-  .token.keyword,
-  .token.operator,
-  .token.property,
-  .token.string {
-    color: highlight;
-  }
-
-  .token.attr-value,
-  .token.url {
-    font-weight: normal;
-  }
+.token.deleted {
+	background: #9d0006; /* red2 */
 }
