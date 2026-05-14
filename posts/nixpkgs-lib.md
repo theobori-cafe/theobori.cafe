@@ -124,7 +124,7 @@ first_part("multiple")([1, 9])
 
 ## Progress
 
-I've implemented a number of the features I wanted—55.93% to be exact. Detailed progress is available in the [project documentation](https://github.com/theobori/nixpkgs-lib/tree/main/README.md). This progress report is generated using [a script](https://github.com/theobori/nixpkgs-lib/blob/main/nixpkgs_lib/scripts/statistics.py) that I wrote in Python.
+I've implemented a number of the features I wanted. 55.93% to be exact. Detailed progress is available in the [project documentation](https://github.com/theobori/nixpkgs-lib/tree/main/README.md). This progress report is generated using [a script](https://github.com/theobori/nixpkgs-lib/blob/main/nixpkgs_lib/scripts/statistics.py) that I wrote in Python.
 
 ## Conclusion
 
