@@ -5,7 +5,7 @@ date: "2026-06-13"
 
 ## Introduction
 
-I've visited many webrings available on the Internet, [the hacker webring](https://ring.acab.dev/), [xxiivv](https://webring.xxiivv.com), [noai](https://baccyflap.com/noai), [geekring](https://geekring.net/), etc. These are all webrings designed for HTTP(S) only, but these days, I visit a lot of Gopher websites. So I wanted to write a Gopher application to implement a Gopher webring. To meet my needs, I created the [ange](https://github.com/theobori/ange) project, pronounced \ɑ̃ʒ\, which corresponds to the word angel.
+I've visited many webrings available on the Internet, [the hacker webring](https://ring.acab.dev/), [xxiivv](https://webring.xxiivv.com), [noai](https://baccyflap.com/noai), [geekring](https://geekring.net/), etc. These are all webrings designed for HTTP(S) only, but these days, I visit a lot of Gopher websites. So I wanted to write a Gopher application to implement a Gopher webring. To meet my needs, I created the [ange](https://github.com/theobori/ange) project, pronounced \\ɑ̃ʒ\\, which corresponds to the word angel.
 
 ## What is a webring
 
