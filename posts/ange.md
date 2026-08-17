@@ -21,7 +21,7 @@ My goal is to build a Gopher application that can manage a persistent webring. U
 
 ## Gopher Form
 
-For this project to work, I need to create forms for users. So I wrote the [fleur-form](https://github.com/theobori/fleur-form) project. It’s a plugin for the routers in the [fleur](https://github.com/theobori/fleur) project, it allows you to create forms with multiple text fields for the user, which isn’t natively possible with Gopher and gophermap. Below is an image of an example form.
+For this project to work, I need to create forms for users. So I wrote the [fleur-form](https://github.com/theobori/fleur-form) project. It's a plugin for the routers in the [fleur](https://github.com/theobori/fleur) project, it allows you to create forms with multiple text fields for the user, which isn't natively possible with Gopher and gophermap. Below is an image of an example form.
 
 <center>
 <img src="/fleur-form_example.png" class="img-center">
@@ -74,4 +74,4 @@ And here's an example of Gopherspaces accepted into the webring.
 
 ## Conclusion
 
-Implementing a webring helped me better understand how they generally work, it was pretty fun. During my research, I wasn’t able to find any existing Gopher webrings. If you know of any, please feel free to contact me to discuss them.
+Implementing a webring helped me better understand how they generally work, it was pretty fun. During my research, I wasn't able to find any existing Gopher webrings. If you know of any, please feel free to contact me to discuss them.

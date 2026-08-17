@@ -35,9 +35,9 @@ i	/	tilde.team	70
 i## Gopher Form	/	tilde.team	70
 i	/	tilde.team	70
 iFor this project to work, I need to create forms for users.	/	tilde.team	70
-iSo I wrote the fleur-form project. It’s a plugin for the	/	tilde.team	70
+iSo I wrote the fleur-form project. It's a plugin for the	/	tilde.team	70
 irouters in the fleur project, it allows you to create forms	/	tilde.team	70
-iwith multiple text fields for the user, which isn’t natively	/	tilde.team	70
+iwith multiple text fields for the user, which isn't natively	/	tilde.team	70
 ipossible with Gopher and gophermap. Below is an image of an	/	tilde.team	70
 iexample form.	/	tilde.team	70
 hfleur-form	URL:https://github.com/theobori/fleur-form	github.com	443
@@ -111,6 +111,6 @@ i## Conclusion	/	tilde.team	70
 i	/	tilde.team	70
 iImplementing a webring helped me better understand how they	/	tilde.team	70
 igenerally work, it was pretty fun. During my research, I	/	tilde.team	70
-iwasn’t able to find any existing Gopher webrings. If you	/	tilde.team	70
+iwasn't able to find any existing Gopher webrings. If you	/	tilde.team	70
 iknow of any, please feel free to contact me to discuss them.	/	tilde.team	70
 

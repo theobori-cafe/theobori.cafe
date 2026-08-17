@@ -8,7 +8,7 @@ iIt turns out I also use Emacs a lot, for example, to write	/	tilde.team	70
 ithis blog post. I know that DDNet publicly displays	/	tilde.team	70
 istatistics about the players on their servers on the web. I	/	tilde.team	70
 iknow how to write ELisp, and people have written packages	/	tilde.team	70
-ithat allow you to make web requests. This means it’s	/	tilde.team	70
+ithat allow you to make web requests. This means it's	/	tilde.team	70
 ipossible to retrieve my DDNet statistics and display them in	/	tilde.team	70
 imy Emacs window.	/	tilde.team	70
 hTeeworlds	URL:https://teeworlds.com/	teeworlds.com	443
@@ -16,7 +16,7 @@ hDDNet	URL:https://ddnet.org	ddnet.org	443
 i	/	tilde.team	70
 i## My goal	/	tilde.team	70
 i	/	tilde.team	70
-iI’d like to be able to display my DDNet statistics,such as	/	tilde.team	70
+iI'd like to be able to display my DDNet statistics,such as	/	tilde.team	70
 imy points, my most recently completed maps, my latest	/	tilde.team	70
 iactivities, etc. in my Emacs dashboard.	/	tilde.team	70
 i	/	tilde.team	70

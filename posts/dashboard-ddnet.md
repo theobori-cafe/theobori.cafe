@@ -5,11 +5,11 @@ date: "2026-05-12"
 
 ## Introduction
 
-Right now, I'm playing a lot of [Teeworlds](https://teeworlds.com/) on [DDNet](https://ddnet.org) servers. It turns out I also use Emacs a lot, for example, to write this blog post. I know that DDNet publicly displays statistics about the players on their servers on the web. I know how to write ELisp, and people have written packages that allow you to make web requests. This means it’s possible to retrieve my DDNet statistics and display them in my Emacs window.
+Right now, I'm playing a lot of [Teeworlds](https://teeworlds.com/) on [DDNet](https://ddnet.org) servers. It turns out I also use Emacs a lot, for example, to write this blog post. I know that DDNet publicly displays statistics about the players on their servers on the web. I know how to write ELisp, and people have written packages that allow you to make web requests. This means it's possible to retrieve my DDNet statistics and display them in my Emacs window.
 
 ## My goal
 
-I’d like to be able to display my DDNet statistics,such as my points, my most recently completed maps, my latest activities, etc. in my Emacs dashboard.
+I'd like to be able to display my DDNet statistics,such as my points, my most recently completed maps, my latest activities, etc. in my Emacs dashboard.
 
 ## Emacs package
 

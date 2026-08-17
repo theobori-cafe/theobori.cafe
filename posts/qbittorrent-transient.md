@@ -5,7 +5,7 @@ date: "2026-03-30"
 
 ## Introduction
 
-I often use [qBittorrent](https://www.qbittorrent.org/) and I usually manage my files with Emacs, especially my torrent files. One day, while in Dired, I noticed I had some unused torrent files. I wanted to mark them and then use a command to start the downloads, but I realized that this feature didn’t exist. So I had the idea to create an Emacs package that would provide an ELisp API to communicate with the qBittorrent CLI.
+I often use [qBittorrent](https://www.qbittorrent.org/) and I usually manage my files with Emacs, especially my torrent files. One day, while in Dired, I noticed I had some unused torrent files. I wanted to mark them and then use a command to start the downloads, but I realized that this feature didn't exist. So I had the idea to create an Emacs package that would provide an ELisp API to communicate with the qBittorrent CLI.
 
 ## My goal
 
@@ -25,7 +25,7 @@ The Emacs package is called `qbittorrent-transient`. It exposes customizations i
 
 ## Results
 
-I’m satisfied with the result; it allows me to pass files marked with Dired to qBittorrent, which was my main goal. Here’s what the Transient menu looks like.
+I'm satisfied with the result; it allows me to pass files marked with Dired to qBittorrent, which was my main goal. Here's what the Transient menu looks like.
 
 <center>
 <img src="/qbittorrent-transient.png" class="img-center">

@@ -14,9 +14,9 @@ i	/	tilde.team	70
 i## My goal	/	tilde.team	70
 i	/	tilde.team	70
 iThe main goal of this project is to have fun and learn about	/	tilde.team	70
-itechnologies I wasn’t familiar with. Technically, I’d like	/	tilde.team	70
+itechnologies I wasn't familiar with. Technically, I'd like	/	tilde.team	70
 ito write a virtual file system for UNIX that behaves	/	tilde.team	70
-isimilarly to Plan 9’s union dir. The idea is to have mount	/	tilde.team	70
+isimilarly to Plan 9's union dir. The idea is to have mount	/	tilde.team	70
 ipoints that communicate with a daemon that manages a global	/	tilde.team	70
 imount table. Having a client-server architecture will allow	/	tilde.team	70
 ithe mount table to be managed even after the mount points	/	tilde.team	70

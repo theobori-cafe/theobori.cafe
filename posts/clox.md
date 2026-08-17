@@ -72,5 +72,3 @@ print fib(10);
 ## Links
 
 [https://github.com/theobori/lox-virtual-machine](https://github.com/theobori/lox-virtual-machine)
-
-

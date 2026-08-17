@@ -1,5 +1,5 @@
 ---
-title: A union filesystem in userspace 
+title: A union filesystem in userspace
 date: "2026-06-14"
 ---
 
@@ -9,7 +9,7 @@ I find the various concepts and philosophy behind [Plan 9](https://p9f.org/) ver
 
 ## My goal
 
-The main goal of this project is to have fun and learn about technologies I wasn’t familiar with. Technically, I’d like to write a virtual file system for UNIX that behaves similarly to Plan 9’s union dir. The idea is to have mount points that communicate with a daemon that manages a global mount table. Having a client-server architecture will allow the mount table to be managed even after the mount points have been created.
+The main goal of this project is to have fun and learn about technologies I wasn't familiar with. Technically, It is like to write a virtual file system for UNIX that behaves similarly to Plan 9's union dir. The idea is to have mount points that communicate with a daemon that manages a global mount table. Having a client-server architecture will allow the mount table to be managed even after the mount points have been created.
 
 ## Implementation
 

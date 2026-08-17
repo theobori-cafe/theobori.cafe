@@ -5,7 +5,7 @@ date: "2026-06-10"
 
 ## Introduction
 
-I've always really liked the Gopher protocol for its simplicity, lightness, and accessibility. A while back, I wanted to have my own solution for creating custom Gopher applications. That’s why I decided to write a framework in Go that allows you to implement an [RFC 1436](https://www.rfc-editor.org/rfc/rfc1436.html) compliant Gopher server, as well as add evaluation extensions for the gophermap format and dynamic and virtual routes.
+I've always really liked the Gopher protocol for its simplicity, lightness, and accessibility. A while back, I wanted to have my own solution for creating custom Gopher applications. That's why I decided to write a framework in Go that allows you to implement an [RFC 1436](https://www.rfc-editor.org/rfc/rfc1436.html) compliant Gopher server, as well as add evaluation extensions for the gophermap format and dynamic and virtual routes.
 
 The name of the project is [fleur](https://github.com/theobori/fleur), pronounced \\flœʁ\\, which means flower.
 

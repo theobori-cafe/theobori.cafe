@@ -4,21 +4,21 @@ i	/	tilde.team	70
 i## Introduction	/	tilde.team	70
 i	/	tilde.team	70
 iI often come up with new ideas for computer projects when	/	tilde.team	70
-iI’m bored and browsing the internet. One day, I had the idea	/	tilde.team	70
+iI'm bored and browsing the internet. One day, I had the idea	/	tilde.team	70
 ito port the library component of nixpkgs to pure Python. I	/	tilde.team	70
 isimply wanted to be able to use functions in nixpkgs from	/	tilde.team	70
-iwithin Python. It’s a pretty old project, but I still think	/	tilde.team	70
-iit’s cool, which is why I wanted to talk about it in this	/	tilde.team	70
+iwithin Python. It's a pretty old project, but I still think	/	tilde.team	70
+iit's cool, which is why I wanted to talk about it in this	/	tilde.team	70
 ishort blog post.	/	tilde.team	70
 i	/	tilde.team	70
 i## My goal	/	tilde.team	70
 i	/	tilde.team	70
-iThe main goal of this project is to keep myself busy. I’ve	/	tilde.team	70
+iThe main goal of this project is to keep myself busy. I've	/	tilde.team	70
 ialways thought the lib.fixedPoints.fix nixpkgs function was	/	tilde.team	70
 icool, so I wanted to at least be able to use that function	/	tilde.team	70
 iin Python.	/	tilde.team	70
 i	/	tilde.team	70
-iJust to clarify, my goal isn’t to call NixCpp functions from	/	tilde.team	70
+iJust to clarify, my goal isn't to call NixCpp functions from	/	tilde.team	70
 iPython, there is already the python-nix project for that. I	/	tilde.team	70
 iwant to rewrite the logic of Nix functions in pure Python,	/	tilde.team	70
 iwith no dependencies other than the Python interpreter.	/	tilde.team	70
@@ -27,8 +27,8 @@ hpython-nix	URL:https://github.com/tweag/python-nix	github.com	443
 i	/	tilde.team	70
 i## Nixpkgs	/	tilde.team	70
 i	/	tilde.team	70
-iI’ve mentioned nixpkgs several times before, but what	/	tilde.team	70
-iexactly is it? It’s a GitHub repository for NixOS that	/	tilde.team	70
+iI've mentioned nixpkgs several times before, but what	/	tilde.team	70
+iexactly is it? It's a GitHub repository for NixOS that	/	tilde.team	70
 icontains the official collection of Nix and NixOS	/	tilde.team	70
 iexpressions. These expressions include Nix packages, NixOS	/	tilde.team	70
 imodules, functions, and more.	/	tilde.team	70
@@ -110,7 +110,7 @@ iretrieve the default values needed for the final evaluation.	/	tilde.team	70
 i	/	tilde.team	70
 i### Example	/	tilde.team	70
 i	/	tilde.team	70
-iFor example, let’s take the following Python function.	/	tilde.team	70
+iFor example, let's take the following Python function.	/	tilde.team	70
 i	/	tilde.team	70
 ig = lambda self: {"a": 1, "b": self["a"] + 1}	/	tilde.team	70
 i	/	tilde.team	70
@@ -129,13 +129,13 @@ ifix(fix(lambda x: lambda f: [1, 2, 3, f[0] + f[1]))	/	tilde.team	70
 i	/	tilde.team	70
 i### Technical limitation	/	tilde.team	70
 i	/	tilde.team	70
-iSince this approach isn’t true laziness, it obviously has a	/	tilde.team	70
-ilimitation. It doesn’t allow for correctly resolving chains	/	tilde.team	70
+iSince this approach isn't true laziness, it obviously has a	/	tilde.team	70
+ilimitation. It doesn't allow for correctly resolving chains	/	tilde.team	70
 iwith a depth greater than one. That is, in a list or	/	tilde.team	70
 idictionary, a variable cannot depend on more than one other	/	tilde.team	70
-ivariable. I think it’s technically possible to work around	/	tilde.team	70
+ivariable. I think it's technically possible to work around	/	tilde.team	70
 ithis problem, for example by keeping track of dependency	/	tilde.team	70
-ichains in a graph; if you’re interested, you can try	/	tilde.team	70
+ichains in a graph; if you're interested, you can try	/	tilde.team	70
 iimplementing it in the project.	/	tilde.team	70
 hthe project	URL:https://github.com/theobori/nixpkgs-lib	github.com	443
 i	/	tilde.team	70
@@ -166,7 +166,7 @@ ha script	URL:https://github.com/theobori/nixpkgs-lib/blob/main/nixpkgs_lib/scri
 i	/	tilde.team	70
 i## Conclusion	/	tilde.team	70
 i	/	tilde.team	70
-iIt’s a pretty fun and laid-back project that helps me pass	/	tilde.team	70
+iIt's a pretty fun and laid-back project that helps me pass	/	tilde.team	70
 ithe time sometimes. The only downside is certain differences	/	tilde.team	70
-ibetween Python and Nix, such as Nix’s lazy evaluation, which	/	tilde.team	70
+ibetween Python and Nix, such as Nix's lazy evaluation, which	/	tilde.team	70
 ican make porting to Python complicated.	/	tilde.team	70

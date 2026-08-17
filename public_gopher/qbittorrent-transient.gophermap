@@ -7,7 +7,7 @@ iI often use qBittorrent and I usually manage my files with	/	tilde.team	70
 iEmacs, especially my torrent files. One day, while in Dired,	/	tilde.team	70
 iI noticed I had some unused torrent files. I wanted to mark	/	tilde.team	70
 ithem and then use a command to start the downloads, but I	/	tilde.team	70
-irealized that this feature didn’t exist. So I had the idea	/	tilde.team	70
+irealized that this feature didn't exist. So I had the idea	/	tilde.team	70
 ito create an Emacs package that would provide an ELisp API	/	tilde.team	70
 ito communicate with the qBittorrent CLI.	/	tilde.team	70
 hqBittorrent	URL:https://www.qbittorrent.org/	www.qbittorrent.org	443
@@ -40,9 +40,9 @@ I/qbittorrent-transient-commands.png	/~nagi/qbittorrent-transient-commands.png	t
 i	/	tilde.team	70
 i## Results	/	tilde.team	70
 i	/	tilde.team	70
-iI’m satisfied with the result; it allows me to pass files	/	tilde.team	70
+iI'm satisfied with the result; it allows me to pass files	/	tilde.team	70
 imarked with Dired to qBittorrent, which was my main goal.	/	tilde.team	70
-iHere’s what the Transient menu looks like.	/	tilde.team	70
+iHere's what the Transient menu looks like.	/	tilde.team	70
 i	/	tilde.team	70
 i/qbittorrent-transient.png	/	tilde.team	70
 I/qbittorrent-transient.png	/~nagi/qbittorrent-transient.png	tilde.team	70
