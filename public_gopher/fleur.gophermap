@@ -6,7 +6,7 @@ i	/	tilde.team	70
 iI've always really liked the Gopher protocol for its	/	tilde.team	70
 isimplicity, lightness, and accessibility. A while back, I	/	tilde.team	70
 iwanted to have my own solution for creating custom Gopher	/	tilde.team	70
-iapplications. That’s why I decided to write a framework in	/	tilde.team	70
+iapplications. That's why I decided to write a framework in	/	tilde.team	70
 iGo that allows you to implement an RFC 1436 compliant Gopher	/	tilde.team	70
 iserver, as well as add evaluation extensions for the	/	tilde.team	70
 igophermap format and dynamic and virtual routes.	/	tilde.team	70
@@ -14,6 +14,7 @@ hRFC 1436	URL:https://www.rfc-editor.org/rfc/rfc1436.html	www.rfc-editor.org	443
 i	/	tilde.team	70
 iThe name of the project is fleur, pronounced \\flœʁ\\, which	/	tilde.team	70
 imeans flower.	/	tilde.team	70
+hfleur	URL:https://github.com/theobori/fleur	github.com	443
 i	/	tilde.team	70
 i## My goal	/	tilde.team	70
 i	/	tilde.team	70
@@ -166,6 +167,56 @@ iIt also implements an extension that lists files in the	/	tilde.team	70
 icurrent directory. To use it, type * on a line. This feature	/	tilde.team	70
 iis inspired by gophernicus.	/	tilde.team	70
 hgophernicus	URL:https://github.com/gophernicus/gophernicus	github.com	443
+i	/	tilde.team	70
+i### Help Message	/	tilde.team	70
+i	/	tilde.team	70
+iBelow is the CLI help message.	/	tilde.team	70
+i	/	tilde.team	70
+iUsage of ./fleur:	/	tilde.team	70
+i  -directory string	/	tilde.team	70
+i        It specifies an input directory path that will be the	/	tilde.team	70
+iroot of the Gopher server (default "./fleur")	/	tilde.team	70
+i  -domain string	/	tilde.team	70
+i        Gopher domain (default "localhost")	/	tilde.team	70
+i  -enable-auto-inline-text	/	tilde.team	70
+i        Relax non compliant text error and convert to gophermap	/	tilde.team	70
+iinline text	/	tilde.team	70
+i  -enable-personal-gopherspaces	/	tilde.team	70
+i        Enable personal Gopherspaces, it allows each user of	/	tilde.team	70
+ithe system to serve its own files	/	tilde.team	70
+i  -port int	/	tilde.team	70
+i        Gopher port (default 70)	/	tilde.team	70
+i  -verbose	/	tilde.team	70
+i        Enable verbose logs	/	tilde.team	70
+i	/	tilde.team	70
+i### NixOS module	/	tilde.team	70
+i	/	tilde.team	70
+iI also provide a NixOS module for managing the fleur CLI	/	tilde.team	70
+iusing a systemd service unit. Inside your flake.nix, you can	/	tilde.team	70
+istart by adding the following lines.	/	tilde.team	70
+i	/	tilde.team	70
+i{	/	tilde.team	70
+i  inputs = {	/	tilde.team	70
+i    fleur.url = "github:theobori/fleur";	/	tilde.team	70
+i  };	/	tilde.team	70
+i}	/	tilde.team	70
+i	/	tilde.team	70
+iYou can then include the module and its default overlay in	/	tilde.team	70
+ithe system configuration as shown below.	/	tilde.team	70
+i	/	tilde.team	70
+i{ inputs, ... }: {	/	tilde.team	70
+i  imports = with inputs; [ fleur.nixosModules.default ];	/	tilde.team	70
+i	/	tilde.team	70
+i  services.fleur = {	/	tilde.team	70
+i    enable = true;	/	tilde.team	70
+i    directory = "${./my-directory}";	/	tilde.team	70
+i    port = 7070;	/	tilde.team	70
+i    verbose = true;	/	tilde.team	70
+i    autoInlineText = true;	/	tilde.team	70
+i    personalGopherspaces = true;	/	tilde.team	70
+i    # Other options	/	tilde.team	70
+i  };	/	tilde.team	70
+i}	/	tilde.team	70
 i	/	tilde.team	70
 i## Conclusion	/	tilde.team	70
 i	/	tilde.team	70

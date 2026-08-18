@@ -130,6 +130,56 @@ The fleur CLI is a Gopher application that serves files implemented with the fra
 
 It also implements an extension that lists files in the current directory. To use it, type `*` on a line. This feature is inspired by [gophernicus](https://github.com/gophernicus/gophernicus).
 
+### Help Message
+
+Below is the CLI help message.
+
+```text
+Usage of ./fleur:
+  -directory string
+    	It specifies an input directory path that will be the root of the Gopher server (default "./fleur")
+  -domain string
+    	Gopher domain (default "localhost")
+  -enable-auto-inline-text
+    	Relax non compliant text error and convert to gophermap inline text
+  -enable-personal-gopherspaces
+    	Enable personal Gopherspaces, it allows each user of the system to serve its own files
+  -port int
+    	Gopher port (default 70)
+  -verbose
+    	Enable verbose logs
+```
+
+### NixOS module
+
+I also provide a NixOS module for managing the fleur CLI using a systemd service unit. Inside your `flake.nix`, you can start by adding the following lines.
+
+```nix
+{
+  inputs = {
+    fleur.url = "github:theobori/fleur";
+  };
+}
+```
+
+You can then include the module and its default overlay in the system configuration as shown below.
+
+```nix
+{ inputs, ... }: {
+  imports = with inputs; [ fleur.nixosModules.default ];
+
+  services.fleur = {
+    enable = true;
+    directory = "${./my-directory}";
+    port = 7070;
+    verbose = true;
+    autoInlineText = true;
+    personalGopherspaces = true;
+    # Other options
+  };
+}
+```
+
 ## Conclusion
 
 It was a fun project to write and test, and I plan to use it soon to serve my own gophermap files. Also, thanks to [Wireshark](https://www.wireshark.org/), it was a huge help.
