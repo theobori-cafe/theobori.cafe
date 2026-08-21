@@ -9,7 +9,7 @@ I was bored. I had the idea to look for a stimulating and challenging platform s
 
 So I did some research and quickly found [SadServers](https://sadservers.com/). I then decided to explore it and try to solve a few problems. This blog post is simply a brief review of my experience with SadServers.
 
-In the rest of this blog post, we'll refer to the problems as [scenarios](https://sadservers.com/scenario) in accordance with the SadServers terminology.
+In the rest of this blog post, we'll refer to the problems as [scenarios](https://sadservers.com/scenarios) in accordance with the SadServers terminology.
 
 ## What is SadServers
 
